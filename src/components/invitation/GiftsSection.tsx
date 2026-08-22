@@ -1,6 +1,6 @@
 import React from "react";
 import { Gift, Heart, Sparkles, HelpCircle } from "lucide-react";
-import { SectionDivider } from "./SectionDivider";
+import { FloralDivider } from "../brand/FloralDivider";
 import { invitationContent } from "../../config/invitationContent";
 
 export const GiftsSection: React.FC = () => {
@@ -9,21 +9,21 @@ export const GiftsSection: React.FC = () => {
   const renderIcon = (iconName: "Gift" | "Sparkles" | "Heart") => {
     switch (iconName) {
       case "Sparkles":
-        return <Sparkles size={24} />;
+        return <Sparkles size={24} color="var(--color-pink-deep)" />;
       case "Heart":
-        return <Heart size={24} />;
+        return <Heart size={24} color="var(--color-pink-deep)" />;
       case "Gift":
       default:
-        return <Gift size={24} />;
+        return <Gift size={24} color="var(--color-pink-deep)" />;
     }
   };
 
   return (
     <section className="invitation-section" aria-label="Sugestões de Presentes">
       <div className="invitation-container">
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", marginBottom: "var(--space-lg)" }}>
           <span className="section-eyebrow">
-            Mimos & Carinho
+            Mimos para a Maytê
           </span>
           <h2 className="section-title">
             {gifts.title}
@@ -35,7 +35,7 @@ export const GiftsSection: React.FC = () => {
 
         <div className="gifts-grid">
           {gifts.suggestions.map((sug, index) => (
-            <div key={index} className="gift-card">
+            <div key={index} className="floral-gift-card">
               <div className="gift-icon-bubble">
                 {renderIcon(sug.iconName)}
               </div>
@@ -46,14 +46,14 @@ export const GiftsSection: React.FC = () => {
         </div>
 
         <div className="gifts-notice-strip">
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "6px", fontWeight: 600, color: "var(--color-gold-deep)" }}>
-            <HelpCircle size={16} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "6px", fontWeight: 600, color: "var(--color-pink-dark)" }}>
+            <HelpCircle size={17} />
             {gifts.pixNotice}
           </div>
           <div>{gifts.message}</div>
         </div>
 
-        <SectionDivider motif="diamond" />
+        <FloralDivider />
       </div>
     </section>
   );

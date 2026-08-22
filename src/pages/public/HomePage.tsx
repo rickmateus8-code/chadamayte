@@ -1,56 +1,48 @@
 import React from "react";
 import { HeroSection } from "../../components/invitation/HeroSection";
-import { IntroSection } from "../../components/invitation/IntroSection";
+import { WelcomeSection } from "../../components/invitation/WelcomeSection";
+import { EventDetailsSection } from "../../components/invitation/EventDetailsSection";
 import { CountdownSection } from "../../components/invitation/CountdownSection";
-import { EventInfoSection } from "../../components/invitation/EventInfoSection";
-import { LocationSection } from "../../components/invitation/LocationSection";
-import { SpecialMessageSection } from "../../components/invitation/SpecialMessageSection";
-import { GallerySection } from "../../components/invitation/GallerySection";
+import { RsvpSection } from "../../components/invitation/RsvpSection";
+import { MemoriesSection } from "../../components/invitation/MemoriesSection";
 import { GiftsSection } from "../../components/invitation/GiftsSection";
-import { RsvpPreviewSection } from "../../components/invitation/RsvpPreviewSection";
 import { ClosingSection } from "../../components/invitation/ClosingSection";
 
 export const HomePage: React.FC = () => {
   return (
     <div className="invitation-canvas">
-      <main className="stationery-envelope-card" aria-label="Convite Virtual da Maytê">
+      <main className="stationery-envelope-card" aria-label="Convite do Chá de Fraldas da Maytê">
         {/* Moldura Interna de Estamparia Dourada */}
         <div className="stationery-inner-frame" aria-hidden="true" />
 
-        {/* Cantos Ornamentais em Ouro Nobre */}
+        {/* Cantos em Ouro */}
         <div className="stationery-corner stationery-corner-tl" aria-hidden="true" />
         <div className="stationery-corner stationery-corner-tr" aria-hidden="true" />
         <div className="stationery-corner stationery-corner-bl" aria-hidden="true" />
         <div className="stationery-corner stationery-corner-br" aria-hidden="true" />
 
-        {/* 1. Hero */}
+        {/* 1. Capa / Hero com Brasão Floral da Princesa Maytê */}
         <HeroSection />
 
-        {/* 2. Introdução / Mensagem de Abertura */}
-        <IntroSection />
+        {/* 2. Mensagem de Boas-Vindas / Apresentação Acolhedora */}
+        <WelcomeSection />
 
-        {/* 3. Contagem Regressiva */}
+        {/* 3. Informações do Evento & Observações */}
+        <EventDetailsSection />
+
+        {/* 4. Contagem Regressiva */}
         <CountdownSection />
 
-        {/* 4. Informações do Evento */}
-        <EventInfoSection />
+        {/* 5. Confirmar Presença (Destaque Principal) */}
+        <RsvpSection />
 
-        {/* 5. Localização */}
-        <LocationSection />
+        {/* 6. Mural de Fotos & Memórias (Envie suas fotos) */}
+        <MemoriesSection />
 
-        {/* 6. Mensagem Especial aos Convidados */}
-        <SpecialMessageSection />
-
-        {/* 7. Galeria */}
-        <GallerySection />
-
-        {/* 8. Sugestões de Presentes */}
+        {/* 7. Sugestões de Presentes & Fraldas */}
         <GiftsSection />
 
-        {/* 9. Confirmação de Presença Visual */}
-        <RsvpPreviewSection />
-
-        {/* 10. Encerramento */}
+        {/* 8. Encerramento com Barrado Rendado */}
         <ClosingSection />
       </main>
     </div>

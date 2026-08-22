@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SectionDivider } from "./SectionDivider";
+import { FloralDivider } from "../brand/FloralDivider";
 import { invitationContent } from "../../config/invitationContent";
 
 interface TimeRemaining {
@@ -46,7 +46,7 @@ export const CountdownSection: React.FC = () => {
   return (
     <section className="invitation-section" aria-label="Contagem Regressiva">
       <div className="invitation-container-narrow">
-        <div style={{ textAlign: "center", marginBottom: "var(--space-xl)" }}>
+        <div style={{ textAlign: "center", marginBottom: "var(--space-lg)" }}>
           <span className="section-eyebrow">
             Falta Pouco
           </span>
@@ -56,33 +56,33 @@ export const CountdownSection: React.FC = () => {
         </div>
 
         {timeLeft.isFinished ? (
-          <div className="intro-stationery-block">
+          <div className="floral-welcome-card">
             <p style={{ fontFamily: "var(--font-serif)", fontSize: "var(--text-xl)", color: "var(--color-pink-deep)" }}>
               {countdown.finishedText}
             </p>
           </div>
         ) : (
-          <div className="countdown-grid" role="timer" aria-live="polite">
-            <div className="countdown-box">
+          <div className="floral-countdown-grid" role="timer" aria-live="polite">
+            <div className="floral-countdown-box">
               <span className="countdown-number">{padZero(timeLeft.days)}</span>
               <span className="countdown-label">{countdown.labels.days}</span>
             </div>
-            <div className="countdown-box">
+            <div className="floral-countdown-box">
               <span className="countdown-number">{padZero(timeLeft.hours)}</span>
               <span className="countdown-label">{countdown.labels.hours}</span>
             </div>
-            <div className="countdown-box">
+            <div className="floral-countdown-box">
               <span className="countdown-number">{padZero(timeLeft.minutes)}</span>
               <span className="countdown-label">{countdown.labels.minutes}</span>
             </div>
-            <div className="countdown-box">
+            <div className="floral-countdown-box">
               <span className="countdown-number">{padZero(timeLeft.seconds)}</span>
               <span className="countdown-label">{countdown.labels.seconds}</span>
             </div>
           </div>
         )}
 
-        <SectionDivider motif="diamond" />
+        <FloralDivider />
       </div>
     </section>
   );

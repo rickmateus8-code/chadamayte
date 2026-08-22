@@ -8,26 +8,27 @@ export interface InvitationContent {
     babyName: string;
     subtitle: string;
     tagline: string;
-    targetDate: string; // ISO 8601 string for countdown
+    targetDate: string;
     dateFormatted: string;
     timeFormatted: string;
     locationName: string;
     locationAddress: string;
     locationCity: string;
     mapUrl?: string;
+    observations: string;
   };
   sections: {
     hero: {
-      crownAlt: string;
       preTitle: string;
       babyName: string;
       subtitle: string;
       scrollHint: string;
     };
-    intro: {
-      headline: string;
-      quote: string;
-      author: string;
+    welcome: {
+      title: string;
+      greeting: string;
+      badge: string;
+      paragraphs: string[];
     };
     countdown: {
       title: string;
@@ -45,25 +46,26 @@ export interface InvitationContent {
       dateLabel: string;
       timeLabel: string;
       locationLabel: string;
+      observationsLabel: string;
     };
-    location: {
+    rsvp: {
       title: string;
       subtitle: string;
+      confirmPrompt: string;
+      acceptButtonText: string;
+      declineButtonText: string;
+      modalTitle: string;
+      modalMessage: string;
+      closeModalText: string;
+    };
+    memories: {
+      title: string;
+      headline: string;
+      description: string;
+      privacyNote: string;
       buttonText: string;
-      note: string;
-    };
-    specialMessage: {
-      title: string;
-      content: string[];
-    };
-    gallery: {
-      title: string;
-      subtitle: string;
-      placeholders: Array<{
-        id: string;
-        title: string;
-        caption: string;
-      }>;
+      modalTitle: string;
+      modalMessage: string;
     };
     gifts: {
       title: string;
@@ -76,16 +78,6 @@ export interface InvitationContent {
         iconName: "Gift" | "Sparkles" | "Heart";
       }>;
     };
-    rsvp: {
-      title: string;
-      subtitle: string;
-      confirmPrompt: string;
-      acceptButtonText: string;
-      declineButtonText: string;
-      modalTitle: string;
-      modalMessage: string;
-      closeModalText: string;
-    };
     closing: {
       message: string;
       signature: string;
@@ -96,110 +88,102 @@ export interface InvitationContent {
 
 export const invitationContent: InvitationContent = {
   meta: {
-    title: "Chá de Bebê da Maytê — Convite Especial",
-    description: "Celebre conosco a chegada da pequena princesa Maytê. Uma experiência cheia de amor e delicadeza.",
+    title: "Chá de Fraldas da Maytê — Nossa Pequena Princesa",
+    description: "Convite especial para o Chá de Fraldas da Maytê. Venha celebrar conosco a chegada da nossa pequena princesa.",
   },
   event: {
-    name: "Chá de Bebê",
+    name: "Chá de Fraldas",
     babyName: "Maytê",
-    subtitle: "A chegada da nossa pequena princesa",
-    tagline: "Uma pequena princesa está chegando para transformar nossas vidas com amor e luz.",
-    targetDate: "2026-10-18T15:30:00", // Placeholder configurável para data do evento
-    dateFormatted: "18 de Outubro de 2026",
+    subtitle: "Chá de Bebê da Nossa Pequena Princesa",
+    tagline: "Uma linda história de amor está começando e queremos você ao nosso lado para celebrar!",
+    targetDate: "2026-10-18T15:30:00",
+    dateFormatted: "Domingo, 18 de Outubro de 2026",
     timeFormatted: "A partir das 15h30",
     locationName: "Espaço Jardim das Flores",
-    locationAddress: "Av. das Rosas, 1234 — Salão Nobre (Placeholder)",
+    locationAddress: "Av. das Rosas, 1234 — Salão Nobre",
     locationCity: "São Paulo — SP",
-    mapUrl: "", // Opcional — se vazio, o botão exibe aviso amigável sem quebrar
+    mapUrl: "",
+    observations: "Será um encontro muito especial, venham preparados para comemorar e registrar muitas fotos!",
   },
   sections: {
     hero: {
-      crownAlt: "Coroa Dourada da Princesa Maytê",
-      preTitle: "Chá de Bebê",
+      preTitle: "Chá de Fraldas",
       babyName: "Maytê",
-      subtitle: "Uma pequena princesa está chegando para transformar nossas vidas.",
+      subtitle: "Chá de Bebê da Nossa Pequena Princesa",
       scrollHint: "Deslize para ver o convite",
     },
-    intro: {
-      headline: "Esperando Nosso Maior Presente",
-      quote: "Um amor que já é infinito antes mesmo do primeiro abraço.",
-      author: "Com amor, Papai & Mamãe",
+    welcome: {
+      title: "Chá de Fraldas da Maytê",
+      greeting: "Olá, bem-vindos ao nosso Chá de Fraldas!",
+      badge: "❤️ Queridos amigos e familiares ❤️",
+      paragraphs: [
+        "Este site foi criado para facilitar a organização do dia da Maytê.",
+        "Estamos preparando tudo com muito carinho e cuidado para que esse dia seja cheio de lindas lembranças, que um dia poderão ser mostradas à Maytê com muito amor. ❤️",
+      ],
     },
     countdown: {
-      title: "Contagem Regressiva para a Nossa Princesa",
+      title: "Contagem Regressiva para a Festa",
       labels: {
         days: "Dias",
         hours: "Horas",
         minutes: "Min",
         seconds: "Seg",
       },
-      finishedText: "O grande dia chegou! Estamos celebrando a nossa Maytê!",
+      finishedText: "O grande dia chegou! Estamos celebrando a nossa princesa Maytê!",
     },
     details: {
       title: "Informações do Evento",
-      subtitle: "Reserve esse dia no seu coração e na sua agenda para celebrar com a gente",
-      dateLabel: "Data",
+      subtitle: "Os principais detalhes do evento reunidos aqui para você se planejar com tranquilidade.",
+      dateLabel: "Data do Evento",
       timeLabel: "Horário",
-      locationLabel: "Local",
+      locationLabel: "Local & Endereço",
+      observationsLabel: "Observações Importantes",
     },
-    location: {
-      title: "Como Chegar",
-      subtitle: "Esperamos você em um ambiente preparado com todo carinho",
-      buttonText: "Abrir no Mapa",
-      note: "Estacionamento com serviço de valet disponível no local.",
+    rsvp: {
+      title: "Confirmar Presença",
+      subtitle: "Confirme sua presença e participe de um momento inesquecível!",
+      confirmPrompt: "Você poderá estar conosco para celebrar a chegada da Maytê?",
+      acceptButtonText: "SIM, VOU AO EVENTO! ✓",
+      declineButtonText: "NÃO PODEREI IR ✕",
+      modalTitle: "Confirmação de Presença",
+      modalMessage: "Recebemos o seu carinho! A lista nominal completa de confirmação será liberada com o envio individual dos convites.",
+      closeModalText: "Entendi com carinho",
     },
-    specialMessage: {
-      title: "Mensagem com Carinho",
-      content: [
-        "Cada detalhe deste dia está sendo preparado com muito carinho para que você compartilhe dessa alegria com a nossa família.",
-        "Sua presença e seu abraço são os melhores presentes que a Maytê pode receber ao iniciar sua linda jornada no mundo.",
-      ],
-    },
-    gallery: {
-      title: "Momentos de Espera",
-      subtitle: "Pequenos registros do início de uma história de amor incondicional",
-      placeholders: [
-        { id: "1", title: "O Começo do Sonho", caption: "Primeiros batimentos e a descoberta da nossa princesa" },
-        { id: "2", title: "Crescendo com Amor", caption: "A cada semana, mais amor preenche nosso lar" },
-        { id: "3", title: "O Quartinho Real", caption: "Preparando o castelo onde a Maytê vai sonhar" },
-      ],
+    memories: {
+      title: "Mural de Fotos & Memórias",
+      headline: "Ei, convidado! Suas fotos podem fazer parte da festa!",
+      description: "Ajude a contar a história do evento, enviando aos anfitriões seus registros para eternizar cada detalhe da comemoração.",
+      privacyNote: "Ahhh... apenas os anfitriões verão suas fotos! 😊",
+      buttonText: "ENVIAR MINHAS FOTOS",
+      modalTitle: "Galeria dos Convidados",
+      modalMessage: "No dia do evento este canal estará aberto para você fazer o upload das fotos tiradas durante a festa direto para os papais da Maytê!",
     },
     gifts: {
       title: "Sugestões de Presentes",
-      subtitle: "O maior presente é a sua presença. Se desejar mimar nossa princesa, preparamos algumas ideias com carinho.",
-      message: "Fraldas (tamanhos M e G), roupinhas delicadas ou itens de cuidados para bebê.",
-      pixNotice: "Opção de lista virtual e PIX estarão disponíveis em breve.",
+      subtitle: "Sua presença é o maior presente! Para quem desejar mimar a Maytê, preparamos algumas dicas com amor:",
+      message: "Fraldas tamanhos M ou G, roupinhas delicadas ou itens de cuidados.",
+      pixNotice: "Opção de presente via PIX e lista de fraldas virtual.",
       suggestions: [
         {
-          category: "Cuidados & Higiene",
-          description: "Fraldas tamanhos M ou G, toalhinhas umedecidas e sabonetes suaves.",
+          category: "Fraldas & Higiene",
+          description: "Fraldas tamanhos M ou G, lenços umedecidos e pomadinhas.",
           iconName: "Sparkles",
         },
         {
-          category: "Roupas & Conforto",
-          description: "Bodys, macacõezinhos delicados (3 a 9 meses) e mantas macias.",
+          category: "Roupas & Mimos",
+          description: "Bodys e macacões confortáveis (3 a 9 meses) e meinhas.",
           iconName: "Heart",
         },
         {
-          category: "Mimos & Brincadeiras",
-          description: "Mordedores, chocalhos e livrinhos sensoriais para os primeiros meses.",
+          category: "Brinquedos & Conforto",
+          description: "Naninhas, mordedores e mantas macias.",
           iconName: "Gift",
         },
       ],
     },
-    rsvp: {
-      title: "Confirmação de Presença",
-      subtitle: "Para que possamos preparar tudo com perfeição, confirme sua presença até 05 de Outubro.",
-      confirmPrompt: "Você poderá estar conosco para celebrar a chegada da Maytê?",
-      acceptButtonText: "Sim, estarei presente!",
-      declineButtonText: "Infelizmente não poderei ir",
-      modalTitle: "Confirmação de Presença",
-      modalMessage: "Obrigado pelo carinho! O formulário completo com lista de convidados e acompanhantes será aberto oficialmente na próxima fase.",
-      closeModalText: "Entendi com carinho",
-    },
     closing: {
-      message: "Com todo o nosso carinho e gratidão, esperamos você para celebrar a chegada da nossa doce Maytê.",
-      signature: "Com amor,",
+      message: "Esperamos você com todo o nosso coração para celebrar a doce vida da nossa Maytê!",
+      signature: "Com muito amor e carinho,",
       babyName: "Família da Maytê",
     },
   },

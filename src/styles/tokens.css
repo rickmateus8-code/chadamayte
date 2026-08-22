@@ -1,58 +1,63 @@
 :root {
   /* ==========================================================================
-     Design Tokens — Papelaria Digital de Luxo (Chá de Bebê da Maytê)
+     Design Tokens — Chá de Fraldas da Maytê (Pequena Princesa Floral)
      ========================================================================== */
 
-  /* Palette */
-  --color-canvas: #f6e6eb;
-  --color-canvas-soft: #fcf1f4;
-  --color-paper: #fffdfd;
-  --color-paper-warm: #fff8fa;
-  --color-paper-subtle: #fcf4f6;
+  /* Palette Floral Real */
+  --color-canvas: #fcf1f5;
+  --color-canvas-soft: #fdf5f8;
+  --color-paper: #ffffff;
+  --color-paper-warm: #fff9fb;
+  --color-paper-subtle: #fbf0f4;
 
-  --color-pink-soft: #f4dbe2;
-  --color-pink: #d99aaa;
-  --color-pink-deep: #964f61;
+  --color-pink-light: #fdedf1;
+  --color-pink-soft: #f7d5de;
+  --color-pink: #e28299;
+  --color-pink-deep: #b34764;
+  --color-pink-dark: #7c243a;
 
-  --color-gold-light: #f3e5c8;
-  --color-gold-soft: #ebd9b5;
-  --color-gold: #c59b27;
+  --color-gold-light: #f7ebd0;
+  --color-gold-soft: #ebd6a7;
+  --color-gold: #cfa439;
   --color-gold-rich: #d4af37;
-  --color-gold-deep: #856120;
+  --color-gold-deep: #8c671b;
 
-  --color-text: #382b2e;
-  --color-text-soft: #6e5a60;
-  --color-text-light: #947e84;
+  --color-green-leaf: #92ab93;
+  --color-green-soft: #d3e4d4;
+
+  --color-text: #3c2a2e;
+  --color-text-soft: #6d545b;
+  --color-text-light: #987d85;
   --color-white: #ffffff;
 
-  /* Borders & Hairlines */
-  --border-gold-main: 1px solid rgba(197, 155, 39, 0.45);
-  --border-gold-subtle: 1px solid rgba(235, 217, 181, 0.5);
-  --border-pink-subtle: 1px solid rgba(244, 219, 226, 0.6);
+  /* Bordas & Estamparia */
+  --border-gold-main: 1px solid rgba(207, 164, 57, 0.45);
+  --border-gold-subtle: 1px solid rgba(235, 214, 167, 0.6);
+  --border-pink-subtle: 1px solid rgba(247, 213, 222, 0.7);
 
-  /* Luxury Gradients */
-  --gradient-gold: linear-gradient(135deg, #f7e9cc 0%, #d4af37 40%, #c59b27 70%, #856120 100%);
-  --gradient-gold-foil: linear-gradient(135deg, #dfbc55 0%, #ecd69c 35%, #c59b27 70%, #946d23 100%);
-  --gradient-gold-subtle: linear-gradient(135deg, rgba(243, 229, 200, 0.4) 0%, rgba(197, 155, 39, 0.15) 100%);
-  --gradient-paper: linear-gradient(180deg, #fffdfd 0%, #fffbfb 60%, #fff8fa 100%);
-  --gradient-canvas: radial-gradient(circle at 50% 20%, #fdf2f5 0%, #f6e6eb 60%, #eed9e0 100%);
+  /* Gradientes Nobres */
+  --gradient-gold: linear-gradient(135deg, #f9eed4 0%, #d4af37 38%, #cfa439 70%, #8c671b 100%);
+  --gradient-gold-foil: linear-gradient(135deg, #e5c468 0%, #f4e4b5 30%, #cfa439 70%, #8c671b 100%);
+  --gradient-pink: linear-gradient(135deg, #fdedf1 0%, #f7d5de 100%);
+  --gradient-paper: linear-gradient(180deg, #ffffff 0%, #fffbfd 60%, #fff8fa 100%);
+  --gradient-canvas: radial-gradient(circle at 50% 15%, #ffffff 0%, #fcf0f5 50%, #f8e4ec 100%);
 
-  /* Typography */
+  /* Tipografia */
   --font-serif: "Cormorant Garamond", Garamond, Georgia, serif;
   --font-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Scale */
+  /* Escala Tipográfica */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1.0625rem;
   --text-lg: 1.25rem;
-  --text-xl: 1.4375rem;
+  --text-xl: 1.5rem;
   --text-2xl: 1.875rem;
   --text-3xl: 2.5rem;
   --text-4xl: 3.25rem;
-  --text-hero: clamp(3.75rem, 9.5vw, 6.25rem);
+  --text-hero: clamp(2.75rem, 7vw, 4.75rem);
 
-  /* Spacing */
+  /* Espaçamentos */
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
   --space-sm: 0.875rem;
@@ -60,28 +65,28 @@
   --space-lg: 1.875rem;
   --space-xl: 2.75rem;
   --space-2xl: 4rem;
-  --space-3xl: 6rem;
+  --space-3xl: 5.5rem;
 
-  /* Radius */
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* Raios */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sheet: 0 24px 70px rgba(130, 60, 75, 0.12), 0 4px 16px rgba(0, 0, 0, 0.03);
-  --shadow-card: 0 8px 30px rgba(150, 79, 97, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
-  --shadow-gold: 0 8px 24px rgba(197, 155, 39, 0.3);
-  --shadow-floating: 0 20px 50px rgba(130, 60, 75, 0.14);
+  /* Sombras */
+  --shadow-sheet: 0 20px 60px rgba(179, 71, 100, 0.12), 0 2px 10px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 8px 30px rgba(179, 71, 100, 0.07), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-gold: 0 8px 24px rgba(207, 164, 57, 0.35);
+  --shadow-floating: 0 16px 44px rgba(179, 71, 100, 0.15);
 
-  /* Layout Containers */
-  --container-sheet: 840px;
-  --container-inner: 720px;
-  --container-narrow: 600px;
+  /* Containers */
+  --container-sheet: 780px;
+  --container-inner: 680px;
+  --container-narrow: 560px;
 
-  /* Transitions & Motion */
+  /* Transições */
   --transition-fast: 150ms ease;
   --transition-normal: 300ms cubic-bezier(0.16, 1, 0.3, 1);
   --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);

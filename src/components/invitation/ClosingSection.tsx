@@ -1,5 +1,5 @@
 import React from "react";
-import { Crown } from "../brand/Crown";
+import { LaceBorder } from "../brand/LaceBorder";
 import { invitationContent } from "../../config/invitationContent";
 
 export const ClosingSection: React.FC = () => {
@@ -8,10 +8,6 @@ export const ClosingSection: React.FC = () => {
   return (
     <footer className="closing-section" aria-label="Encerramento do Convite">
       <div className="invitation-container-narrow">
-        <div style={{ marginBottom: "var(--space-lg)" }}>
-          <Crown size={36} color="var(--color-gold)" />
-        </div>
-
         <blockquote className="closing-quote">
           “{closing.message}”
         </blockquote>
@@ -25,10 +21,16 @@ export const ClosingSection: React.FC = () => {
         </div>
 
         <div style={{
-          marginTop: "var(--space-2xl)",
+          margin: "var(--space-xl) auto var(--space-md) auto",
+          maxWidth: "400px",
+        }}>
+          <LaceBorder />
+        </div>
+
+        <div style={{
           fontSize: "var(--text-xs)",
           color: "var(--color-text-light)",
-          letterSpacing: "0.1em",
+          letterSpacing: "0.14em",
           textTransform: "uppercase",
         }}>
           {invitationContent.event.name} • {new Date().getFullYear()}
