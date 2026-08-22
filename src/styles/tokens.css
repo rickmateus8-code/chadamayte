@@ -1,79 +1,81 @@
 :root {
   /* ==========================================================================
-     Design Tokens — Chá de Bebê da Maytê (Pequena Princesa)
+     Design Tokens — Chá de Bebê da Maytê (Papelaria Digital Premium)
      ========================================================================== */
 
   /* Palette */
-  --color-bg: #fff9fa;
-  --color-bg-soft: #f8e7ec;
-  --color-pink-soft: #efcbd6;
+  --color-bg: #fffbfb;
+  --color-bg-soft: #fcf1f4;
+  --color-pink-soft: #f4dbe2;
   --color-pink: #d99aaa;
-  --color-pink-deep: #b97889;
+  --color-pink-deep: #a86273;
 
-  --color-gold-soft: #e8d2a4;
+  --color-gold-soft: #ebd9b5;
   --color-gold: #c8a45d;
-  --color-gold-deep: #9b783c;
+  --color-gold-deep: #8f6c2d;
 
-  --color-text: #59464b;
-  --color-text-soft: #816e73;
+  --color-text: #45363a;
+  --color-text-soft: #7a666b;
+  --color-text-light: #9e8a8f;
   --color-white: #ffffff;
 
-  /* Surfaces & Borders */
+  /* Surfaces & Fine Stationery Borders */
   --color-surface-card: #ffffff;
-  --color-surface-subtle: #fbf3f5;
-  --color-border-delicate: rgba(239, 203, 214, 0.45);
-  --color-border-gold: rgba(200, 164, 93, 0.35);
+  --color-surface-paper: #fffefd;
+  --color-surface-subtle: #fcf4f6;
+  --color-border-delicate: rgba(224, 185, 196, 0.35);
+  --color-border-gold: rgba(200, 164, 93, 0.4);
+  --color-border-gold-soft: rgba(235, 217, 181, 0.5);
 
-  /* Gradients */
-  --gradient-gold: linear-gradient(135deg, var(--color-gold-soft) 0%, var(--color-gold) 50%, var(--color-gold-deep) 100%);
-  --gradient-gold-subtle: linear-gradient(135deg, rgba(232, 210, 164, 0.25) 0%, rgba(200, 164, 93, 0.15) 100%);
-  --gradient-pink: linear-gradient(135deg, #fff0f3 0%, var(--color-bg-soft) 100%);
-  --gradient-hero: radial-gradient(circle at 50% 30%, rgba(248, 231, 236, 0.8) 0%, rgba(255, 249, 250, 0.95) 70%, #fff9fa 100%);
+  /* Luxury Gradients */
+  --gradient-gold: linear-gradient(135deg, #ecd8b3 0%, var(--color-gold) 50%, var(--color-gold-deep) 100%);
+  --gradient-gold-subtle: linear-gradient(135deg, rgba(235, 217, 181, 0.35) 0%, rgba(200, 164, 93, 0.12) 100%);
+  --gradient-pink: linear-gradient(180deg, #fffbfb 0%, #faedf1 100%);
+  --gradient-hero: radial-gradient(circle at 50% 35%, rgba(252, 241, 244, 0.95) 0%, rgba(255, 251, 251, 0.98) 65%, #fffbfb 100%);
 
   /* Typography */
-  --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Cormorant Garamond", Garamond, Georgia, serif;
+  --font-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography Scale */
   --text-xs: 0.75rem;     /* 12px */
   --text-sm: 0.875rem;    /* 14px */
-  --text-base: 1rem;      /* 16px */
-  --text-lg: 1.125rem;    /* 18px */
-  --text-xl: 1.25rem;     /* 20px */
-  --text-2xl: 1.5rem;     /* 24px */
-  --text-3xl: 2rem;       /* 32px */
-  --text-4xl: 2.75rem;    /* 44px */
-  --text-5xl: 3.5rem;     /* 56px */
-  --text-hero: clamp(2.75rem, 8vw, 4.5rem);
+  --text-base: 1.0625rem; /* 17px */
+  --text-lg: 1.25rem;     /* 20px */
+  --text-xl: 1.4375rem;   /* 23px */
+  --text-2xl: 1.75rem;    /* 28px */
+  --text-3xl: 2.25rem;    /* 36px */
+  --text-4xl: 3rem;       /* 48px */
+  --text-hero: clamp(3.25rem, 8.5vw, 5.75rem);
 
   /* Spacing */
   --space-2xs: 0.25rem;   /* 4px */
   --space-xs: 0.5rem;     /* 8px */
-  --space-sm: 0.75rem;    /* 12px */
-  --space-md: 1rem;       /* 16px */
-  --space-lg: 1.5rem;     /* 24px */
-  --space-xl: 2rem;       /* 32px */
-  --space-2xl: 3rem;      /* 48px */
-  --space-3xl: 4.5rem;    /* 72px */
+  --space-sm: 0.875rem;   /* 14px */
+  --space-md: 1.25rem;    /* 20px */
+  --space-lg: 1.75rem;    /* 28px */
+  --space-xl: 2.5rem;     /* 40px */
+  --space-2xl: 3.75rem;   /* 60px */
+  --space-3xl: 5.5rem;    /* 88px */
 
   /* Radius */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-subtle: 0 4px 16px rgba(185, 120, 137, 0.06);
-  --shadow-card: 0 10px 30px rgba(185, 120, 137, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
-  --shadow-gold: 0 8px 24px rgba(200, 164, 93, 0.22);
-  --shadow-floating: 0 16px 40px rgba(185, 120, 137, 0.12);
+  --shadow-subtle: 0 4px 20px rgba(168, 98, 115, 0.05);
+  --shadow-card: 0 8px 32px rgba(168, 98, 115, 0.07), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-gold: 0 6px 20px rgba(200, 164, 93, 0.25);
+  --shadow-floating: 0 16px 48px rgba(168, 98, 115, 0.1);
 
   /* Layout Containers */
-  --container-narrow: 560px;
-  --container-main: 780px;
-  --container-wide: 1040px;
+  --container-narrow: 640px;
+  --container-main: 860px;
+  --container-wide: 1120px;
 
   /* Transitions & Motion */
   --transition-fast: 150ms ease;

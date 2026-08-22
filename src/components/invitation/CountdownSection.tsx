@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Clock } from "lucide-react";
+import { SectionDivider } from "./SectionDivider";
 import { invitationContent } from "../../config/invitationContent";
 
 interface TimeRemaining {
@@ -46,9 +46,8 @@ export const CountdownSection: React.FC = () => {
   return (
     <section className="invitation-section" aria-label="Contagem Regressiva">
       <div className="invitation-container-narrow">
-        <div style={{ textAlign: "center", marginBottom: "var(--space-lg)" }}>
-          <span className="section-badge">
-            <Clock size={13} />
+        <div style={{ textAlign: "center", marginBottom: "var(--space-xl)" }}>
+          <span className="section-eyebrow">
             Falta Pouco
           </span>
           <h2 className="section-title">
@@ -57,7 +56,7 @@ export const CountdownSection: React.FC = () => {
         </div>
 
         {timeLeft.isFinished ? (
-          <div className="intro-card">
+          <div className="intro-stationery-block">
             <p style={{ fontFamily: "var(--font-serif)", fontSize: "var(--text-xl)", color: "var(--color-pink-deep)" }}>
               {countdown.finishedText}
             </p>
@@ -82,6 +81,8 @@ export const CountdownSection: React.FC = () => {
             </div>
           </div>
         )}
+
+        <SectionDivider motif="diamond" />
       </div>
     </section>
   );

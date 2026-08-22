@@ -9,12 +9,12 @@ export const GiftsSection: React.FC = () => {
   const renderIcon = (iconName: "Gift" | "Sparkles" | "Heart") => {
     switch (iconName) {
       case "Sparkles":
-        return <Sparkles size={22} />;
+        return <Sparkles size={24} />;
       case "Heart":
-        return <Heart size={22} />;
+        return <Heart size={24} />;
       case "Gift":
       default:
-        return <Gift size={22} />;
+        return <Gift size={24} />;
     }
   };
 
@@ -22,9 +22,8 @@ export const GiftsSection: React.FC = () => {
     <section className="invitation-section" aria-label="Sugestões de Presentes">
       <div className="invitation-container">
         <div style={{ textAlign: "center" }}>
-          <span className="section-badge">
-            <Gift size={13} />
-            Mimos para a Princesa
+          <span className="section-eyebrow">
+            Mimos & Carinho
           </span>
           <h2 className="section-title">
             {gifts.title}
@@ -46,15 +45,15 @@ export const GiftsSection: React.FC = () => {
           ))}
         </div>
 
-        <div className="gifts-notice-card">
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", marginBottom: "4px", fontWeight: 600, color: "var(--color-gold-deep)" }}>
-            <HelpCircle size={15} />
+        <div className="gifts-notice-strip">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "6px", fontWeight: 600, color: "var(--color-gold-deep)" }}>
+            <HelpCircle size={16} />
             {gifts.pixNotice}
           </div>
           <div>{gifts.message}</div>
         </div>
 
-        <SectionDivider />
+        <SectionDivider motif="diamond" />
       </div>
     </section>
   );

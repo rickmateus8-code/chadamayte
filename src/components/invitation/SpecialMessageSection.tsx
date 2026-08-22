@@ -1,7 +1,6 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
 import { SectionDivider } from "./SectionDivider";
-import { Crown } from "../brand/Crown";
 import { invitationContent } from "../../config/invitationContent";
 
 export const SpecialMessageSection: React.FC = () => {
@@ -10,46 +9,33 @@ export const SpecialMessageSection: React.FC = () => {
   return (
     <section className="invitation-section" aria-label="Mensagem Especial">
       <div className="invitation-container-narrow">
-        <div className="intro-card" style={{ padding: "var(--space-2xl) var(--space-xl)" }}>
-          <div style={{ marginBottom: "var(--space-sm)" }}>
-            <Crown size={32} color="var(--color-gold)" />
-          </div>
+        <div className="special-letter-block">
+          <span className="section-eyebrow">
+            Com Amor
+          </span>
 
-          <h2 style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "clamp(1.5rem, 4vw, 2rem)",
-            color: "var(--color-text)",
-            fontWeight: 700,
-            marginBottom: "var(--space-md)",
-          }}>
+          <h2 className="section-title" style={{ marginBottom: "var(--space-xl)" }}>
             {specialMessage.title}
           </h2>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-md)" }}>
+          <div className="special-letter-paragraphs">
             {specialMessage.content.map((paragraph, index) => (
-              <p
-                key={index}
-                style={{
-                  fontSize: "var(--text-base)",
-                  color: "var(--color-text-soft)",
-                  lineHeight: 1.7,
-                }}
-              >
+              <p key={index} className="special-letter-p">
                 {paragraph}
               </p>
             ))}
           </div>
 
           <div style={{
-            marginTop: "var(--space-lg)",
+            marginTop: "var(--space-2xl)",
             display: "inline-flex",
             alignItems: "center",
-            gap: "6px",
+            gap: "8px",
             color: "var(--color-gold-deep)",
             fontSize: "var(--text-xs)",
             fontWeight: 600,
             textTransform: "uppercase",
-            letterSpacing: "0.08em",
+            letterSpacing: "0.2em",
           }}>
             <Sparkles size={14} />
             Esperamos por você
@@ -57,7 +43,7 @@ export const SpecialMessageSection: React.FC = () => {
           </div>
         </div>
 
-        <SectionDivider />
+        <SectionDivider motif="diamond" />
       </div>
     </section>
   );

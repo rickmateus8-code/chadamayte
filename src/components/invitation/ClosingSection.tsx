@@ -8,8 +8,8 @@ export const ClosingSection: React.FC = () => {
   return (
     <footer className="closing-section" aria-label="Encerramento do Convite">
       <div className="invitation-container-narrow">
-        <div style={{ marginBottom: "var(--space-md)" }}>
-          <Crown size={32} color="var(--color-gold)" />
+        <div style={{ marginBottom: "var(--space-lg)" }}>
+          <Crown size={36} color="var(--color-gold)" />
         </div>
 
         <blockquote className="closing-quote">
@@ -27,8 +27,9 @@ export const ClosingSection: React.FC = () => {
         <div style={{
           marginTop: "var(--space-2xl)",
           fontSize: "var(--text-xs)",
-          color: "var(--color-text-soft)",
-          opacity: 0.75,
+          color: "var(--color-text-light)",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
         }}>
           {invitationContent.event.name} • {new Date().getFullYear()}
         </div>

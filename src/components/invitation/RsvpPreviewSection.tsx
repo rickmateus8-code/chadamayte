@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CheckCircle, XCircle, HeartHandshake, Sparkles, X } from "lucide-react";
+import { CheckCircle, XCircle, Sparkles, X } from "lucide-react";
 import { Crown } from "../brand/Crown";
 import { invitationContent } from "../../config/invitationContent";
 
@@ -22,9 +22,8 @@ export const RsvpPreviewSection: React.FC = () => {
     <section className="invitation-section" aria-label="Confirmação de Presença">
       <div className="invitation-container-narrow">
         <div style={{ textAlign: "center" }}>
-          <span className="section-badge">
-            <HeartHandshake size={13} />
-            Sua Presença
+          <span className="section-eyebrow">
+            R. S. V. P.
           </span>
           <h2 className="section-title">
             {rsvp.title}
@@ -34,9 +33,10 @@ export const RsvpPreviewSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="rsvp-card">
+        {/* Cartão de Resposta / Papelaria de Confirmação */}
+        <div className="rsvp-stationery-card">
           <div style={{ marginBottom: "var(--space-md)" }}>
-            <Crown size={36} color="var(--color-gold)" />
+            <Crown size={40} color="var(--color-gold)" />
           </div>
 
           <h3 className="rsvp-prompt">
@@ -66,13 +66,14 @@ export const RsvpPreviewSection: React.FC = () => {
           </div>
 
           <div style={{
-            marginTop: "var(--space-lg)",
+            marginTop: "var(--space-xl)",
             fontSize: "var(--text-xs)",
-            color: "var(--color-text-soft)",
+            color: "var(--color-text-light)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "4px",
+            gap: "6px",
+            letterSpacing: "0.05em",
           }}>
             <Sparkles size={13} color="var(--color-gold)" />
             <span>Confirmação digital exclusiva para convidados</span>
@@ -105,7 +106,7 @@ export const RsvpPreviewSection: React.FC = () => {
             </div>
 
             <div style={{ marginBottom: "var(--space-md)" }}>
-              <Crown size={48} color="var(--color-gold)" />
+              <Crown size={44} color="var(--color-gold)" />
             </div>
 
             <h3
@@ -123,12 +124,12 @@ export const RsvpPreviewSection: React.FC = () => {
             <p style={{
               fontSize: "var(--text-sm)",
               color: "var(--color-text-soft)",
-              lineHeight: 1.6,
-              marginBottom: "var(--space-lg)",
+              lineHeight: 1.65,
+              marginBottom: "var(--space-xl)",
             }}>
               {selectedResponse === "yes" ? (
                 <>
-                  Ficamos imensamente felizes com a sua intenção de vir celebrar com a gente!{" "}
+                  Ficamos imensamente felizes com a sua intenção de vir celebrar conosco!{" "}
                   {rsvp.modalMessage}
                 </>
               ) : (

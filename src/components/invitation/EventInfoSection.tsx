@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, Clock, MapPin, Sparkles } from "lucide-react";
+import { Calendar, Clock, MapPin } from "lucide-react";
 import { SectionDivider } from "./SectionDivider";
 import { invitationContent } from "../../config/invitationContent";
 
@@ -11,9 +11,8 @@ export const EventInfoSection: React.FC = () => {
     <section className="invitation-section" aria-label="Detalhes do Evento">
       <div className="invitation-container">
         <div style={{ textAlign: "center" }}>
-          <span className="section-badge">
-            <Sparkles size={13} />
-            Detalhes da Celebração
+          <span className="section-eyebrow">
+            Celebração
           </span>
           <h2 className="section-title">
             {details.title}
@@ -23,39 +22,40 @@ export const EventInfoSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="event-info-grid">
-          {/* Card Data */}
-          <div className="info-card">
-            <div className="info-icon-wrapper">
-              <Calendar size={24} />
+        {/* Bloco Tripartite Bespoke em Estilo Papelaria */}
+        <div className="event-info-strip">
+          {/* Coluna Data */}
+          <div className="info-strip-cell">
+            <div className="info-cell-icon">
+              <Calendar size={28} />
             </div>
-            <span className="info-card-title">{details.dateLabel}</span>
-            <div className="info-card-value">{event.dateFormatted}</div>
-            <span className="info-card-sub">Domingo de Festa</span>
+            <span className="info-cell-label">{details.dateLabel}</span>
+            <div className="info-cell-value">{event.dateFormatted}</div>
+            <span className="info-cell-sub">Domingo de Festa</span>
           </div>
 
-          {/* Card Horário */}
-          <div className="info-card">
-            <div className="info-icon-wrapper">
-              <Clock size={24} />
+          {/* Coluna Horário */}
+          <div className="info-strip-cell">
+            <div className="info-cell-icon">
+              <Clock size={28} />
             </div>
-            <span className="info-card-title">{details.timeLabel}</span>
-            <div className="info-card-value">{event.timeFormatted}</div>
-            <span className="info-card-sub">Recepção dos Convidados</span>
+            <span className="info-cell-label">{details.timeLabel}</span>
+            <div className="info-cell-value">{event.timeFormatted}</div>
+            <span className="info-cell-sub">Recepção dos Convidados</span>
           </div>
 
-          {/* Card Local */}
-          <div className="info-card">
-            <div className="info-icon-wrapper">
-              <MapPin size={24} />
+          {/* Coluna Local */}
+          <div className="info-strip-cell">
+            <div className="info-cell-icon">
+              <MapPin size={28} />
             </div>
-            <span className="info-card-title">{details.locationLabel}</span>
-            <div className="info-card-value">{event.locationName}</div>
-            <span className="info-card-sub">{event.locationCity}</span>
+            <span className="info-cell-label">{details.locationLabel}</span>
+            <div className="info-cell-value">{event.locationName}</div>
+            <span className="info-cell-sub">{event.locationCity}</span>
           </div>
         </div>
 
-        <SectionDivider />
+        <SectionDivider motif="diamond" />
       </div>
     </section>
   );
