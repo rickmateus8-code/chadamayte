@@ -12,36 +12,47 @@ import { ClosingSection } from "../../components/invitation/ClosingSection";
 
 export const HomePage: React.FC = () => {
   return (
-    <div className="invitation-page">
-      {/* 1. Hero */}
-      <HeroSection />
+    <div className="invitation-canvas">
+      <main className="stationery-envelope-card" aria-label="Convite Virtual da Maytê">
+        {/* Moldura Interna de Estamparia Dourada */}
+        <div className="stationery-inner-frame" aria-hidden="true" />
 
-      {/* 2. Introdução / Mensagem Emocional */}
-      <IntroSection />
+        {/* Cantos Ornamentais em Ouro Nobre */}
+        <div className="stationery-corner stationery-corner-tl" aria-hidden="true" />
+        <div className="stationery-corner stationery-corner-tr" aria-hidden="true" />
+        <div className="stationery-corner stationery-corner-bl" aria-hidden="true" />
+        <div className="stationery-corner stationery-corner-br" aria-hidden="true" />
 
-      {/* 3. Contagem Regressiva */}
-      <CountdownSection />
+        {/* 1. Hero */}
+        <HeroSection />
 
-      {/* 4. Informações do Evento */}
-      <EventInfoSection />
+        {/* 2. Introdução / Mensagem de Abertura */}
+        <IntroSection />
 
-      {/* 5. Localização */}
-      <LocationSection />
+        {/* 3. Contagem Regressiva */}
+        <CountdownSection />
 
-      {/* 6. Mensagem Especial aos Convidados */}
-      <SpecialMessageSection />
+        {/* 4. Informações do Evento */}
+        <EventInfoSection />
 
-      {/* 7. Galeria */}
-      <GallerySection />
+        {/* 5. Localização */}
+        <LocationSection />
 
-      {/* 8. Sugestões de Presentes */}
-      <GiftsSection />
+        {/* 6. Mensagem Especial aos Convidados */}
+        <SpecialMessageSection />
 
-      {/* 9. Confirmação de Presença Visual */}
-      <RsvpPreviewSection />
+        {/* 7. Galeria */}
+        <GallerySection />
 
-      {/* 10. Encerramento */}
-      <ClosingSection />
+        {/* 8. Sugestões de Presentes */}
+        <GiftsSection />
+
+        {/* 9. Confirmação de Presença Visual */}
+        <RsvpPreviewSection />
+
+        {/* 10. Encerramento */}
+        <ClosingSection />
+      </main>
     </div>
   );
 };
