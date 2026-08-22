@@ -1,0 +1,100 @@
+:root {
+  /* ==========================================================================
+     Design Tokens — Chá de Bebê da Maytê (Pequena Princesa)
+     ========================================================================== */
+
+  /* Palette */
+  --color-bg: #fff9fa;
+  --color-bg-soft: #f8e7ec;
+  --color-pink-soft: #efcbd6;
+  --color-pink: #d99aaa;
+  --color-pink-deep: #b97889;
+
+  --color-gold-soft: #e8d2a4;
+  --color-gold: #c8a45d;
+  --color-gold-deep: #9b783c;
+
+  --color-text: #59464b;
+  --color-text-soft: #816e73;
+  --color-white: #ffffff;
+
+  /* Surfaces & Borders */
+  --color-surface-card: #ffffff;
+  --color-surface-subtle: #fbf3f5;
+  --color-border-delicate: rgba(239, 203, 214, 0.45);
+  --color-border-gold: rgba(200, 164, 93, 0.35);
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(135deg, var(--color-gold-soft) 0%, var(--color-gold) 50%, var(--color-gold-deep) 100%);
+  --gradient-gold-subtle: linear-gradient(135deg, rgba(232, 210, 164, 0.25) 0%, rgba(200, 164, 93, 0.15) 100%);
+  --gradient-pink: linear-gradient(135deg, #fff0f3 0%, var(--color-bg-soft) 100%);
+  --gradient-hero: radial-gradient(circle at 50% 30%, rgba(248, 231, 236, 0.8) 0%, rgba(255, 249, 250, 0.95) 70%, #fff9fa 100%);
+
+  /* Typography */
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Typography Scale */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 2rem;       /* 32px */
+  --text-4xl: 2.75rem;    /* 44px */
+  --text-5xl: 3.5rem;     /* 56px */
+  --text-hero: clamp(2.75rem, 8vw, 4.5rem);
+
+  /* Spacing */
+  --space-2xs: 0.25rem;   /* 4px */
+  --space-xs: 0.5rem;     /* 8px */
+  --space-sm: 0.75rem;    /* 12px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;       /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4.5rem;    /* 72px */
+
+  /* Radius */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-subtle: 0 4px 16px rgba(185, 120, 137, 0.06);
+  --shadow-card: 0 10px 30px rgba(185, 120, 137, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-gold: 0 8px 24px rgba(200, 164, 93, 0.22);
+  --shadow-floating: 0 16px 40px rgba(185, 120, 137, 0.12);
+
+  /* Layout Containers */
+  --container-narrow: 560px;
+  --container-main: 780px;
+  --container-wide: 1040px;
+
+  /* Transitions & Motion */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Z-Index */
+  --z-base: 1;
+  --z-header: 50;
+  --z-modal-backdrop: 100;
+  --z-modal: 101;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

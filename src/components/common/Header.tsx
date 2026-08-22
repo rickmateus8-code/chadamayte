@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Crown, Sparkles, Settings } from "lucide-react";
+import { Crown } from "../brand/Crown";
+import { Sparkles, Settings } from "lucide-react";
 
 export const Header: React.FC = () => {
   const location = useLocation();
@@ -8,49 +9,53 @@ export const Header: React.FC = () => {
 
   return (
     <header style={{
-      backgroundColor: "var(--color-surface)",
-      borderBottom: "1px solid var(--color-border)",
-      padding: "0.75rem 1.5rem",
+      backgroundColor: "rgba(255, 249, 250, 0.85)",
+      backdropFilter: "blur(8px)",
+      WebkitBackdropFilter: "blur(8px)",
+      borderBottom: "1px solid var(--color-border-delicate)",
+      padding: "0.75rem 1.25rem",
       position: "sticky",
       top: 0,
-      zIndex: 10,
+      zIndex: "var(--z-header)" as unknown as number,
     }}>
       <div style={{
-        maxWidth: "800px",
+        maxWidth: "var(--container-wide)",
         margin: "0 auto",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
       }}>
-        <Link to="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
           <div style={{
             width: "36px",
             height: "36px",
-            borderRadius: "50%",
-            backgroundColor: "var(--color-primary-light)",
+            borderRadius: "var(--radius-full)",
+            backgroundColor: "var(--color-bg-soft)",
+            border: "1px solid var(--color-pink-soft)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "var(--color-gold)",
           }}>
-            <Crown size={20} />
+            <Crown size={22} color="var(--color-gold)" />
           </div>
           <div>
             <span style={{
               fontFamily: "var(--font-serif)",
               fontSize: "1.25rem",
               fontWeight: 700,
-              color: "var(--color-text-main)",
+              color: "var(--color-text)",
               letterSpacing: "0.02em",
+              display: "block",
+              lineHeight: 1.1,
             }}>
               Maytê
             </span>
             <span style={{
               display: "block",
               fontSize: "0.6875rem",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-deep)",
               textTransform: "uppercase",
-              letterSpacing: "0.1em",
+              letterSpacing: "0.12em",
               fontWeight: 600,
             }}>
               Chá de Bebê
@@ -58,39 +63,41 @@ export const Header: React.FC = () => {
           </div>
         </Link>
 
-        <nav style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        <nav style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <Link
             to="/"
             style={{
-              padding: "0.4rem 0.8rem",
-              fontSize: "0.875rem",
-              borderRadius: "var(--radius-sm)",
-              backgroundColor: !isAdmin ? "var(--color-primary-light)" : "transparent",
-              color: !isAdmin ? "var(--color-primary-dark)" : "var(--color-text-muted)",
+              padding: "0.4rem 0.85rem",
+              fontSize: "0.8125rem",
+              borderRadius: "var(--radius-full)",
+              backgroundColor: !isAdmin ? "var(--color-bg-soft)" : "transparent",
+              color: !isAdmin ? "var(--color-pink-deep)" : "var(--color-text-soft)",
               fontWeight: !isAdmin ? 600 : 500,
               display: "flex",
               alignItems: "center",
               gap: "0.35rem",
+              transition: "all var(--transition-fast)",
             }}
           >
-            <Sparkles size={15} />
-            Início
+            <Sparkles size={14} />
+            Convite
           </Link>
           <Link
             to="/admin"
             style={{
-              padding: "0.4rem 0.8rem",
-              fontSize: "0.875rem",
-              borderRadius: "var(--radius-sm)",
-              backgroundColor: isAdmin ? "var(--color-primary-light)" : "transparent",
-              color: isAdmin ? "var(--color-primary-dark)" : "var(--color-text-muted)",
+              padding: "0.4rem 0.85rem",
+              fontSize: "0.8125rem",
+              borderRadius: "var(--radius-full)",
+              backgroundColor: isAdmin ? "var(--color-bg-soft)" : "transparent",
+              color: isAdmin ? "var(--color-pink-deep)" : "var(--color-text-soft)",
               fontWeight: isAdmin ? 600 : 500,
               display: "flex",
               alignItems: "center",
               gap: "0.35rem",
+              transition: "all var(--transition-fast)",
             }}
           >
-            <Settings size={15} />
+            <Settings size={14} />
             Admin
           </Link>
         </nav>
