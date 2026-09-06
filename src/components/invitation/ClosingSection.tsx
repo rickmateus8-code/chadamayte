@@ -8,6 +8,20 @@ export const ClosingSection: React.FC = () => {
   return (
     <footer className="closing-section" aria-label="Encerramento do Convite">
       <div className="invitation-container-narrow">
+        {/* Selo da Coroa Real em Escala Suave */}
+        <div style={{
+          width: "76px",
+          margin: "0 auto var(--space-md) auto",
+          opacity: 0.9,
+          filter: "drop-shadow(0 4px 10px rgba(179, 71, 100, 0.15))",
+        }}>
+          <img
+            src="/images/mayte-royal-crown.png"
+            alt="Coroa da Maitê"
+            style={{ width: "100%", height: "auto", display: "block" }}
+          />
+        </div>
+
         <blockquote className="closing-quote">
           “{closing.message}”
         </blockquote>

@@ -155,39 +155,66 @@
   position: relative;
 }
 
-.hero-emblem-wrapper {
-  max-width: 520px;
-  width: 100%;
-  margin: 0 auto var(--space-md) auto;
+.hero-crown-container {
+  max-width: 360px;
+  width: 82%;
+  margin: 0 auto var(--space-xs) auto;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.hero-emblem-glow {
+@media (min-width: 640px) {
+  .hero-crown-container {
+    max-width: 440px;
+  }
+}
+
+.hero-crown-glow {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
-  height: 80%;
-  background: radial-gradient(circle, rgba(247, 235, 208, 0.8) 0%, rgba(253, 237, 241, 0.4) 55%, transparent 75%);
+  width: 82%;
+  height: 82%;
+  background: radial-gradient(circle, rgba(247, 235, 208, 0.9) 0%, rgba(253, 237, 241, 0.5) 55%, transparent 75%);
   border-radius: 50%;
-  filter: blur(22px);
+  filter: blur(24px);
   z-index: 0;
 }
 
-.hero-emblem-img {
+.hero-royal-crown-img {
   width: 100%;
   height: auto;
   object-fit: contain;
   position: relative;
   z-index: 1;
-  border-radius: var(--radius-xl);
-  mix-blend-mode: multiply;
-  filter: drop-shadow(0 12px 30px rgba(179, 71, 100, 0.18));
+  filter: drop-shadow(0 14px 28px rgba(179, 71, 100, 0.16));
   animation: delicateFloat 6s ease-in-out infinite;
+}
+
+.hero-title-container {
+  max-width: 380px;
+  width: 88%;
+  margin: 0 auto var(--space-md) auto;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .hero-title-container {
+    max-width: 440px;
+  }
+}
+
+.hero-title-header-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 14px rgba(179, 71, 100, 0.1));
 }
 
 .hero-caption-block {

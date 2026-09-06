@@ -88,14 +88,14 @@ export interface InvitationContent {
 
 export const invitationContent: InvitationContent = {
   meta: {
-    title: "Chá de Fraldas da Maytê — Nossa Pequena Princesa",
-    description: "Convite especial para o Chá de Fraldas da Maytê. Venha celebrar conosco a chegada da nossa pequena princesa.",
+    title: "Chá de Fraldas da Maitê — Nossa Pequena Princesa",
+    description: "Convite especial para o Chá de Fraldas da Maitê. Venha celebrar conosco a chegada da nossa princesinha.",
   },
   event: {
     name: "Chá de Fraldas",
-    babyName: "Maytê",
+    babyName: "Maitê",
     subtitle: "Chá de Bebê da Nossa Pequena Princesa",
-    tagline: "Uma linda história de amor está começando e queremos você ao nosso lado para celebrar!",
+    tagline: "Maitê já é muito amada e, com você, nossa alegria será ainda maior. Junte-se a nós para dar as boas-vindas à nossa princesinha!",
     targetDate: "2026-10-18T15:30:00",
     dateFormatted: "Domingo, 18 de Outubro de 2026",
     timeFormatted: "A partir das 15h30",
@@ -108,17 +108,17 @@ export const invitationContent: InvitationContent = {
   sections: {
     hero: {
       preTitle: "Chá de Fraldas",
-      babyName: "Maytê",
+      babyName: "Maitê",
       subtitle: "Chá de Bebê da Nossa Pequena Princesa",
       scrollHint: "Deslize para ver o convite",
     },
     welcome: {
-      title: "Chá de Fraldas da Maytê",
-      greeting: "Olá, bem-vindos ao nosso Chá de Fraldas!",
-      badge: "❤️ Queridos amigos e familiares ❤️",
+      title: "Chá de Fraldas da Maitê",
+      greeting: "Queridos amigos e familiares,",
+      badge: "❤️ A contagem regressiva começou! ❤️",
       paragraphs: [
-        "Este site foi criado para facilitar a organização do dia da Maytê.",
-        "Estamos preparando tudo com muito carinho e cuidado para que esse dia seja cheio de lindas lembranças, que um dia poderão ser mostradas à Maytê com muito amor. ❤️",
+        "O Chá de Fraldas da nossa Maitê está sendo preparado com muito amor e cuidado.",
+        "A presença de cada um de vocês é indispensável para enchermos esse dia de sorrisos, abraços e memórias inesquecíveis.",
       ],
     },
     countdown: {
@@ -129,7 +129,7 @@ export const invitationContent: InvitationContent = {
         minutes: "Min",
         seconds: "Seg",
       },
-      finishedText: "O grande dia chegou! Estamos celebrando a nossa princesa Maytê!",
+      finishedText: "O grande dia chegou! Estamos celebrando a nossa princesa Maitê!",
     },
     details: {
       title: "Informações do Evento",
@@ -142,7 +142,7 @@ export const invitationContent: InvitationContent = {
     rsvp: {
       title: "Confirmar Presença",
       subtitle: "Confirme sua presença e participe de um momento inesquecível!",
-      confirmPrompt: "Você poderá estar conosco para celebrar a chegada da Maytê?",
+      confirmPrompt: "Você poderá estar conosco para celebrar a chegada da Maitê?",
       acceptButtonText: "SIM, VOU AO EVENTO! ✓",
       declineButtonText: "NÃO PODEREI IR ✕",
       modalTitle: "Confirmação de Presença",
@@ -156,11 +156,11 @@ export const invitationContent: InvitationContent = {
       privacyNote: "Ahhh... apenas os anfitriões verão suas fotos! 😊",
       buttonText: "ENVIAR MINHAS FOTOS",
       modalTitle: "Galeria dos Convidados",
-      modalMessage: "No dia do evento este canal estará aberto para você fazer o upload das fotos tiradas durante a festa direto para os papais da Maytê!",
+      modalMessage: "No dia do evento este canal estará aberto para você fazer o upload das fotos tiradas durante a festa direto para os papais da Maitê!",
     },
     gifts: {
       title: "Sugestões de Presentes",
-      subtitle: "Sua presença é o maior presente! Para quem desejar mimar a Maytê, preparamos algumas dicas com amor:",
+      subtitle: "Sua presença é o maior presente! Para quem desejar mimar a Maitê, preparamos algumas dicas com amor:",
       message: "Fraldas tamanhos M ou G, roupinhas delicadas ou itens de cuidados.",
       pixNotice: "Opção de presente via PIX e lista de fraldas virtual.",
       suggestions: [
@@ -182,9 +182,9 @@ export const invitationContent: InvitationContent = {
       ],
     },
     closing: {
-      message: "Esperamos você com todo o nosso coração para celebrar a doce vida da nossa Maytê!",
+      message: "Esperamos você com todo o nosso coração para celebrar a doce vida da nossa Maitê!",
       signature: "Com muito amor e carinho,",
-      babyName: "Família da Maytê",
+      babyName: "Família da Maitê",
     },
   },
 };

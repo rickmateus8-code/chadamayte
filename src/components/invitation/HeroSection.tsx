@@ -14,17 +14,26 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section className="hero-section" aria-label="Capa do Convite">
-      {/* Imagem do Brasão Floral da Princesa Maytê */}
-      <div className="hero-emblem-wrapper">
-        <div className="hero-emblem-glow" aria-hidden="true" />
+      {/* Coroa Real com Rosas e Pérolas (PNG com transparência) */}
+      <div className="hero-crown-container">
+        <div className="hero-crown-glow" aria-hidden="true" />
         <img
-          src="/images/mayte-floral-crown-emblem.png"
-          alt="Brasão Floral da Princesa Maytê — Chá de Bebê da Nossa Pequena Princesa"
-          className="hero-emblem-img"
+          src="/images/mayte-royal-crown.png"
+          alt="Coroa Real com Rosas da Maitê"
+          className="hero-royal-crown-img"
         />
       </div>
 
-      {/* Frase de Convite */}
+      {/* Lettering Nobre Chá de Fraldas de Maytê com Buquês (PNG com transparência) */}
+      <div className="hero-title-container">
+        <img
+          src="/images/mayte-title-header.png"
+          alt="Chá de Fraldas de Maytê"
+          className="hero-title-header-img"
+        />
+      </div>
+
+      {/* Frase de Convite / Tagline */}
       <div className="hero-caption-block">
         <p className="hero-tagline-text">
           {invitationContent.event.tagline}
