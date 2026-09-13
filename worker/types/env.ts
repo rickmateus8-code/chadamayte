@@ -3,4 +3,5 @@ export interface Env {
   MEDIA?: R2Bucket;
   ASSETS?: Fetcher;
   ENVIRONMENT?: string;
+  ADMIN_PASSCODE?: string;
 }

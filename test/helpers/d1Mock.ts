@@ -1,7 +1,7 @@
 import type Database from "better-sqlite3";
 
 export function createD1Mock(sqlite: Database.Database): D1Database {
-  return {
+  const d1Mock = {
     prepare(query: string) {
       let boundParams: unknown[] = [];
 
@@ -23,7 +23,7 @@ export function createD1Mock(sqlite: Database.Database): D1Database {
           return {
             results,
             success: true,
-            meta: {} as D1Meta,
+            meta: {} as any,
           };
         },
         async run(): Promise<D1Response> {
@@ -31,7 +31,7 @@ export function createD1Mock(sqlite: Database.Database): D1Database {
           const info = s.run(...boundParams);
           return {
             success: true,
-            meta: { changes: info.changes, last_row_id: Number(info.lastInsertRowid) } as D1Meta,
+            meta: { changes: info.changes, last_row_id: Number(info.lastInsertRowid) } as any,
           };
         },
       } as unknown as D1PreparedStatement;
@@ -55,5 +55,10 @@ export function createD1Mock(sqlite: Database.Database): D1Database {
     async dump(): Promise<ArrayBuffer> {
       return new ArrayBuffer(0);
     },
+    withSession() {
+      return d1Mock;
+    },
   };
+
+  return d1Mock as unknown as D1Database;
 }

@@ -1,11 +1,49 @@
-import React, { useState } from "react";
-import { Camera, Upload, X } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Camera, X, CheckCircle2 } from "lucide-react";
 import { FloralDivider } from "../brand/FloralDivider";
 import { invitationContent } from "../../config/invitationContent";
 
 export const MemoriesSection: React.FC = () => {
   const { memories } = invitationContent.sections;
   const [modalOpen, setModalOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/media/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        setModalOpen(true);
+      } else {
+        alert("Não foi possível enviar a foto no momento. Tente novamente mais tarde.");
+      }
+    } catch {
+      alert("Erro ao conectar ao servidor.");
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
 
   return (
     <section className="invitation-section" aria-label="Fotos e Memórias">
@@ -38,14 +76,23 @@ export const MemoriesSection: React.FC = () => {
           </p>
 
           <div style={{ marginTop: "var(--space-lg)" }}>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              style={{ display: "none" }}
+            />
+
             <button
               type="button"
-              onClick={() => setModalOpen(true)}
+              disabled={uploading}
+              onClick={handleButtonClick}
               className="btn-send-photos"
               aria-label={memories.buttonText}
             >
               <Camera size={18} />
-              {memories.buttonText}
+              {uploading ? "Enviando foto..." : memories.buttonText}
             </button>
           </div>
         </div>
@@ -53,7 +100,7 @@ export const MemoriesSection: React.FC = () => {
         <FloralDivider />
       </div>
 
-      {/* Modal Dialog */}
+      {/* Modal Dialog de Sucesso */}
       {modalOpen && (
         <div
           className="modal-backdrop"
@@ -78,21 +125,21 @@ export const MemoriesSection: React.FC = () => {
               height: "56px",
               margin: "0 auto var(--space-md) auto",
               borderRadius: "50%",
-              backgroundColor: "var(--color-pink-light)",
+              backgroundColor: "#d4edda",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "var(--color-pink-deep)",
+              color: "#155724",
             }}>
-              <Upload size={28} />
+              <CheckCircle2 size={28} />
             </div>
 
             <h3 className="modal-title">
-              {memories.modalTitle}
+              Foto Enviada com Sucesso!
             </h3>
 
             <p className="modal-description">
-              {memories.modalMessage}
+              Recebemos seu registro com muito amor! Os papais da Maitê terão o maior prazer em guardar essa memória especial para sempre. ❤️
             </p>
 
             <button
@@ -101,7 +148,7 @@ export const MemoriesSection: React.FC = () => {
               className="btn-floral-gold"
               style={{ width: "100%" }}
             >
-              Entendido!
+              Maravilha!
             </button>
           </div>
         </div>

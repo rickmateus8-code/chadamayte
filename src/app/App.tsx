@@ -12,6 +12,7 @@ export const App: React.FC = () => {
         <div style={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/i/:token" element={<HomePage />} />
             <Route path="/admin" element={<AdminDashboardPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
