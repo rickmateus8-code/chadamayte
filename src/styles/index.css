@@ -1,7 +1,7 @@
 @import "./tokens.css";
 @import "./invitation.css";
 
-/* Reset & Global */
+/* Reset & Global — Chá da Maytê (Rolagem Dinâmica & Mapa Interativo Mobile) */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -10,6 +10,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 body {

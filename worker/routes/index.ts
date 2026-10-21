@@ -3,6 +3,7 @@ import { handleHealthCheck } from "./health";
 import { handleInvitationRoutes } from "./invitations";
 import { handleAdminRoutes } from "./admin";
 import { handleMediaRoutes } from "./media";
+import { handlePublicEventRoutes } from "./publicEvent";
 import { handleOptions } from "../middleware/cors";
 
 export async function handleApiRequest(request: Request, env: Env): Promise<Response> {
@@ -17,17 +18,22 @@ export async function handleApiRequest(request: Request, env: Env): Promise<Resp
     return handleHealthCheck(request, env);
   }
 
-  // 2. Public invitation routes (/api/invitations/:token ...)
+  // 2. Public Event Info & Guestbook (/api/public/event-info)
+  if (url.pathname.startsWith("/api/public")) {
+    return handlePublicEventRoutes(request, env, url);
+  }
+
+  // 3. Public invitation routes (/api/invitations/:token or /api/invitations/public-rsvp)
   if (url.pathname.startsWith("/api/invitations")) {
     return handleInvitationRoutes(request, env, url);
   }
 
-  // 3. Admin routes (/api/admin/*)
+  // 4. Admin routes (/api/admin/*)
   if (url.pathname.startsWith("/api/admin")) {
     return handleAdminRoutes(request, env, url);
   }
 
-  // 4. Media routes (/api/media/*)
+  // 5. Media routes (/api/media/*)
   if (url.pathname.startsWith("/api/media")) {
     return handleMediaRoutes(request, env, url);
   }

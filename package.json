@@ -12,7 +12,8 @@
     "check": "npm run typecheck && npm run typecheck:worker",
     "test": "vitest run",
     "test:watch": "vitest",
-    "cf-typegen": "wrangler types worker/types/worker-configuration.d.ts"
+    "cf-typegen": "wrangler types worker/types/worker-configuration.d.ts",
+    "deploy:pages": "npm run build && node -e \"fs.copyFileSync('dist/mayte_baby_shower/index.js','dist/client/_worker.js')\" && wrangler pages deploy dist/client --project-name=chadamayte --branch=main --commit-dirty=true"
   },
   "dependencies": {
     "lucide-react": "^0.475.0",

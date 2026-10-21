@@ -25,14 +25,14 @@ INSERT OR IGNORE INTO events (
   'Maytê',
   'DIAPER_SHOWER',
   'PUBLISHED',
-  '2026-10-18T15:30:00Z',
+  '2026-11-22T15:30:00',
   'America/Sao_Paulo',
   'Espaço Jardim das Flores',
   'Av. das Rosas, 1234 — Salão Nobre',
   'São Paulo',
   'SP',
   '01000-000',
-  ''
+  'https://maps.google.com/?q=Av.+Paulista,+1000,+Sao+Paulo'
 );
 
 INSERT OR IGNORE INTO event_sections (id, event_id, section_key, enabled, sort_order, config_json) VALUES
@@ -47,4 +47,5 @@ INSERT OR IGNORE INTO event_sections (id, event_id, section_key, enabled, sort_o
 
 INSERT OR IGNORE INTO event_settings (id, event_id, setting_key, value_json) VALUES
   ('set_theme', 'evt_mayte_2026', 'theme', '{"primary": "#e28299", "accent": "#d4af37", "style": "floral_royal"}'),
-  ('set_rsvp_deadline', 'evt_mayte_2026', 'rsvp_deadline', '{"deadlineDate": "2026-10-05T23:59:59Z"}');
+  ('set_rsvp_deadline', 'evt_mayte_2026', 'rsvp_deadline', '{"deadlineDate": "2026-11-15T23:59:59Z"}'),
+  ('set_custom_details', 'evt_mayte_2026', 'custom_details', '{"dateFormatted": "Domingo, 22 de Novembro de 2026", "timeFormatted": "A partir das 15h30", "pixKey": "chadamayte@familia.com.br", "pixBeneficiary": "Papais da Maytê", "observations": "Será um encontro real muito especial! Venham preparados para comemorar, brindar e registrar muitas fotos para o álbum da nossa princesinha."}');

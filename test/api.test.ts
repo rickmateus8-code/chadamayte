@@ -174,4 +174,66 @@ describe("Worker HTTP API Routes", () => {
     const list = await resList.json() as Array<{ display_name: string }>;
     expect(list.some((i) => i.display_name === "Tia Lúcia")).toBe(true);
   });
+
+  it("handles public RSVP via POST /api/invitations/public-rsvp and exposes notes in /api/public/event-info", async () => {
+    const reqPublicRsvp = new Request("http://localhost/api/invitations/public-rsvp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contactName: "Madrinha Fernanda",
+        contactWhatsapp: "(11) 98888-7777",
+        notes: "Que a princesa Maytê venha cheia de saúde!",
+        attendanceStatus: "CONFIRMED",
+        additionalGuests: [{ displayName: "Tio Bruno", guestType: "ADULT" }],
+      }),
+    });
+
+    const resRsvp = await handleApiRequest(reqPublicRsvp, env);
+    expect(resRsvp.status).toBe(200);
+    const rsvpData = (await resRsvp.json()) as { success: boolean; rsvp: { guestCount: number } };
+    expect(rsvpData.success).toBe(true);
+    expect(rsvpData.rsvp.guestCount).toBe(2);
+
+    const reqInfo = new Request("http://localhost/api/public/event-info", { method: "GET" });
+    const resInfo = await handleApiRequest(reqInfo, env);
+    expect(resInfo.status).toBe(200);
+    const infoData = (await resInfo.json()) as {
+      event: { babyName: string };
+      guestbook: Array<{ author: string; message: string }>;
+    };
+    expect(infoData.event.babyName).toBe("Maytê");
+    expect(infoData.guestbook.some((g) => g.author === "Madrinha Fernanda")).toBe(true);
+  });
+
+  it("updates event settings via PATCH /api/admin/event-settings", async () => {
+    const headers = {
+      Authorization: "Bearer mayte2026",
+      "Content-Type": "application/json",
+    };
+
+    const reqPatch = new Request("http://localhost/api/admin/event-settings", {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({
+        targetDate: "2026-12-06T16:00:00",
+        dateFormatted: "Domingo, 06 de Dezembro de 2026",
+        timeFormatted: "A partir das 16h00",
+        locationName: "Palácio das Rosas",
+        pixKey: "pix@mayte.com.br",
+      }),
+    });
+
+    const resPatch = await handleApiRequest(reqPatch, env);
+    expect(resPatch.status).toBe(200);
+
+    const reqGet = new Request("http://localhost/api/admin/event-settings", {
+      method: "GET",
+      headers,
+    });
+    const resGet = await handleApiRequest(reqGet, env);
+    expect(resGet.status).toBe(200);
+    const cfg = (await resGet.json()) as { locationName: string; pixKey: string };
+    expect(cfg.locationName).toBe("Palácio das Rosas");
+    expect(cfg.pixKey).toBe("pix@mayte.com.br");
+  });
 });

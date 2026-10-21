@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Lock } from "lucide-react";
+import { Lock, Crown, Sparkles, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import { adminLogin } from "../../../lib/adminApi";
+import { RoyalCornerFiligree, RoyalCrestOrnament } from "../../../components/brand/RoyalOrnaments";
 
 interface AdminLoginProps {
   onSuccess: (token: string) => void;
@@ -27,69 +29,92 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onSuccess }) => {
   };
 
   return (
-    <main style={{ minHeight: "85vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
-      <div style={{
-        width: "100%",
-        maxWidth: "400px",
-        background: "var(--color-paper)",
-        padding: "2.5rem 2rem",
-        borderRadius: "var(--radius-xl)",
-        border: "1.5px solid var(--color-gold)",
-        boxShadow: "var(--shadow-sheet)",
-        textAlign: "center",
-      }}>
-        <div style={{
-          width: "56px",
-          height: "56px",
-          margin: "0 auto 1.25rem auto",
-          borderRadius: "50%",
-          backgroundColor: "var(--color-pink-light)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "var(--color-pink-deep)",
-        }}>
-          <Lock size={26} />
-        </div>
+    <div className="invitation-canvas" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
+      <div
+        className="floral-welcome-card"
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "440px",
+          padding: "2.75rem 2.25rem",
+          border: "2px solid var(--color-gold)",
+          boxShadow: "0 28px 65px rgba(201, 155, 59, 0.24)",
+        }}
+      >
+        <RoyalCornerFiligree position="tl" size={50} />
+        <RoyalCornerFiligree position="tr" size={50} />
+        <RoyalCornerFiligree position="bl" size={50} />
+        <RoyalCornerFiligree position="br" size={50} />
 
-        <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "1.85rem", color: "var(--color-text)", marginBottom: "0.5rem" }}>
-          Acesso dos Pais
+        <RoyalCrestOrnament width={175} />
+
+        <img
+          src="/images/mayte-royal-crown.png"
+          alt="Coroa Real da Maytê"
+          style={{ width: "110px", height: "auto", margin: "0 auto 0.75rem auto", display: "block", filter: "drop-shadow(0 8px 18px rgba(201,155,59,0.3))" }}
+        />
+
+        <span className="section-eyebrow" style={{ marginBottom: "4px" }}>
+          <Crown size={13} /> Gabinete Real dos Papais
+        </span>
+
+        <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-text)", marginBottom: "0.4rem", marginTop: 0 }}>
+          Painel Real da Maytê
         </h1>
-        <p style={{ fontSize: "0.875rem", color: "var(--color-text-soft)", marginBottom: "1.5rem" }}>
-          Digite a senha de administrador para gerenciar o Chá de Fraldas da Maitê.
+
+        <p style={{ fontSize: "0.88rem", color: "var(--color-text-soft)", marginBottom: "1.5rem" }}>
+          Digite a senha real para gerenciar convites, mimos, fotos, perguntas e a fase <strong>"Quando a Maytê Nascer"</strong>.
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <input
-            type="password"
-            placeholder="Senha de acesso"
-            value={passcode}
-            onChange={(e) => setPasscode(e.target.value)}
-            required
-            style={{
-              padding: "0.85rem 1rem",
-              borderRadius: "var(--radius-sm)",
-              border: "1px solid var(--color-pink-soft)",
-              outline: "none",
-              fontSize: "1rem",
-              textAlign: "center",
-            }}
-          />
+          <div className="royal-input-group">
+            <span className="royal-input-icon">
+              <Lock size={16} />
+            </span>
+            <input
+              type="password"
+              placeholder="Senha Real dos Papais"
+              value={passcode}
+              onChange={(e) => setPasscode(e.target.value)}
+              required
+              className="rsvp-field-input with-icon"
+            />
+          </div>
 
           {error && (
-            <span style={{ fontSize: "0.8rem", color: "#e74c3c" }}>{error}</span>
+            <div className="rsvp-error-banner" role="alert">
+              {error}
+            </div>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="btn-floral-gold"
-            style={{ width: "100%", padding: "0.9rem" }}
+            className="btn-floral-gold btn-shimmer-gold"
+            style={{ width: "100%", padding: "0.95rem" }}
           >
-            {loading ? "Entrando..." : "Acessar Painel"}
+            <Sparkles size={16} />
+            <span>{loading ? "Abrindo Gabinete Real..." : "Entrar no Painel Real"}</span>
           </button>
         </form>
+
+        <div style={{ marginTop: "1.25rem" }}>
+          <Link
+            to="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "0.82rem",
+              color: "var(--color-gold-deep)",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            <ArrowLeft size={14} /> Voltar para o Convite da Maytê
+          </Link>
+        </div>
       </div>
-    </main>
+    </div>
   );
 };

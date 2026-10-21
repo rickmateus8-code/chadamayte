@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
-  ShieldCheck,
+  Crown,
   Users,
   CheckCircle2,
   Image as ImageIcon,
+  Settings,
   LogOut,
   RefreshCw,
+  Sliders,
+  ExternalLink,
+  Sparkles,
 } from "lucide-react";
 import {
   fetchAdminOverview,
@@ -13,30 +18,36 @@ import {
   deleteAdminInvitation,
   fetchAdminRsvps,
   fetchAdminMedia,
+  fetchAdminEventSettings,
   type AdminOverview,
   type AdminInvitation,
   type AdminRsvp,
   type AdminMedia,
+  type AdminEventSettings,
 } from "../../lib/adminApi";
 import { AdminLogin } from "./components/AdminLogin";
 import { OverviewTab } from "./components/OverviewTab";
 import { InvitationsTab } from "./components/InvitationsTab";
 import { RsvpsTab } from "./components/RsvpsTab";
 import { MediaTab } from "./components/MediaTab";
+import { SettingsTab } from "./components/SettingsTab";
+import { PortalBuilderTab } from "./components/PortalBuilderTab";
 import { CreateInvitationModal } from "./components/CreateInvitationModal";
+import { RoyalCornerFiligree, RoyalCrestOrnament } from "../../components/brand/RoyalOrnaments";
+
+type AdminTabId = "overview" | "invitations" | "builder" | "rsvps" | "media" | "settings";
 
 export const AdminDashboardPage: React.FC = () => {
   const [token, setToken] = useState<string>(() => localStorage.getItem("mayte_admin_token") || "");
   const [loading, setLoading] = useState(false);
-
-  // Tabs: 'overview' | 'invitations' | 'rsvps' | 'media'
-  const [activeTab, setActiveTab] = useState<"overview" | "invitations" | "rsvps" | "media">("overview");
+  const [activeTab, setActiveTab] = useState<AdminTabId>("overview");
 
   // Data states
   const [overview, setOverview] = useState<AdminOverview | null>(null);
   const [invitations, setInvitations] = useState<AdminInvitation[]>([]);
   const [rsvps, setRsvps] = useState<AdminRsvp[]>([]);
   const [mediaList, setMediaList] = useState<AdminMedia[]>([]);
+  const [eventSettings, setEventSettings] = useState<AdminEventSettings | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
@@ -48,14 +59,15 @@ export const AdminDashboardPage: React.FC = () => {
   const loadAllData = async () => {
     if (!token) return;
     setLoading(true);
-    const [ov, invs, rsv, med] = await Promise.all([
+    const [ov, invs, rsv, med, cfg] = await Promise.all([
       fetchAdminOverview(token),
       fetchAdminInvitations(token),
       fetchAdminRsvps(token),
       fetchAdminMedia(token),
+      fetchAdminEventSettings(token),
     ]);
 
-    if (!ov && !invs.length && !rsv.length) {
+    if (!ov && !invs.length && !rsv.length && !cfg) {
       handleLogout();
       return;
     }
@@ -64,6 +76,7 @@ export const AdminDashboardPage: React.FC = () => {
     setInvitations(invs);
     setRsvps(rsv);
     setMediaList(med);
+    setEventSettings(cfg);
     setLoading(false);
   };
 
@@ -88,144 +101,171 @@ export const AdminDashboardPage: React.FC = () => {
   }
 
   return (
-    <main style={{ minHeight: "90vh", padding: "1.5rem 1rem", maxWidth: "980px", margin: "0 auto" }}>
-      {/* Header */}
-      <div style={{
-        display: "flex",
-        flexWrap: "wrap",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: "1rem",
-        marginBottom: "1.5rem",
-        paddingBottom: "1rem",
-        borderBottom: "1px solid var(--color-pink-soft)",
-      }}>
-        <div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--color-pink-deep)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em" }}>
-            <ShieldCheck size={16} />
-            Painel de Gestão dos Papais
+    <div className="invitation-canvas admin-page-canvas" style={{ minHeight: "100vh", paddingBottom: "4rem" }}>
+      <main
+        className="stationery-envelope-card admin-shell-card"
+        style={{
+          maxWidth: "1120px",
+          margin: "0 auto",
+        }}
+      >
+        <div className="stationery-inner-frame" aria-hidden="true" />
+        <RoyalCornerFiligree position="tl" size={64} />
+        <RoyalCornerFiligree position="tr" size={64} />
+        <RoyalCornerFiligree position="bl" size={64} />
+        <RoyalCornerFiligree position="br" size={64} />
+
+        {/* Cabeçalho Real do Painel */}
+        <header className="admin-header-bar">
+          <div className="admin-header-brand">
+            <img
+              src="/images/mayte-royal-crown.png"
+              alt="Coroa Real da Maytê"
+              className="admin-header-crown"
+            />
+            <div>
+              <div className="admin-header-eyebrow">
+                <Crown size={14} />
+                <span>Gabinete Real de Gestão • Papais da Maytê</span>
+              </div>
+              <h1 className="admin-header-title">
+                Portal & Chá de Fraldas da Maytê
+              </h1>
+            </div>
           </div>
-          <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-text)", margin: "0.25rem 0 0 0" }}>
-            Chá de Fraldas da Maitê
-          </h1>
-        </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <button
-            type="button"
-            onClick={loadAllData}
-            title="Atualizar dados"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              padding: "0.6rem 0.9rem",
-              borderRadius: "var(--radius-md)",
-              border: "1px solid var(--color-pink-soft)",
-              background: "var(--color-paper)",
-              color: "var(--color-text)",
-              fontSize: "0.85rem",
-              cursor: "pointer",
-            }}
-          >
-            <RefreshCw size={14} className={loading ? "spin" : ""} />
-            Atualizar
-          </button>
-
-          <button
-            type="button"
-            onClick={handleLogout}
-            title="Sair"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              padding: "0.6rem 0.9rem",
-              borderRadius: "var(--radius-md)",
-              border: "1px solid var(--color-pink-soft)",
-              background: "var(--color-paper)",
-              color: "#e74c3c",
-              fontSize: "0.85rem",
-              cursor: "pointer",
-            }}
-          >
-            <LogOut size={14} />
-            Sair
-          </button>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", overflowX: "auto", paddingBottom: "4px" }}>
-        {[
-          { id: "overview", label: "Visão Geral", icon: Users },
-          { id: "invitations", label: `Convites (${invitations.length})`, icon: Users },
-          { id: "rsvps", label: `Respostas (${rsvps.length})`, icon: CheckCircle2 },
-          { id: "media", label: `Fotos (${mediaList.length})`, icon: ImageIcon },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const isSelected = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id as any)}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "0.75rem 1.25rem",
-                borderRadius: "var(--radius-full)",
-                border: isSelected ? "1.5px solid var(--color-gold)" : "1px solid var(--color-pink-soft)",
-                background: isSelected ? "var(--color-pink-light)" : "var(--color-paper)",
-                color: isSelected ? "var(--color-pink-dark)" : "var(--color-text-soft)",
-                fontWeight: isSelected ? 700 : 500,
-                fontSize: "0.9rem",
-                whiteSpace: "nowrap",
-                cursor: "pointer",
-              }}
+          <div className="admin-header-actions">
+            <Link
+              to="/"
+              className="btn-mini-luxury admin-action-btn"
+              style={{ textDecoration: "none" }}
             >
-              <Icon size={16} />
-              {tab.label}
+              <ExternalLink size={14} />
+              <span>Ver Convite ao Vivo</span>
+            </Link>
+
+            <button
+              type="button"
+              onClick={loadAllData}
+              title="Atualizar dados"
+              className="btn-mini-luxury admin-action-btn"
+            >
+              <RefreshCw size={14} className={loading ? "spin" : ""} />
+              <span>Atualizar</span>
             </button>
-          );
-        })}
-      </div>
 
-      {/* Tab Content */}
-      {activeTab === "overview" && overview && (
-        <OverviewTab
-          overview={overview}
-          onNewInvitation={() => {
-            setActiveTab("invitations");
-            setShowCreateModal(true);
-          }}
-        />
-      )}
+            <button
+              type="button"
+              onClick={handleLogout}
+              title="Sair"
+              className="btn-remove-companion admin-action-btn admin-logout-btn"
+              style={{ width: "auto", padding: "0.45rem 0.9rem", borderRadius: "var(--radius-full)", gap: "5px", display: "inline-flex", alignItems: "center", fontSize: "0.8rem", fontWeight: 700 }}
+            >
+              <LogOut size={14} />
+              <span>Sair</span>
+            </button>
+          </div>
+        </header>
 
-      {activeTab === "invitations" && (
-        <InvitationsTab
-          invitations={invitations}
-          onOpenCreateModal={() => setShowCreateModal(true)}
-          onDeleteInvitation={handleDeleteInvitation}
-        />
-      )}
+        <RoyalCrestOrnament width={180} />
 
-      {activeTab === "rsvps" && <RsvpsTab rsvps={rsvps} />}
+        {/* Navegação de Abas Reais */}
+        <nav
+          aria-label="Seções do painel administrativo"
+          className="admin-tabs-nav"
+        >
+          {[
+            { id: "overview", label: "Fase & Nascimento", icon: Crown },
+            { id: "invitations", label: `Kanban & Convites (${invitations.length})`, icon: Users },
+            { id: "builder", label: "Construtor Arrastável", icon: Sliders },
+            { id: "rsvps", label: `Respostas & Mimos (${rsvps.length})`, icon: CheckCircle2 },
+            { id: "media", label: `Álbum Polaroid (${mediaList.length})`, icon: ImageIcon },
+            { id: "settings", label: "Datas, Local & PIX", icon: Settings },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isSelected = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id as AdminTabId)}
+                className={`boutique-filter-pill admin-tab-pill ${isSelected ? "is-active" : ""}`}
+              >
+                <Icon size={15} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
 
-      {activeTab === "media" && <MediaTab mediaList={mediaList} />}
+        {/* Conteúdo da Aba Selecionada */}
+        {activeTab === "overview" && overview && (
+          <OverviewTab
+            token={token}
+            overview={overview}
+            eventSettings={eventSettings}
+            onNewInvitation={() => {
+              setActiveTab("invitations");
+              setShowCreateModal(true);
+            }}
+            onSaved={loadAllData}
+          />
+        )}
 
-      {/* Modal */}
-      {showCreateModal && (
-        <CreateInvitationModal
-          token={token}
-          onClose={() => setShowCreateModal(false)}
-          onSuccess={() => {
-            setShowCreateModal(false);
-            loadAllData();
-          }}
-        />
-      )}
-    </main>
+        {activeTab === "invitations" && (
+          <InvitationsTab
+            token={token}
+            invitations={invitations}
+            onOpenCreateModal={() => setShowCreateModal(true)}
+            onDeleteInvitation={handleDeleteInvitation}
+            onRefresh={loadAllData}
+          />
+        )}
+
+        {activeTab === "builder" && (
+          <PortalBuilderTab
+            token={token}
+            initialPortalConfig={eventSettings?.portalConfig}
+            onSaved={loadAllData}
+          />
+        )}
+
+        {activeTab === "rsvps" && <RsvpsTab rsvps={rsvps} />}
+
+        {activeTab === "media" && (
+          <MediaTab
+            token={token}
+            mediaList={mediaList}
+            onRefresh={loadAllData}
+          />
+        )}
+
+        {activeTab === "settings" && (
+          <SettingsTab
+            token={token}
+            initialSettings={eventSettings}
+            onSaved={loadAllData}
+          />
+        )}
+
+        {/* Rodapé Real do Admin */}
+        <footer style={{ textAlign: "center", marginTop: "2.5rem", paddingTop: "1rem", borderTop: "1px dashed rgba(212,169,89,0.4)", fontSize: "0.8rem", color: "var(--color-text-light)" }}>
+          <Sparkles size={12} color="var(--color-gold-deep)" style={{ verticalAlign: "middle", marginRight: "6px" }} />
+          Painel Real da Princesa Maytê • Conectado ao Cloudflare D1 & R2
+        </footer>
+
+        {/* Modal de Novo Convite */}
+        {showCreateModal && (
+          <CreateInvitationModal
+            token={token}
+            onClose={() => setShowCreateModal(false)}
+            onSuccess={() => {
+              setShowCreateModal(false);
+              loadAllData();
+            }}
+          />
+        )}
+      </main>
+    </div>
   );
 };

@@ -1,3 +1,5 @@
+import type { PortalDynamicConfig } from "../config/portalConfig";
+
 export interface AdminOverview {
   totalInvitations: number;
   totalNominalGuests: number;
@@ -66,6 +68,21 @@ export interface AdminMedia {
   created_at: string;
 }
 
+export interface AdminEventSettings {
+  targetDate: string;
+  dateFormatted: string;
+  timeFormatted: string;
+  locationName: string;
+  locationAddress: string;
+  locationCity: string;
+  locationState: string;
+  mapUrl: string;
+  pixKey: string;
+  pixBeneficiary: string;
+  observations: string;
+  portalConfig?: Partial<PortalDynamicConfig> | null;
+}
+
 function getHeaders(token: string) {
   return {
     "Content-Type": "application/json",
@@ -132,6 +149,23 @@ export async function createAdminInvitation(
   }
 }
 
+export async function updateAdminInvitationStatus(
+  token: string,
+  id: string,
+  targetStatus: "PENDING" | "CONFIRMED" | "DECLINED"
+): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch(`/api/admin/invitations/${id}/status`, {
+      method: "PATCH",
+      headers: getHeaders(token),
+      body: JSON.stringify({ targetStatus }),
+    });
+    return await res.json();
+  } catch {
+    return { success: false, message: "Erro ao mover cartão no quadro." };
+  }
+}
+
 export async function deleteAdminInvitation(token: string, id: string): Promise<boolean> {
   try {
     const res = await fetch(`/api/admin/invitations/${id}`, {
@@ -165,5 +199,45 @@ export async function fetchAdminMedia(token: string): Promise<AdminMedia[]> {
     return await res.json();
   } catch {
     return [];
+  }
+}
+
+export async function deleteAdminMedia(token: string, id: string): Promise<boolean> {
+  try {
+    const res = await fetch(`/api/admin/media/${id}`, {
+      method: "DELETE",
+      headers: getHeaders(token),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function fetchAdminEventSettings(token: string): Promise<AdminEventSettings | null> {
+  try {
+    const res = await fetch("/api/admin/event-settings", {
+      headers: getHeaders(token),
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function updateAdminEventSettings(
+  token: string,
+  payload: Partial<AdminEventSettings>
+): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch("/api/admin/event-settings", {
+      method: "PATCH",
+      headers: getHeaders(token),
+      body: JSON.stringify(payload),
+    });
+    return await res.json();
+  } catch {
+    return { success: false, message: "Erro ao salvar configurações." };
   }
 }

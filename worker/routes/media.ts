@@ -13,6 +13,7 @@ export async function handleMediaRoutes(
       const formData = await request.formData();
       const file = formData.get("file") as File | null;
       const invitationId = (formData.get("invitationId") as string) || null;
+      const caption = (formData.get("caption") as string) || "";
 
       if (!file || typeof file === "string") {
         return new Response(
@@ -24,6 +25,9 @@ export async function handleMediaRoutes(
       const mediaId = generateId("med");
       const ext = file.name.split(".").pop() || "jpg";
       const r2Key = `photos/${Date.now()}_${mediaId}.${ext}`;
+      const displayCaption = caption.trim()
+        ? `${caption.trim()}.${ext}`
+        : file.name;
 
       // If R2 binding is available, store the bytes
       if (env.MEDIA) {
@@ -48,7 +52,7 @@ export async function handleMediaRoutes(
           "evt_mayte_2026",
           invitationId,
           r2Key,
-          file.name,
+          displayCaption,
           file.type || "image/jpeg",
           file.size || 1,
           "GUEST_PHOTO",
@@ -64,6 +68,7 @@ export async function handleMediaRoutes(
           success: true,
           id: mediaId,
           key: r2Key,
+          url: `/api/media/file/${mediaId}`,
           message: "Foto recebida com muito carinho pelos papais!",
         }),
         { status: 201, headers: { "Content-Type": "application/json", ...corsHeaders() } }
@@ -74,6 +79,39 @@ export async function handleMediaRoutes(
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders() } }
       );
     }
+  }
+
+  // 2. GET /api/media/file/:id (Serve photo bytes from R2)
+  const fileMatch = url.pathname.match(/^\/api\/media\/file\/([a-zA-Z0-9_-]+)$/);
+  if (fileMatch && request.method === "GET") {
+    const mediaId = fileMatch[1];
+    if (!env.DB || !env.MEDIA) {
+      return new Response("Media service unavailable", { status: 503 });
+    }
+
+    const row = await env.DB.prepare(
+      "SELECT r2_key, mime_type FROM media_uploads WHERE id = ? AND status = 'AVAILABLE' LIMIT 1"
+    )
+      .bind(mediaId)
+      .first<{ r2_key: string; mime_type: string }>();
+
+    if (!row) {
+      return new Response("Not Found", { status: 404 });
+    }
+
+    const obj = await env.MEDIA.get(row.r2_key);
+    if (!obj) {
+      return new Response("Object Not Found in R2", { status: 404 });
+    }
+
+    return new Response(obj.body, {
+      status: 200,
+      headers: {
+        "Content-Type": row.mime_type || "image/jpeg",
+        "Cache-Control": "public, max-age=31536000, immutable",
+        ...corsHeaders(),
+      },
+    });
   }
 
   return new Response(

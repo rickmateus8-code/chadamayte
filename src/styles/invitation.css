@@ -542,23 +542,23 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
-  padding: 1rem 1.75rem;
-  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  padding: 1.05rem 1.85rem;
+  background: linear-gradient(135deg, #d4af37 0%, #cfa439 45%, #b68424 100%);
   color: #ffffff;
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: 700;
-  letter-spacing: 0.06em;
-  border-radius: var(--radius-md);
-  border: none;
-  box-shadow: 0 6px 18px rgba(39, 174, 96, 0.35);
+  letter-spacing: 0.08em;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 10px 26px rgba(207, 164, 57, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.45);
   cursor: pointer;
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .btn-rsvp-confirm:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(39, 174, 96, 0.45);
+  box-shadow: 0 14px 32px rgba(207, 164, 57, 0.55);
 }
 
 .btn-rsvp-decline {
@@ -802,3 +802,3918 @@
   line-height: 1.6;
   margin-bottom: var(--space-lg);
 }
+
+/* ==========================================================================
+   9. ANIMAÇÕES REAIS & SCROLL-DRIVEN REVEAL (MODERN WEB GUIDANCE)
+   ========================================================================== */
+@keyframes delicateFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes sealPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.55), 0 12px 28px rgba(140, 103, 27, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(212, 175, 55, 0), 0 16px 34px rgba(140, 103, 27, 0.55);
+  }
+}
+
+@keyframes scrollEntryReveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Progressive Scroll-Driven Animations + IntersectionObserver Fallback */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 650ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .reveal-on-scroll {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      animation: scrollEntryReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 26%;
+    }
+  }
+}
+
+/* ==========================================================================
+   10. CERIMÔNIA DE ABERTURA: ENVELOPE REAL 3D & LACRE DE CERA DOURADO
+   ========================================================================== */
+.royal-envelope-stage {
+  width: 100%;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  position: relative;
+  overflow: hidden;
+  transition: opacity 450ms ease, transform 450ms ease;
+}
+
+.royal-envelope-stage.is-unsealing {
+  opacity: 0.96;
+}
+
+.royal-envelope-wrapper {
+  width: 100%;
+  max-width: 580px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.royal-envelope-preheader {
+  text-align: center;
+}
+
+.royal-envelope-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.45rem 1.2rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--color-gold-soft);
+  color: var(--color-gold-deep);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(207, 164, 57, 0.15);
+}
+
+.royal-envelope-3d {
+  width: 100%;
+  min-height: 390px;
+  background: linear-gradient(165deg, #fffcfd 0%, #fdf2f6 55%, #f9e4ec 100%);
+  border: 1.5px solid var(--color-gold);
+  border-radius: var(--radius-xl);
+  position: relative;
+  box-shadow: 0 28px 70px rgba(179, 71, 100, 0.18),
+              0 4px 18px rgba(207, 164, 57, 0.22),
+              inset 0 0 0 8px rgba(255, 255, 255, 0.65);
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md) var(--space-2xl) var(--space-md);
+  overflow: hidden;
+}
+
+.royal-envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 92px;
+  background: linear-gradient(180deg, #fdf4f7 0%, #f7dce6 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 780ms cubic-bezier(0.22, 1, 0.36, 1), opacity 600ms ease;
+  z-index: 4;
+  filter: drop-shadow(0 6px 12px rgba(179, 71, 100, 0.14));
+}
+
+.royal-envelope-flap-trim {
+  position: absolute;
+  inset: 0;
+  border-top: 2px solid var(--color-gold);
+}
+
+.royal-envelope-3d.is-open .royal-envelope-flap {
+  transform: rotateX(175deg);
+  opacity: 0.25;
+}
+
+.royal-envelope-letter-preview {
+  width: 100%;
+  max-width: 460px;
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf6 100%);
+  border: 1px solid var(--color-gold-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-md);
+  box-shadow: 0 12px 34px rgba(140, 103, 27, 0.12);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  transition: transform 780ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.royal-envelope-3d.is-open .royal-envelope-letter-preview {
+  transform: translateY(-22px) scale(1.03);
+}
+
+.royal-envelope-inner-gold-border {
+  border: 1px dashed rgba(207, 164, 57, 0.55);
+  border-radius: calc(var(--radius-lg) - 6px);
+  padding: 2.25rem var(--space-sm) var(--space-xl) var(--space-sm);
+}
+
+.royal-envelope-mini-crown {
+  width: 86px;
+  height: auto;
+  margin: 0 auto var(--space-xs) auto;
+  display: block;
+  filter: drop-shadow(0 6px 12px rgba(207, 164, 57, 0.25));
+}
+
+.royal-envelope-for-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--color-gold-deep);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.royal-envelope-recipient {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 4.5vw, 2.35rem);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin-bottom: var(--space-xs);
+}
+
+.royal-envelope-salutation {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-base);
+  color: var(--color-text-soft);
+  max-width: 380px;
+  margin: 0 auto var(--space-md) auto;
+  line-height: 1.45;
+}
+
+.royal-envelope-date-pill {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-pink-light);
+  border: 1px solid var(--color-gold-soft);
+  color: var(--color-pink-dark);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.royal-envelope-pocket {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 92px;
+  background: linear-gradient(0deg, #f7d5de 0%, rgba(253, 237, 241, 0.85) 100%);
+  border-top: 1px solid rgba(207, 164, 57, 0.45);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.royal-wax-seal-Anchor {
+  position: absolute;
+  bottom: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.royal-wax-seal-btn {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #f9eed4 0%, #d4af37 42%, #b58922 78%, #7d5b12 100%);
+  border: 2px solid #fff8e7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: sealPulse 2.6s infinite;
+  transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease;
+}
+
+.royal-wax-seal-btn:hover {
+  transform: scale(1.07);
+}
+
+.royal-wax-seal-btn.is-broken {
+  transform: scale(1.3) rotate(12deg);
+  opacity: 0;
+}
+
+.royal-wax-seal-ring {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255, 255, 255, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.royal-wax-seal-crown {
+  width: 30px;
+  height: auto;
+  filter: brightness(1.1);
+}
+
+.royal-wax-seal-monogram {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(90, 60, 10, 0.6);
+}
+
+.royal-envelope-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+.btn-open-royal-envelope {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 1rem 2.25rem;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-white);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  box-shadow: var(--shadow-gold);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.btn-open-royal-envelope:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(207, 164, 57, 0.48);
+}
+
+.btn-open-silent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--color-text-soft);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-full);
+  transition: color var(--transition-fast);
+}
+
+.btn-open-silent:hover {
+  color: var(--color-pink-dark);
+}
+
+/* ==========================================================================
+   11. CAIXINHA DE MÚSICA REAL FLUTUANTE
+   ========================================================================== */
+.royal-music-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1.5px solid var(--color-gold);
+  color: var(--color-gold-deep);
+  box-shadow: 0 10px 28px rgba(179, 71, 100, 0.18);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition-normal), background var(--transition-fast);
+}
+
+.royal-music-fab:hover {
+  transform: translateY(-2px);
+  background: var(--color-paper-warm);
+}
+
+.royal-music-fab.is-playing {
+  background: linear-gradient(135deg, #fffdf7 0%, #fdedf1 100%);
+  border-color: var(--color-gold-rich);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.18), 0 10px 26px rgba(207, 164, 57, 0.32);
+}
+
+.royal-music-fab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-pink-deep);
+}
+
+.royal-music-fab-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   12. DETALHES INTERATIVOS DO HERO (OURO, ROSA & BRANCO PÉROLA)
+   ========================================================================== */
+.hero-top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: var(--space-md);
+  position: relative;
+  z-index: 2;
+}
+
+.hero-royal-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.45rem 1.15rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fff9fb 100%);
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-gold-deep);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(207, 164, 57, 0.16);
+}
+
+.hero-reopen-envelope-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.42rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: var(--color-pink-light);
+  border: 1px solid var(--color-pink-soft);
+  color: var(--color-pink-dark);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.hero-reopen-envelope-btn:hover {
+  border-color: var(--color-gold);
+  background: var(--color-white);
+}
+
+.hero-crown-ring {
+  position: absolute;
+  width: 76%;
+  height: 76%;
+  border-radius: 50%;
+  border: 1px dashed rgba(207, 164, 57, 0.45);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-date-ribbon {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.55rem 1.4rem;
+  margin: 0 auto var(--space-md) auto;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  border: 1px solid var(--color-gold-soft);
+  box-shadow: 0 6px 20px rgba(207, 164, 57, 0.14);
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.hero-date-dot {
+  color: var(--color-gold);
+  font-size: 0.9rem;
+}
+
+.hero-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-action-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  border: 1px solid var(--color-gold-soft);
+  color: var(--color-text);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 12px rgba(179, 71, 100, 0.06);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.hero-action-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-gold);
+  box-shadow: 0 6px 16px rgba(207, 164, 57, 0.22);
+}
+
+.hero-action-chip-primary {
+  background: var(--gradient-gold);
+  color: var(--color-white);
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(207, 164, 57, 0.35);
+}
+
+/* ==========================================================================
+   13. DETALHES DE BOAS-VINDAS, CONTAGEM & AGENDA
+   ========================================================================== */
+.welcome-card-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-gold);
+  opacity: 0.65;
+  pointer-events: none;
+}
+.welcome-card-corner-tl { top: 10px; left: 10px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.welcome-card-corner-tr { top: 10px; right: 10px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.welcome-card-corner-bl { bottom: 10px; left: 10px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.welcome-card-corner-br { bottom: 10px; right: 10px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+.welcome-signature-seal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px dashed var(--color-gold-soft);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-lg);
+  color: var(--color-gold-deep);
+  font-weight: 600;
+}
+
+.countdown-crown-dot {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--color-gold);
+  margin-bottom: 2px;
+}
+
+.floral-countdown-box-seconds {
+  background: linear-gradient(180deg, #fffdf9 0%, #fdedf1 100%);
+  border-color: var(--color-gold);
+}
+
+.event-calendar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-mini-luxury {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  border: 1px solid var(--color-gold-soft);
+  color: var(--color-gold-deep);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-mini-luxury:hover {
+  background: var(--color-pink-light);
+  border-color: var(--color-gold);
+  color: var(--color-pink-dark);
+}
+
+.btn-mini-gold-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 14px rgba(207, 164, 57, 0.3);
+  transition: transform var(--transition-fast);
+}
+
+.btn-mini-gold-solid:hover {
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   14. BOUTIQUE INTERATIVA DE MIMOS & MODAL PIX DOURADO
+   ========================================================================== */
+.boutique-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: var(--space-lg);
+}
+
+.boutique-filter-pill {
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  border: 1px solid var(--color-pink-soft);
+  color: var(--color-text-soft);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.boutique-filter-pill:hover {
+  border-color: var(--color-gold);
+}
+
+.boutique-filter-pill.is-active {
+  background: linear-gradient(135deg, #fffdf7 0%, #fdedf1 100%);
+  border: 1.5px solid var(--color-gold);
+  color: var(--color-pink-dark);
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(207, 164, 57, 0.2);
+}
+
+.boutique-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .boutique-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 760px) {
+  .boutique-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.boutique-item-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-pink-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-normal), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+}
+
+.boutique-item-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-gold);
+}
+
+.boutique-item-card.is-selected {
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf2 100%);
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 12px 30px rgba(207, 164, 57, 0.25);
+}
+
+.boutique-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: var(--space-xs);
+}
+
+.boutique-item-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--color-pink-light);
+  color: var(--color-pink-dark);
+}
+
+.boutique-check-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--color-gold-soft);
+  background: var(--color-paper-warm);
+  color: var(--color-gold-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.boutique-check-circle.is-checked {
+  background: var(--gradient-gold);
+  color: var(--color-white);
+  border-color: transparent;
+}
+
+.boutique-icon-medal {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-pink-light);
+  border: 1px solid var(--color-gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-xs);
+}
+
+.boutique-item-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+.boutique-item-subtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-soft);
+  line-height: 1.45;
+  margin-bottom: var(--space-sm);
+}
+
+.boutique-item-action-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-gold-deep);
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-pink-soft);
+  width: 100%;
+}
+
+.boutique-selected-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #fffdf7 0%, #fdedf1 100%);
+  border: 1.5px solid var(--color-gold);
+  margin-bottom: var(--space-lg);
+  box-shadow: 0 8px 24px rgba(207, 164, 57, 0.18);
+}
+
+.boutique-selected-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.royal-pix-showcase-card {
+  background: linear-gradient(135deg, #ffffff 0%, #fff9fb 60%, #fdf3e7 100%);
+  border: 1.5px solid var(--color-gold);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-card);
+}
+
+.royal-pix-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-white);
+  border: 1px solid var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(207, 164, 57, 0.2);
+}
+
+.royal-pix-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.royal-pix-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+  max-width: 500px;
+  line-height: 1.55;
+}
+
+.royal-pix-brands {
+  font-size: var(--text-xs);
+  color: var(--color-pink-deep);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.royal-pix-modal-crown {
+  width: 68px;
+  margin: 0 auto 8px auto;
+}
+
+.royal-pix-modal-crown img {
+  width: 100%;
+  height: auto;
+}
+
+.royal-pix-key-box {
+  background: var(--color-paper-warm);
+  border: 1.5px dashed var(--color-gold);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.royal-pix-key-label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-deep);
+  font-weight: 700;
+}
+
+.royal-pix-key-value {
+  font-family: monospace;
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--color-white);
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-pink-soft);
+  word-break: break-all;
+  width: 100%;
+}
+
+.btn-copy-pix-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  box-shadow: var(--shadow-gold);
+}
+
+/* ==========================================================================
+   15. RSVP NOMINAL, ACOMPANHANTES & PASSE REAL VIP DOURADO
+   ========================================================================== */
+.rsvp-personalized-banner {
+  background: linear-gradient(135deg, #ffffff 0%, #fdedf1 100%);
+  border: 1.5px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: center;
+  margin-bottom: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+
+.rsvp-personalized-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-gold-deep);
+  font-weight: 700;
+}
+
+.rsvp-personalized-title {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  color: var(--color-text);
+  margin: 4px 0;
+}
+
+.rsvp-personalized-salutation {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-base);
+  color: var(--color-text-soft);
+}
+
+.rsvp-error-banner {
+  background: #fff2f4;
+  border: 1px solid var(--color-pink-deep);
+  color: var(--color-pink-dark);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.rsvp-declined-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-pink-light);
+  border: 1px solid var(--color-pink-soft);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+}
+
+.rsvp-nominal-guests-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.rsvp-nominal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rsvp-nominal-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-gold-soft);
+  background: var(--color-white);
+  transition: all var(--transition-fast);
+}
+
+.rsvp-nominal-toggle.is-confirmed {
+  border-color: var(--color-gold);
+  background: linear-gradient(90deg, #ffffff 0%, #fffdf5 100%);
+}
+
+.rsvp-nominal-toggle.is-declined {
+  opacity: 0.65;
+  background: var(--color-canvas-soft);
+}
+
+.rsvp-nominal-name {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.rsvp-nominal-status {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-pink-light);
+  color: var(--color-gold-deep);
+}
+
+.rsvp-companions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  padding-top: 4px;
+}
+
+.rsvp-companions-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btn-add-companion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold-deep);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.rsvp-companions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rsvp-companion-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.rsvp-companion-select {
+  padding: 0.8rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-pink-soft);
+  background: var(--color-white);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+}
+
+.btn-remove-companion {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--color-pink-light);
+  color: var(--color-pink-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rsvp-mimos-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.rsvp-mimo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rsvp-mimo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  border: 1px solid var(--color-pink-soft);
+  color: var(--color-text-soft);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.rsvp-mimo-chip.is-active {
+  background: linear-gradient(135deg, #fffdf6 0%, #fdedf1 100%);
+  border-color: var(--color-gold);
+  color: var(--color-gold-deep);
+  font-weight: 700;
+}
+
+/* Passe Real VIP de Presença Confirmada */
+.royal-vip-pass-card {
+  background: linear-gradient(165deg, #ffffff 0%, #fffdf8 50%, #fdf1f5 100%);
+  border: 2px solid var(--color-gold);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl) var(--space-lg);
+  box-shadow: 0 22px 55px rgba(207, 164, 57, 0.25);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.royal-vip-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-md);
+}
+
+.royal-vip-crown {
+  width: 78px;
+  height: auto;
+}
+
+.royal-vip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.royal-vip-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--color-text);
+}
+
+.royal-vip-body {
+  background: var(--color-white);
+  border: 1px dashed var(--color-gold);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: var(--space-md);
+}
+
+.royal-vip-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.royal-vip-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-gold-deep);
+  font-weight: 700;
+}
+
+.royal-vip-value {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--color-text);
+}
+
+.royal-vip-divider {
+  height: 1px;
+  background: var(--color-pink-soft);
+  margin: 4px 0;
+}
+
+.royal-vip-event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--color-text-soft);
+  align-items: center;
+}
+
+.royal-vip-event-meta > div {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.royal-vip-mimos-box {
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-pink-soft);
+}
+
+.royal-vip-mimos-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.royal-vip-mimo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-pink-light);
+  color: var(--color-pink-dark);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.royal-vip-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* ==========================================================================
+   16. ESTÚDIO POLAROID DOURADO & CÁPSULA DO TEMPO DA MAYTÊ
+   ========================================================================== */
+.polaroid-caption-input-wrap {
+  margin-top: var(--space-md);
+}
+
+.polaroid-preview-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.royal-polaroid-frame {
+  width: 210px;
+  background: #ffffff;
+  border: 1.5px solid var(--color-gold);
+  border-radius: var(--radius-sm);
+  padding: 10px 10px 18px 10px;
+  box-shadow: 0 14px 32px rgba(60, 42, 46, 0.14);
+  transform: rotate(-1.5deg);
+  transition: transform var(--transition-normal);
+}
+
+.royal-polaroid-frame:nth-child(even) {
+  transform: rotate(1.8deg);
+}
+
+.royal-polaroid-frame:hover {
+  transform: rotate(0deg) scale(1.03);
+}
+
+.royal-polaroid-img-wrap {
+  width: 100%;
+  height: 175px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--color-pink-light);
+  margin-bottom: 10px;
+}
+
+.royal-polaroid-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.royal-polaroid-caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-base);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Cápsula do Tempo */
+.time-capsule-wrapper {
+  margin-top: var(--space-2xl);
+}
+
+.time-capsule-header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.time-capsule-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.time-capsule-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-soft);
+}
+
+.time-capsule-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .time-capsule-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.time-capsule-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf4 100%);
+  border: 1px solid var(--color-gold-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.time-capsule-quote-mark {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  line-height: 0.8;
+  color: var(--color-gold);
+  opacity: 0.55;
+  margin-bottom: 4px;
+}
+
+.time-capsule-message {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin-bottom: var(--space-md);
+}
+
+.time-capsule-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-pink-soft);
+}
+
+.time-capsule-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-pink-light);
+  border: 1px solid var(--color-gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-capsule-author {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text);
+}
+
+.time-capsule-relation {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--color-gold-deep);
+  font-weight: 600;
+}
+
+.time-capsule-quick-form {
+  background: var(--color-paper-warm);
+  border: 1px solid var(--color-gold-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+
+.time-capsule-form-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.time-capsule-inputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .time-capsule-inputs {
+    grid-template-columns: 180px 1fr auto;
+  }
+}
+
+.time-capsule-saved-feedback {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-gold-deep);
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   17. ACABAMENTO HAUTE-COUTURE REAL: SUPERFÍCIES PREENCHIDAS, ARABESCOS & SHIMMER
+   ========================================================================== */
+
+@keyframes slowSunburstSpin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes sheenSweep {
+  0% {
+    transform: translateX(-140%) skewX(-22deg);
+  }
+  45%, 100% {
+    transform: translateX(240%) skewX(-22deg);
+  }
+}
+
+/* Fundo Geral com Textura Damasco Sutil e Atmosfera Rosa & Ouro */
+.invitation-canvas {
+  background-color: #f8dfe8;
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(255, 250, 240, 0.85) 0%, transparent 45%),
+    radial-gradient(circle at 80% 35%, rgba(244, 178, 196, 0.45) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(212, 175, 55, 0.18) 0%, transparent 55%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(212, 175, 55, 0.03) 0px,
+      rgba(212, 175, 55, 0.03) 2px,
+      transparent 2px,
+      transparent 16px
+    ),
+    linear-gradient(180deg, #fceef3 0%, #f7d9e4 50%, #f5e2d8 100%);
+  padding-bottom: 5.5rem;
+}
+
+/* Folha Principal com Moldura Dupla chanfrada em Folha de Ouro */
+.stationery-envelope-card {
+  background:
+    radial-gradient(circle at 50% 8%, #ffffff 0%, #fff8fb 38%, #fdedf3 78%, #fbf0e4 100%);
+  border: 2px solid #cfa439;
+  box-shadow:
+    0 30px 80px rgba(145, 48, 76, 0.22),
+    0 6px 24px rgba(207, 164, 57, 0.28),
+    inset 0 0 0 6px rgba(255, 255, 255, 0.85);
+}
+
+.stationery-inner-frame {
+  border: 1.5px solid rgba(207, 164, 57, 0.55);
+  box-shadow: inset 0 0 28px rgba(226, 130, 153, 0.12);
+}
+
+/* Arabescos Reais SVG nos 4 Cantos */
+.royal-filigree-corner {
+  position: absolute;
+  pointer-events: none;
+  z-index: 4;
+  filter: drop-shadow(0 2px 6px rgba(140, 103, 27, 0.18));
+}
+.royal-filigree-tl { top: 10px; left: 10px; }
+.royal-filigree-tr { top: 10px; right: 10px; }
+.royal-filigree-bl { bottom: 10px; left: 10px; }
+.royal-filigree-br { bottom: 10px; right: 10px; }
+
+/* Ritmo Visual Entre Seções (Alternância de Preenchimento Rosa Seda & Champagne) */
+.invitation-section:nth-of-type(even) {
+  background: linear-gradient(
+    180deg,
+    rgba(253, 234, 241, 0.65) 0%,
+    rgba(250, 238, 218, 0.42) 50%,
+    rgba(253, 234, 241, 0.65) 100%
+  );
+  border-top: 1px solid rgba(207, 164, 57, 0.22);
+  border-bottom: 1px solid rgba(207, 164, 57, 0.22);
+}
+
+/* Halo Solar Giratório atrás da Coroa da Maytê */
+.hero-sunburst-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 92%;
+  height: 92%;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(207, 164, 57, 0.55);
+  box-shadow:
+    0 0 40px rgba(212, 175, 55, 0.28),
+    inset 0 0 30px rgba(226, 130, 153, 0.22);
+  animation: slowSunburstSpin 34s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-crown-container {
+  transition: transform 180ms ease-out;
+  will-change: transform;
+}
+
+.hero-title-container {
+  transition: transform 180ms ease-out;
+}
+
+/* Faixa de Data Preenchida em Seda Rosê & Borda de Ouro */
+.hero-date-ribbon {
+  background: linear-gradient(135deg, #fffdf9 0%, #fce4ec 50%, #faebd0 100%);
+  border: 1.5px solid #cfa439;
+  box-shadow:
+    0 10px 26px rgba(179, 71, 100, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  padding: 0.65rem 1.65rem;
+}
+
+.hero-date-ornament {
+  color: #b58922;
+  font-size: 0.95rem;
+}
+
+/* Botões Jóia com Brilho Metálico Deslizante (Shimmer) */
+.btn-shimmer-gold,
+.btn-floral-gold,
+.btn-rsvp-confirm,
+.btn-copy-pix-gold {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #d8b243 0%, #c89829 48%, #9e7115 100%);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(75, 48, 6, 0.45);
+  border: 1.5px solid #f7e6b2;
+  box-shadow:
+    0 12px 28px rgba(168, 123, 24, 0.38),
+    0 4px 10px rgba(179, 71, 100, 0.16),
+    inset 0 1px 1px rgba(255, 255, 255, 0.75),
+    inset 0 -2px 0 rgba(105, 70, 10, 0.35);
+}
+
+.btn-shimmer-gold::after,
+.btn-floral-gold::after,
+.btn-rsvp-confirm::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.42) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: sheenSweep 4.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero-action-chip {
+  padding: 0.72rem 1.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.hero-action-chip-rose {
+  background: linear-gradient(135deg, #f9dce6 0%, #f2bed0 100%);
+  border: 1.5px solid #cfa439;
+  color: #6b1d32;
+  box-shadow:
+    0 8px 20px rgba(179, 71, 100, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.hero-action-chip-pearl {
+  background: linear-gradient(135deg, #fffdf9 0%, #f7ebd2 100%);
+  border: 1.5px solid #cfa439;
+  color: #6e4f12;
+  box-shadow:
+    0 8px 20px rgba(207, 164, 57, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Cartões Nobres Preenchidos (Boas-vindas, Detalhes, RSVP, Memórias) */
+.floral-welcome-card,
+.event-details-card,
+.floral-rsvp-card,
+.memories-interactive-card {
+  background: linear-gradient(155deg, #ffffff 0%, #fdedf3 52%, #faebd4 100%);
+  border: 2px solid #cfa439;
+  box-shadow:
+    0 18px 46px rgba(179, 71, 100, 0.14),
+    0 4px 14px rgba(207, 164, 57, 0.2),
+    inset 0 0 0 5px rgba(255, 255, 255, 0.78);
+}
+
+.welcome-badge {
+  background: linear-gradient(135deg, #f8d4e0 0%, #f5e2be 100%);
+  border: 1px solid #cfa439;
+  color: #6d1c33;
+  box-shadow: 0 4px 12px rgba(179, 71, 100, 0.12);
+}
+
+/* Medalhões Preenchidos da Contagem Regressiva */
+.floral-countdown-box {
+  background: linear-gradient(165deg, #ffffff 0%, #f9dce5 55%, #f5e3be 100%);
+  border: 1.5px solid #cfa439;
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 12px 26px rgba(179, 71, 100, 0.14),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.78);
+  transition: transform var(--transition-normal);
+}
+
+.floral-countdown-box:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.floral-countdown-box-seconds {
+  background: linear-gradient(165deg, #fff9eb 0%, #f5d896 55%, #f4c4d3 100%);
+  border: 2px solid #b58922;
+}
+
+/* Cartões Preenchidos da Boutique de Mimos */
+.boutique-item-card {
+  background: linear-gradient(160deg, #ffffff 0%, #fcebf0 58%, #f9ebd2 100%);
+  border: 1.5px solid rgba(207, 164, 57, 0.65);
+  box-shadow:
+    0 10px 26px rgba(179, 71, 100, 0.1),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.75);
+}
+
+.boutique-item-card.is-selected {
+  background: linear-gradient(155deg, #fffdf7 0%, #f7d9e3 48%, #f3dca8 100%);
+  border: 2px solid #b58922;
+  box-shadow:
+    0 16px 36px rgba(207, 164, 57, 0.34),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.85);
+}
+
+.boutique-icon-medal {
+  background: linear-gradient(135deg, #fffdf9 0%, #f8d5e0 100%);
+  border: 1px solid #cfa439;
+}
+
+/* Cartões Preenchidos da Cápsula do Tempo */
+.time-capsule-card {
+  background: linear-gradient(160deg, #ffffff 0%, #fcecf1 55%, #faecd2 100%);
+  border: 1.5px solid #cfa439;
+  box-shadow:
+    0 12px 28px rgba(179, 71, 100, 0.11),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.75);
+}
+
+/* Envelope Real 3D: Forro de Veludo Rosa, Abas Laterais e Subida Coreografada */
+.royal-envelope-3d {
+  background: linear-gradient(165deg, #fbe3ec 0%, #f5cbd9 55%, #eed4b9 100%);
+  border: 2px solid #cfa439;
+  transition: transform 220ms ease-out;
+}
+
+.royal-envelope-velvet-lining {
+  position: absolute;
+  inset: 10px;
+  border-radius: calc(var(--radius-xl) - 6px);
+  background: radial-gradient(circle at 50% 30%, #e89db2 0%, #c96b86 100%);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.royal-envelope-side-left {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(251, 224, 234, 0.92) 0%, rgba(244, 198, 214, 0.85) 100%);
+  clip-path: polygon(0 0, 34% 52%, 0 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.royal-envelope-side-right {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(225deg, rgba(251, 224, 234, 0.92) 0%, rgba(244, 198, 214, 0.85) 100%);
+  clip-path: polygon(100% 0, 66% 52%, 100% 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.royal-envelope-pocket {
+  height: 112px;
+  background: linear-gradient(0deg, #f3bfd0 0%, #fae3eb 88%, #f7e4be 100%);
+  border-top: 2px solid #cfa439;
+  box-shadow: 0 -8px 24px rgba(179, 71, 100, 0.15);
+}
+
+.royal-envelope-letter-preview {
+  background: linear-gradient(165deg, #ffffff 0%, #fff6f9 55%, #fdf0d8 100%);
+  border: 1.5px solid #cfa439;
+}
+
+.royal-envelope-3d.is-rising .royal-envelope-letter-preview {
+  transform: translateY(-78px) scale(1.045);
+  box-shadow: 0 28px 60px rgba(179, 71, 100, 0.28);
+}
+
+.royal-envelope-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #f9d8e3 0%, #f6e4be 100%);
+  border: 1px solid #cfa439;
+  color: #6b1d32;
+  font-weight: 700;
+}
+
+/* Barra de Navegação Flutuante de Cristal, Rosa & Ouro */
+.royal-floating-dock {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 88;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 250, 252, 0.94);
+  border: 1.5px solid #cfa439;
+  box-shadow:
+    0 14px 36px rgba(145, 48, 76, 0.22),
+    0 2px 10px rgba(207, 164, 57, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.royal-floating-dock.is-dock-hidden {
+  opacity: 0;
+  transform: translate(-50%, 24px);
+  pointer-events: none;
+}
+
+.royal-floating-dock.is-dock-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.royal-dock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.48rem 0.9rem;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.royal-dock-btn:hover {
+  color: var(--color-pink-dark);
+  background: rgba(249, 216, 227, 0.45);
+}
+
+.royal-dock-btn.is-active {
+  background: linear-gradient(135deg, #d8b243 0%, #c89829 52%, #a67818 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(207, 164, 57, 0.38);
+}
+
+@media (max-width: 720px) {
+  .royal-music-fab {
+    bottom: 74px;
+    right: 14px;
+  }
+}
+
+/* ==========================================================================
+   18. COROA INTERATIVA (DESKTOP & MOBILE) + 7 REFINAMENTOS DE UX DO FORMULÁRIO
+   ========================================================================== */
+
+@keyframes orbitTwinkle {
+  0%, 100% {
+    transform: translateY(0px) scale(0.9) rotate(0deg);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(-9px) scale(1.22) rotate(18deg);
+    opacity: 1;
+  }
+}
+
+.is-interactive-crown {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: 1.5rem;
+}
+
+.is-interactive-crown.is-crown-bursting .hero-crown-glow {
+  background: radial-gradient(
+    circle,
+    rgba(212, 175, 55, 0.72) 0%,
+    rgba(244, 178, 196, 0.65) 55%,
+    transparent 78%
+  );
+  transform: translate(-50%, -50%) scale(1.25);
+  transition: transform 420ms ease, background 420ms ease;
+}
+
+.crown-orbit-sparkle {
+  position: absolute;
+  color: #d4af37;
+  font-size: 1.15rem;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.75);
+  pointer-events: none;
+  z-index: 3;
+  animation: orbitTwinkle 3.2s ease-in-out infinite;
+}
+
+.crown-orbit-sparkle.sparkle-1 { top: 8%; left: 10%; animation-delay: 0s; }
+.crown-orbit-sparkle.sparkle-2 { top: 12%; right: 10%; animation-delay: 0.8s; font-size: 1.35rem; }
+.crown-orbit-sparkle.sparkle-3 { bottom: 20%; left: 6%; animation-delay: 1.6s; }
+.crown-orbit-sparkle.sparkle-4 { bottom: 22%; right: 8%; color: #e28299; animation-delay: 2.2s; font-size: 0.95rem; }
+
+.hero-crown-interactive-badge {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.36rem 0.95rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #fffdf9 0%, #fce4ec 55%, #faebd0 100%);
+  border: 1.5px solid #cfa439;
+  color: #6b1d32;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(179, 71, 100, 0.18);
+  transition: transform 250ms ease, box-shadow 250ms ease;
+}
+
+.is-interactive-crown:hover .hero-crown-interactive-badge,
+.is-interactive-crown.is-crown-bursting .hero-crown-interactive-badge {
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 8px 22px rgba(207, 164, 57, 0.38);
+}
+
+/* 1. Cabeçalho do Cartão de Resposta Real (R.S.V.P.) */
+.royal-rsvp-stationery-form {
+  gap: 1.35rem;
+}
+
+.rsvp-stationery-header {
+  text-align: center;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px dashed rgba(207, 164, 57, 0.55);
+}
+
+.rsvp-stationery-seal {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 6px auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fffdf7 0%, #f8d9e3 55%, #f5e2b8 100%);
+  border: 1.5px solid #cfa439;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(207, 164, 57, 0.22);
+}
+
+.rsvp-stationery-subtitle {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--color-gold-deep);
+  letter-spacing: 0.08em;
+}
+
+.rsvp-stationery-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.45rem, 3.8vw, 1.85rem);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 2px 0 6px 0;
+}
+
+.rsvp-stationery-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #cfa439;
+  font-size: 0.75rem;
+}
+
+.rsvp-stationery-divider::before,
+.rsvp-stationery-divider::after {
+  content: "";
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #cfa439, transparent);
+}
+
+/* 2. Seletor Interativo de Presença no Topo */
+.rsvp-intent-selector {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 520px) {
+  .rsvp-intent-selector {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.rsvp-intent-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 0.95rem 0.85rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1.5px solid rgba(207, 164, 57, 0.45);
+  transition: all var(--transition-fast);
+}
+
+.rsvp-intent-card:hover {
+  transform: translateY(-2px);
+  border-color: #cfa439;
+}
+
+.rsvp-intent-card.is-active-yes {
+  background: linear-gradient(145deg, #fffdf8 0%, #fce3ec 52%, #f7e2b6 100%);
+  border: 2px solid #b58922;
+  box-shadow: 0 10px 24px rgba(207, 164, 57, 0.26), inset 0 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+.rsvp-intent-card.is-active-no {
+  background: linear-gradient(145deg, #ffffff 0%, #f9dfe7 100%);
+  border: 2px solid var(--color-pink-deep);
+  box-shadow: 0 8px 20px rgba(179, 71, 100, 0.16);
+}
+
+.rsvp-intent-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #cfa439;
+  color: var(--color-gold-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.rsvp-intent-card.is-active-yes .rsvp-intent-icon {
+  background: var(--gradient-gold);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.rsvp-intent-card.is-active-no .rsvp-intent-icon {
+  background: var(--color-pink-deep);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.rsvp-intent-title {
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.rsvp-intent-desc {
+  font-size: 0.72rem;
+  color: var(--color-text-soft);
+  font-weight: 500;
+}
+
+/* 3. Campos de Input com Ícones Dourados Embutidos & Halo no Foco */
+.rsvp-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 560px) {
+  .rsvp-fields-grid {
+    grid-template-columns: 1.2fr 0.95fr;
+  }
+}
+
+.royal-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.royal-input-icon {
+  position: absolute;
+  left: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #fdf2f6 0%, #f7e6c4 100%);
+  border: 1px solid rgba(207, 164, 57, 0.55);
+  color: var(--color-gold-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.rsvp-field-input {
+  border: 1.5px solid rgba(207, 164, 57, 0.5);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: inset 0 1px 3px rgba(60, 42, 46, 0.04);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.rsvp-field-input.with-icon {
+  padding-left: 3.1rem;
+}
+
+.rsvp-field-input:focus {
+  border-color: #b58922;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2), 0 4px 12px rgba(207, 164, 57, 0.14);
+}
+
+/* 4. Painel de Acompanhantes Preenchido em Seda Rosê */
+.royal-companions-panel {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.85) 0%, rgba(252, 232, 240, 0.8) 100%);
+  border: 1.5px solid rgba(207, 164, 57, 0.55);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rsvp-companions-sub {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--color-text-soft);
+  margin-top: 2px;
+}
+
+.btn-add-companion {
+  background: linear-gradient(135deg, #fffdf9 0%, #f7e4be 100%);
+  border: 1.5px solid #cfa439;
+  padding: 0.48rem 0.95rem;
+  box-shadow: 0 4px 12px rgba(207, 164, 57, 0.18);
+  transition: transform 150ms ease;
+}
+
+.btn-add-companion:hover {
+  transform: translateY(-1px);
+}
+
+.royal-companion-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(207, 164, 57, 0.35);
+}
+
+.royal-companion-type-pills {
+  display: inline-flex;
+  background: #ffffff;
+  border: 1px solid rgba(207, 164, 57, 0.55);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  gap: 2px;
+}
+
+.companion-type-pill {
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  transition: all 150ms ease;
+}
+
+.companion-type-pill.is-active {
+  background: var(--gradient-gold);
+  color: #ffffff;
+}
+
+/* 5. Grade Simétrica 2x2 de Mini-Cartões para Mimo/Fralda */
+.rsvp-mimos-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.rsvp-mimos-count-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: #ffffff;
+}
+
+.rsvp-mimo-grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 480px) {
+  .rsvp-mimo-grid-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.rsvp-mimo-mini-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid rgba(207, 164, 57, 0.45);
+  text-align: left;
+  transition: all 180ms ease;
+}
+
+.rsvp-mimo-mini-card:hover {
+  transform: translateY(-2px);
+  border-color: #cfa439;
+}
+
+.rsvp-mimo-mini-card.is-active {
+  background: linear-gradient(145deg, #fffdf8 0%, #f9dce6 52%, #f6e1b5 100%);
+  border: 2px solid #b58922;
+  box-shadow: 0 8px 18px rgba(207, 164, 57, 0.24);
+}
+
+.rsvp-mimo-mini-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.rsvp-mimo-mini-sub {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-pink-deep);
+}
+
+.rsvp-mimo-mini-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #cfa439;
+  background: #ffffff;
+  color: var(--color-gold-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.rsvp-mimo-mini-check.is-checked {
+  background: var(--gradient-gold);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.rsvp-mimo-mini-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+/* 6. Mensagem + Pílulas de Inspiração em 1 Toque */
+.rsvp-message-label-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.rsvp-char-hint {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-pink-deep);
+}
+
+.rsvp-textarea-luxury {
+  resize: vertical;
+  min-height: 82px;
+}
+
+.rsvp-inspiration-box {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rsvp-inspiration-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-gold-deep);
+}
+
+.rsvp-inspiration-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rsvp-inspiration-pill {
+  padding: 0.38rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(207, 164, 57, 0.5);
+  color: var(--color-text-soft);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  text-align: left;
+  transition: all 150ms ease;
+}
+
+.rsvp-inspiration-pill:hover {
+  background: #fffdf7;
+  border-color: #b58922;
+  color: var(--color-text);
+}
+
+.btn-rsvp-decline-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 1rem 1.85rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #d87a94 0%, #b34764 100%);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border: 1.5px solid #f7d5de;
+  box-shadow: 0 10px 24px rgba(179, 71, 100, 0.3);
+}
+
+/* 7. Dropzone Polaroid & Pergaminho da Cápsula do Tempo */
+.royal-polaroid-dropzone {
+  margin-top: var(--space-md);
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82) 0%, rgba(253, 236, 242, 0.75) 100%);
+  border: 2px dashed #cfa439;
+  transition: all 200ms ease;
+}
+
+.royal-polaroid-dropzone.is-dragging {
+  background: #fffdf5;
+  border-color: #b58922;
+  transform: scale(1.01);
+}
+
+.polaroid-drop-hint {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--color-text-soft);
+  margin-top: 8px;
+}
+
+.time-capsule-quick-form {
+  background: linear-gradient(155deg, #ffffff 0%, #fdedf3 52%, #faebd4 100%);
+  border: 2px solid #cfa439;
+  padding: 1.35rem 1.15rem;
+  box-shadow:
+    0 14px 34px rgba(179, 71, 100, 0.12),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+.btn-capsule-publish {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.85rem 1.35rem;
+  border-radius: 12px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Responsividade Mobile Dedicada (Smartphones <= 640px) */
+@media (max-width: 640px) {
+  .royal-filigree-corner {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hero-section {
+    min-height: auto;
+    padding: 2.25rem 1rem 1.75rem 1rem;
+  }
+
+  .hero-crown-container {
+    width: 88%;
+    max-width: 310px;
+  }
+
+  .hero-crown-interactive-badge {
+    font-size: 0.65rem;
+    padding: 0.32rem 0.75rem;
+  }
+
+  .hero-date-ribbon {
+    font-size: 0.98rem;
+    padding: 0.55rem 1rem;
+    gap: 6px;
+  }
+
+  .hero-quick-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hero-action-chip {
+    width: 100%;
+    justify-content: center;
+    padding: 0.82rem 1rem;
+  }
+
+  .floral-countdown-grid {
+    gap: 8px;
+  }
+
+  .floral-countdown-box {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .floral-welcome-card,
+  .event-details-card,
+  .floral-rsvp-card,
+  .memories-interactive-card {
+    padding: 2rem 1rem;
+  }
+}
+
+/* ============================================================================
+   19. PAINEL REAL (/ADMIN) + COMPONENTES ARRASTÁVEIS & KANBAN
+   ============================================================================ */
+
+.drag-handle {
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(212, 169, 89, 0.45);
+  background: linear-gradient(135deg, #fffdf9 0%, #fceef3 100%);
+  color: var(--color-gold-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.drag-handle:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 4px 12px rgba(201, 155, 59, 0.22);
+  transform: scale(1.04);
+}
+
+.drag-handle:active,
+.drag-handle.dragging {
+  cursor: grabbing;
+}
+
+.admin-draggable-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fffdf9 100%);
+  border: 1.5px solid rgba(212, 169, 89, 0.42);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.15rem;
+  box-shadow: 0 10px 26px rgba(176, 114, 134, 0.08);
+  transition: all 0.22s ease;
+}
+
+.admin-draggable-card:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 14px 32px rgba(201, 155, 59, 0.16);
+}
+
+.admin-draggable-card.is-drag-over {
+  border: 2px dashed var(--color-gold-deep);
+  background: #fff9eb;
+  transform: scale(1.01);
+}
+
+.admin-draggable-card.is-muted-card {
+  opacity: 0.62;
+  background: #faf6f7;
+}
+
+.admin-draggable-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.admin-draggable-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.btn-icon-royal {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(212, 169, 89, 0.4);
+  background: #fff;
+  color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-icon-royal:hover:not(:disabled) {
+  border-color: var(--color-gold);
+  background: #fff8e6;
+}
+
+.btn-icon-royal:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Cartões de Estatísticas do Painel Real */
+.admin-stat-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fdf4f7 100%);
+  border: 1.5px solid rgba(212, 169, 89, 0.45);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.35rem;
+  box-shadow: 0 12px 28px rgba(176, 114, 134, 0.09);
+  text-align: left;
+}
+
+.admin-stat-card.is-gold-highlight {
+  background: linear-gradient(145deg, #fffdf7 0%, #fff4d9 50%, #fdeaf0 100%);
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 16px 36px rgba(201, 155, 59, 0.2);
+}
+
+.admin-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.admin-stat-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--color-text-soft);
+}
+
+.admin-stat-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(212, 169, 89, 0.16);
+  color: var(--color-gold-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-stat-number {
+  font-family: var(--font-serif);
+  font-size: 2.35rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.admin-stat-sub {
+  font-size: 0.76rem;
+  color: var(--color-text-light);
+  display: block;
+  margin-top: 4px;
+}
+
+/* Quadro Kanban Arrastável de Convites */
+.admin-kanban-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1.15rem;
+  align-items: flex-start;
+}
+
+.admin-kanban-column {
+  background: linear-gradient(180deg, #fffdf9 0%, #fdf2f6 100%);
+  border: 1.5px solid rgba(212, 169, 89, 0.45);
+  border-radius: var(--radius-xl);
+  padding: 1.15rem;
+  min-height: 360px;
+  transition: all 0.22s ease;
+}
+
+.admin-kanban-column.is-kanban-over {
+  border: 2px dashed var(--color-gold-deep);
+  background: #fff9eb;
+  box-shadow: 0 16px 38px rgba(201, 155, 59, 0.22);
+}
+
+.admin-kanban-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px dashed rgba(212, 169, 89, 0.45);
+  text-align: left;
+}
+
+.admin-kanban-col-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.admin-kanban-col-sub {
+  font-size: 0.74rem;
+  color: var(--color-text-light);
+}
+
+.admin-kanban-count {
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.admin-kanban-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-kanban-card {
+  background: #ffffff;
+  border: 1px solid rgba(212, 169, 89, 0.42);
+  border-radius: var(--radius-md);
+  padding: 0.95rem;
+  box-shadow: 0 8px 20px rgba(176, 114, 134, 0.08);
+  text-align: left;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.admin-kanban-card:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 12px 26px rgba(201, 155, 59, 0.18);
+  transform: translateY(-2px);
+}
+
+.admin-kanban-empty {
+  border: 1.5px dashed rgba(212, 169, 89, 0.45);
+  border-radius: var(--radius-md);
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+/* ============================================================================
+   20. TIPOGRAFIA NUMÉRICA DE ALTA VISIBILIDADE, ÁLBUM POLAROID VINTAGE
+       (GRADE / CATEGORIA) & RESPONSIVIDADE MOBILE /ADMIN + CONVITE
+   ============================================================================ */
+
+/* 20.1. Visibilidade Cristalina de Números e Datas em Todo o Projeto */
+html,
+body,
+.invitation-canvas,
+.hero-date-ribbon,
+.event-row-value,
+.floral-countdown-number,
+.admin-stat-number,
+.royal-vip-value,
+.royal-envelope-date-pill {
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+.royal-num-highlight {
+  font-family: var(--font-numeric);
+  font-weight: 700;
+  font-size: 0.92em;
+  color: #2b1219;
+  letter-spacing: 0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
+  padding: 0.04em 0.28em;
+  margin: 0 1px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(207, 164, 57, 0.38);
+  box-shadow: 0 1px 3px rgba(140, 103, 27, 0.1);
+  display: inline-block;
+  line-height: 1.25;
+}
+
+.hero-title-header-img {
+  width: 100%;
+  max-width: 630px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 8px 22px rgba(140, 103, 27, 0.16));
+}
+
+.hero-date-ribbon {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  padding: 0.72rem 1.65rem;
+  margin: 0.35rem auto var(--space-md) auto;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #fffdf9 0%, #fce4ec 50%, #f9e6c3 100%);
+  border: 2px solid #c5962d;
+  box-shadow:
+    0 12px 28px rgba(179, 71, 100, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  font-family: var(--font-serif);
+  font-size: clamp(1.08rem, 2.6vw, 1.3rem);
+  font-weight: 700;
+  color: #2e151d;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  max-width: 100%;
+}
+
+.hero-date-segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.hero-date-text {
+  color: #2e151d;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.hero-date-ornament {
+  color: #a67814;
+  font-size: 1.05rem;
+  line-height: 1;
+  filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.8));
+  flex-shrink: 0;
+}
+
+.hero-date-dot {
+  color: #b58922;
+  font-size: 0.95rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.floral-countdown-number {
+  font-family: var(--font-numeric);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #2e151d;
+}
+
+/* 20.2. Álbum Polaroid Organizável por Categoria / Grade & Estilo 'Antigo' (Vintage) */
+@keyframes vintagePolaroidSway {
+  0%, 100% {
+    transform: rotate(var(--polaroid-tilt, -1.8deg)) translateY(0px);
+  }
+  50% {
+    transform: rotate(calc(var(--polaroid-tilt, -1.8deg) * -0.65)) translateY(-5px);
+  }
+}
+
+@keyframes vintageChemicalDevelop {
+  0% {
+    filter: sepia(0.85) brightness(1.35) contrast(0.65) blur(4px);
+    opacity: 0.35;
+  }
+  60% {
+    filter: sepia(0.35) brightness(1.08) contrast(0.95) blur(0.5px);
+    opacity: 0.92;
+  }
+  100% {
+    filter: sepia(0.12) contrast(1.04) brightness(1.01) blur(0px);
+    opacity: 1;
+  }
+}
+
+.polaroid-category-selector-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.polaroid-cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid rgba(207, 164, 57, 0.48);
+  color: var(--color-text-soft);
+  font-size: 0.76rem;
+  font-weight: 700;
+  transition: all 180ms ease;
+}
+
+.polaroid-cat-pill:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-1px);
+}
+
+.polaroid-cat-pill.is-active {
+  background: linear-gradient(135deg, #fffdf7 0%, #fce4ec 52%, #f7e2b5 100%);
+  border-color: #b58922;
+  color: #5c192b;
+  box-shadow: 0 6px 16px rgba(207, 164, 57, 0.25);
+}
+
+/* Barra de Ferramentas do Álbum (Categorias + Seletor de Grade) */
+.polaroid-album-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(253, 236, 242, 0.85) 100%);
+  border: 1.5px solid rgba(207, 164, 57, 0.5);
+  box-shadow: 0 8px 24px rgba(179, 71, 100, 0.08);
+}
+
+.polaroid-category-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.polaroid-cat-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: rgba(207, 164, 57, 0.2);
+  color: #6b1d32;
+  font-family: var(--font-numeric);
+  font-size: 0.68rem;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.polaroid-grid-mode-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1.5px solid rgba(207, 164, 57, 0.55);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  gap: 3px;
+  box-shadow: inset 0 1px 3px rgba(60, 42, 46, 0.05);
+}
+
+.polaroid-grid-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.38rem 0.78rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  transition: all 160ms ease;
+}
+
+.polaroid-grid-btn:hover {
+  color: var(--color-pink-dark);
+}
+
+.polaroid-grid-btn.is-active {
+  background: var(--gradient-gold);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(207, 164, 57, 0.32);
+}
+
+/* Modos de Exibição da Galeria Polaroid */
+.polaroid-preview-gallery.mode-vintage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.65rem 1.35rem;
+  margin-top: var(--space-lg);
+  padding: 0.75rem 0.25rem;
+}
+
+.polaroid-preview-gallery.mode-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 1.35rem;
+  margin-top: var(--space-lg);
+  justify-items: center;
+}
+
+.polaroid-preview-gallery.mode-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 1.6rem;
+  margin-top: var(--space-lg);
+  justify-items: center;
+}
+
+/* Moldura Polaroid Clássica em Papel Fotográfico Creme Antigo */
+.royal-polaroid-frame.is-vintage-animated {
+  --polaroid-tilt: -1.8deg;
+  position: relative;
+  width: 228px;
+  background: linear-gradient(180deg, #fffefb 0%, #fdf8ee 65%, #f9f0df 100%);
+  border: 1.5px solid rgba(207, 164, 57, 0.72);
+  border-radius: 6px;
+  padding: 12px 12px 18px 12px;
+  box-shadow:
+    0 16px 34px rgba(60, 42, 46, 0.16),
+    0 3px 8px rgba(140, 103, 27, 0.12),
+    inset 0 0 18px rgba(212, 175, 55, 0.08);
+  transform-origin: 50% -12px;
+  animation: vintagePolaroidSway 6.5s ease-in-out infinite;
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 280ms ease;
+}
+
+.royal-polaroid-frame.is-vintage-animated:nth-child(even) {
+  --polaroid-tilt: 2.1deg;
+  animation-delay: -3.2s;
+}
+
+.royal-polaroid-frame.is-vintage-animated:nth-child(3n) {
+  --polaroid-tilt: -1.1deg;
+  animation-delay: -1.7s;
+}
+
+.polaroid-preview-gallery.mode-grid-3 .royal-polaroid-frame.is-vintage-animated {
+  width: 100%;
+  max-width: 245px;
+  --polaroid-tilt: -0.6deg;
+}
+
+.polaroid-preview-gallery.mode-grid-2 .royal-polaroid-frame.is-vintage-animated {
+  width: 100%;
+  max-width: 320px;
+  --polaroid-tilt: 0.5deg;
+}
+
+.polaroid-preview-gallery.mode-grid-2 .royal-polaroid-img-wrap {
+  height: 235px;
+}
+
+.royal-polaroid-frame.is-vintage-animated:hover {
+  animation-play-state: paused;
+  transform: rotate(0deg) translateY(-6px) scale(1.035);
+  box-shadow:
+    0 22px 44px rgba(145, 48, 76, 0.22),
+    0 6px 18px rgba(207, 164, 57, 0.32);
+  z-index: 5;
+}
+
+.royal-polaroid-frame.is-chemical-developing .royal-polaroid-img-wrap img {
+  animation: vintageChemicalDevelop 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Fita Adesiva Translúcida Dourada Antiga no Topo da Polaroid */
+.polaroid-vintage-tape {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 76px;
+  height: 22px;
+  background: linear-gradient(
+    90deg,
+    rgba(247, 232, 190, 0.45) 0%,
+    rgba(245, 224, 166, 0.78) 50%,
+    rgba(247, 232, 190, 0.45) 100%
+  );
+  border-top: 1px solid rgba(207, 164, 57, 0.45);
+  border-bottom: 1px solid rgba(207, 164, 57, 0.45);
+  border-left: 2px dotted rgba(255, 255, 255, 0.8);
+  border-right: 2px dotted rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 6px rgba(60, 42, 46, 0.1);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.royal-polaroid-frame:nth-child(even) .polaroid-vintage-tape {
+  transform: translateX(-50%) rotate(2.5deg);
+}
+
+/* Foto Analógica com Filtro Quente Vintage & Vinheta */
+.royal-polaroid-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #f6e7ec;
+  margin-bottom: 11px;
+  border: 1px solid rgba(140, 103, 27, 0.22);
+}
+
+.royal-polaroid-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.11) contrast(1.04) saturate(1.05);
+  transition: transform 420ms ease, filter 420ms ease;
+}
+
+.royal-polaroid-frame:hover .royal-polaroid-img-wrap img {
+  transform: scale(1.05);
+  filter: sepia(0.03) contrast(1.06) saturate(1.08);
+}
+
+.polaroid-vintage-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 58%, rgba(62, 34, 18, 0.28) 100%),
+    linear-gradient(135deg, rgba(255, 236, 195, 0.14) 0%, transparent 50%, rgba(179, 71, 100, 0.1) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.polaroid-zoom-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 253, 248, 0.88);
+  border: 1px solid #cfa439;
+  color: var(--color-gold-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all 200ms ease;
+  z-index: 2;
+}
+
+.royal-polaroid-frame:hover .polaroid-zoom-badge {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Metadados de Categoria e Carimbo de Data Vintage ('26) */
+.polaroid-vintage-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.polaroid-vintage-cat-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-pink-dark);
+  background: rgba(249, 216, 227, 0.65);
+  border: 1px solid rgba(207, 164, 57, 0.35);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.polaroid-vintage-date-stamp {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #b8621b;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.royal-polaroid-caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: #2f1a20;
+  font-weight: 700;
+  line-height: 1.28;
+  text-align: center;
+}
+
+/* Lightbox Modal de Ampliação da Polaroid */
+.polaroid-lightbox-card {
+  position: relative;
+  width: min(92vw, 440px);
+  background: linear-gradient(180deg, #fffefb 0%, #fbf3e4 100%);
+  border: 2px solid #cfa439;
+  border-radius: 12px;
+  padding: 18px 18px 24px 18px;
+  box-shadow: 0 28px 70px rgba(32, 12, 18, 0.55);
+  text-align: center;
+}
+
+.polaroid-lightbox-img-wrap {
+  position: relative;
+  width: 100%;
+  max-height: 62vh;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(140, 103, 27, 0.3);
+  margin-bottom: 14px;
+  background: #fdf4f7;
+}
+
+.polaroid-lightbox-img-wrap img {
+  width: 100%;
+  height: auto;
+  max-height: 62vh;
+  object-fit: contain;
+  display: block;
+}
+
+.polaroid-lightbox-footer {
+  padding: 0 6px;
+}
+
+/* 20.3. Estrutura e Responsividade Mobile Dedicada para /ADMIN e Todo o Projeto */
+.admin-shell-card {
+  padding: 2.25rem 1.75rem;
+}
+
+.admin-header-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed rgba(212, 169, 89, 0.5);
+}
+
+.admin-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-header-crown {
+  width: 68px;
+  height: auto;
+  filter: drop-shadow(0 6px 14px rgba(201, 155, 59, 0.3));
+  flex-shrink: 0;
+}
+
+.admin-header-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--color-gold-deep);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.admin-header-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 3.5vw, 2.35rem);
+  color: var(--color-text);
+  margin: 0.15rem 0 0 0;
+  line-height: 1.15;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.admin-tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.admin-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0.7rem 1.15rem;
+}
+
+@media (max-width: 768px) {
+  .admin-shell-card {
+    padding: 1.5rem 1rem;
+    border-radius: 0;
+  }
+
+  .admin-header-bar {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 0.85rem;
+  }
+
+  .admin-header-brand {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .admin-header-crown {
+    width: 56px;
+  }
+
+  .admin-header-eyebrow {
+    justify-content: center;
+    font-size: 0.68rem;
+  }
+
+  .admin-header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .admin-action-btn {
+    justify-content: center;
+    padding: 0.55rem 0.65rem;
+    font-size: 0.74rem;
+  }
+
+  .admin-tabs-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+
+  .admin-tab-pill {
+    width: 100%;
+    padding: 0.68rem 0.55rem;
+    font-size: 0.73rem;
+    text-align: center;
+  }
+
+  .admin-kanban-board {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-kanban-column {
+    min-height: auto;
+    padding: 0.95rem;
+  }
+
+  .admin-draggable-card {
+    padding: 0.85rem;
+  }
+
+  .admin-draggable-row {
+    gap: 0.6rem;
+  }
+
+  .polaroid-album-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem;
+  }
+
+  .polaroid-category-filter-bar {
+    justify-content: center;
+  }
+
+  .polaroid-grid-mode-switcher {
+    align-self: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-date-ribbon {
+    padding: 0.65rem 1rem;
+    gap: 6px 10px;
+    font-size: 1.04rem;
+    border-radius: 20px;
+  }
+
+  .hero-date-dot {
+    display: none;
+  }
+
+  .hero-date-segment {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .polaroid-preview-gallery.mode-vintage .royal-polaroid-frame.is-vintage-animated {
+    width: min(100%, 260px);
+  }
+
+  .polaroid-preview-gallery.mode-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .polaroid-preview-gallery.mode-grid-3 .royal-polaroid-frame.is-vintage-animated {
+    padding: 8px 8px 12px 8px;
+  }
+
+  .polaroid-preview-gallery.mode-grid-3 .royal-polaroid-img-wrap {
+    height: 135px;
+  }
+}
+
+/* ============================================================================
+   21. ROLAGEM DINÂMICA & INTERATIVA, MAPA INTERATIVO REAL & PROGRESSO
+   ============================================================================ */
+
+/* 21.1. Barra de Ouro Líquido de Progresso de Rolagem no Topo */
+.royal-scroll-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(230, 204, 150, 0.28);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.royal-scroll-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37 0%, #f7d5de 45%, #e5c468 85%, #b58922 100%);
+  border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.75), 0 0 4px rgba(247, 213, 222, 0.9);
+  position: relative;
+  transition: width 90ms ease-out;
+  will-change: width;
+}
+
+.royal-scroll-progress-spark {
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px 3px rgba(255, 235, 170, 0.95), 0 0 14px rgba(212, 175, 55, 0.8);
+}
+
+/* 21.2. Pílula Flutuante Discreta do Capítulo Atual & Voltar ao Topo */
+.royal-reading-milestone-pill {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translate(-50%, -18px) scale(0.92);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 99;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.royal-reading-milestone-pill.is-active {
+  transform: translate(-50%, 0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.royal-milestone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0.38rem 0.95rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 252, 248, 0.94);
+  border: 1.5px solid rgba(207, 164, 57, 0.65);
+  box-shadow:
+    0 10px 24px rgba(179, 71, 100, 0.16),
+    0 2px 8px rgba(207, 164, 57, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--color-text);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 180ms ease;
+  user-select: none;
+}
+
+.royal-milestone-btn:hover {
+  background: #ffffff;
+  border-color: #b58922;
+  box-shadow:
+    0 14px 28px rgba(179, 71, 100, 0.22),
+    0 4px 12px rgba(207, 164, 57, 0.34);
+  transform: translateY(-2px);
+}
+
+.royal-milestone-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.royal-milestone-label {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+  color: #381b24;
+}
+
+.royal-milestone-percent {
+  font-family: var(--font-numeric);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-pink-dark);
+  background: rgba(247, 213, 222, 0.55);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(207, 164, 57, 0.35);
+}
+
+.royal-milestone-up {
+  color: var(--color-gold-deep);
+  transition: transform 180ms ease;
+}
+
+.royal-milestone-btn:hover .royal-milestone-up {
+  transform: translateY(-2px);
+}
+
+/* 21.3. Efeitos Dinâmicos de Rolagem (Sem Exageros, Fluidos & Nobres) */
+@keyframes subtleGoldGleam {
+  0% {
+    box-shadow:
+      0 18px 46px rgba(179, 71, 100, 0.12),
+      0 4px 14px rgba(207, 164, 57, 0.18),
+      inset 0 0 0 5px rgba(255, 255, 255, 0.78);
+  }
+  50% {
+    box-shadow:
+      0 22px 52px rgba(179, 71, 100, 0.2),
+      0 6px 20px rgba(207, 164, 57, 0.35),
+      inset 0 0 0 5px rgba(255, 255, 255, 0.95);
+  }
+  100% {
+    box-shadow:
+      0 18px 46px rgba(179, 71, 100, 0.12),
+      0 4px 14px rgba(207, 164, 57, 0.18),
+      inset 0 0 0 5px rgba(255, 255, 255, 0.78);
+  }
+}
+
+.reveal-on-scroll {
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  animation: subtleGoldGleam 2.8s ease-in-out;
+}
+
+/* Transição Fluida no Dock de Navegação */
+.royal-floating-dock .royal-dock-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.royal-dock-btn.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: #ffffff;
+  box-shadow: 0 0 6px #fff;
+}
+
+/* 21.4. Mapa Interativo Real (InteractiveRoyalMap) */
+.royal-interactive-map-container {
+  width: 100%;
+  margin-top: var(--space-md);
+  background: linear-gradient(155deg, #ffffff 0%, #fffbfd 45%, #faf0e4 100%);
+  border: 2px solid #cfa439;
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  box-shadow:
+    0 16px 40px rgba(179, 71, 100, 0.11),
+    0 3px 12px rgba(207, 164, 57, 0.18),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.85);
+  transition: all 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.royal-interactive-map-container.is-map-expanded {
+  margin-top: var(--space-lg);
+  box-shadow:
+    0 24px 60px rgba(145, 48, 76, 0.22),
+    0 6px 24px rgba(207, 164, 57, 0.3),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.95);
+}
+
+.royal-map-header-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px dashed rgba(207, 164, 57, 0.45);
+}
+
+.royal-map-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+@keyframes mapBeaconPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
+}
+
+.royal-map-pin-pulse {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37 0%, #b58922 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(181, 137, 34, 0.35);
+  animation: mapBeaconPulse 2.4s infinite;
+  flex-shrink: 0;
+}
+
+.royal-map-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-deep);
+  display: block;
+}
+
+.royal-map-venue-name {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.royal-map-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.royal-map-view-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(207, 164, 57, 0.5);
+  border-radius: var(--radius-full);
+  padding: 2px;
+  gap: 2px;
+  box-shadow: inset 0 1px 3px rgba(60, 42, 46, 0.05);
+}
+
+.royal-map-view-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.32rem 0.72rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.royal-map-view-pill.is-active {
+  background: var(--gradient-gold);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(207, 164, 57, 0.3);
+}
+
+.royal-map-expand-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(207, 164, 57, 0.5);
+  color: var(--color-gold-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.royal-map-expand-btn:hover {
+  background: #fff8e8;
+  border-color: #b58922;
+  transform: scale(1.06);
+}
+
+/* Moldura do Iframe do Mapa com Cantos Filigranados */
+.royal-map-frame-wrapper {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1.5px solid rgba(207, 164, 57, 0.55);
+  box-shadow:
+    inset 0 0 14px rgba(60, 42, 46, 0.08),
+    0 8px 22px rgba(179, 71, 100, 0.08);
+  transition: height 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  background: #fdf5f7;
+}
+
+.royal-interactive-map-container.is-map-expanded .royal-map-frame-wrapper {
+  height: 480px;
+}
+
+.royal-map-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.royal-map-floating-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.royal-map-floating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: rgba(43, 22, 28, 0.82);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+
+.royal-map-dot-beacon {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d4af37;
+  box-shadow: 0 0 6px #d4af37;
+}
+
+/* Seletor Dinâmico de Apps de Navegação (1 Toque) */
+.royal-map-apps-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1rem;
+  padding-top: 0.95rem;
+  border-top: 1px dashed rgba(207, 164, 57, 0.45);
+}
+
+@media (min-width: 600px) {
+  .royal-map-apps-row {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.royal-map-apps-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gold-deep);
+}
+
+.royal-map-apps-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.royal-app-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(207, 164, 57, 0.4);
+  background: #ffffff;
+  color: var(--color-text);
+  box-shadow: 0 2px 6px rgba(60, 42, 46, 0.06);
+  transition: all 160ms ease;
+  cursor: pointer;
+}
+
+.royal-app-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(207, 164, 57, 0.22);
+}
+
+.royal-app-pill.app-google:hover {
+  background: linear-gradient(135deg, #fff 0%, #ebf5fb 100%);
+  border-color: #4285f4;
+  color: #1a73e8;
+}
+
+.royal-app-pill.app-waze:hover {
+  background: linear-gradient(135deg, #fff 0%, #e8f8f9 100%);
+  border-color: #33ccff;
+  color: #0099cc;
+}
+
+.royal-app-pill.app-apple:hover {
+  background: linear-gradient(135deg, #fff 0%, #f4f4f4 100%);
+  border-color: #666;
+  color: #111;
+}
+
+.royal-app-pill.app-uber:hover {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+
+.royal-app-pill.app-copy:hover {
+  background: linear-gradient(135deg, #fff 0%, #fef8eb 100%);
+  border-color: #cfa439;
+  color: var(--color-gold-deep);
+}
+
+/* Dicas de Chegada e Estacionamento */
+.royal-map-tips-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+@media (min-width: 600px) {
+  .royal-map-tips-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.royal-map-tip-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(207, 164, 57, 0.35);
+  box-shadow: 0 2px 8px rgba(179, 71, 100, 0.04);
+}
+
+.royal-map-tip-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #fcedf3 0%, #fae6c6 100%);
+  border: 1px solid rgba(207, 164, 57, 0.45);
+  color: var(--color-gold-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.royal-map-tip-title {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.royal-map-tip-desc {
+  font-size: 0.69rem;
+  color: var(--color-text-soft);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Ajustes Mobile Finos (<= 640px) para Mapa Interativo e Pílula de Rolagem */
+@media (max-width: 640px) {
+  .royal-reading-milestone-pill {
+    top: 8px;
+  }
+
+  .royal-milestone-btn {
+    padding: 0.22rem 0.65rem;
+    gap: 5px;
+    font-size: 0.68rem;
+  }
+
+  .royal-milestone-label {
+    font-size: 0.78rem;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .royal-milestone-percent {
+    font-size: 0.62rem;
+    padding: 0 4px;
+  }
+
+  .royal-interactive-map-container {
+    padding: 0.85rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .royal-map-venue-name {
+    font-size: 1.08rem;
+  }
+
+  .royal-map-frame-wrapper {
+    height: 250px;
+  }
+
+  .royal-interactive-map-container.is-map-expanded .royal-map-frame-wrapper {
+    height: 380px;
+  }
+
+  .royal-map-apps-pills {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .royal-app-pill {
+    justify-content: center;
+    padding: 0.42rem 0.5rem;
+    font-size: 0.69rem;
+  }
+
+  .royal-app-pill.app-copy {
+    grid-column: span 2;
+  }
+
+  .royal-map-tips-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+/* Redução de movimento respeitada rigorosamente */
+@media (prefers-reduced-motion: reduce) {
+  .royal-scroll-progress-fill {
+    transition: none;
+  }
+  .royal-map-pin-pulse {
+    animation: none;
+  }
+  .reveal-on-scroll.is-visible {
+    animation: none;
+  }
+}
+
+
+
+
+
