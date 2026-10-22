@@ -90,16 +90,31 @@ function getHeaders(token: string) {
   };
 }
 
-export async function adminLogin(passcode: string): Promise<{ success: boolean; token?: string; message?: string }> {
+export async function adminLogin(
+  credentials: { email?: string; password?: string; passcode?: string } | string
+): Promise<{ success: boolean; token?: string; message?: string }> {
   try {
+    const payload = typeof credentials === "string" ? { passcode: credentials } : credentials;
     const res = await fetch("/api/admin/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ passcode }),
+      body: JSON.stringify(payload),
     });
     return await res.json();
   } catch {
     return { success: false, message: "Erro de conexão com o servidor." };
+  }
+}
+
+export async function approveAdminMedia(token: string, id: string): Promise<boolean> {
+  try {
+    const res = await fetch(`/api/admin/media/${id}/approve`, {
+      method: "POST",
+      headers: getHeaders(token),
+    });
+    return res.ok;
+  } catch {
+    return false;
   }
 }
 

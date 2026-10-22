@@ -1,6 +1,7 @@
 import type { Env } from "../types/env";
 import { corsHeaders } from "../middleware/cors";
 import { isAuthorizedAdmin, unauthorizedResponse, getAdminPasscode } from "../middleware/auth";
+import { verifyParentCredentials, createSignedAdminToken } from "../middleware/crypto";
 import { InvitationService } from "../services/invitationService";
 import { RsvpService } from "../services/rsvpService";
 import { EventRepository } from "../repositories/eventRepository";
@@ -10,17 +11,41 @@ export async function handleAdminRoutes(
   env: Env,
   url: URL
 ): Promise<Response> {
-  // 1. POST /api/admin/auth/login
+  // 1. POST /api/admin/auth/login (Autenticação Segura com E-mail e Senha Criptografada)
   if (url.pathname === "/api/admin/auth/login" && request.method === "POST") {
     try {
-      const body = (await request.json()) as { passcode?: string };
-      const expected = getAdminPasscode(env);
+      const body = (await request.json()) as { email?: string; password?: string; passcode?: string };
 
-      if (body.passcode && body.passcode === expected) {
+      // Autenticação Principal dos Papais da Maytê: rickmateus2021@gmail.com / @Durafa10
+      if (body.email && body.password) {
+        const isValid = await verifyParentCredentials(body.email, body.password);
+        if (isValid) {
+          const signedToken = await createSignedAdminToken(body.email);
+          return new Response(
+            JSON.stringify({
+              success: true,
+              token: signedToken,
+              user: { email: body.email.trim().toLowerCase(), role: "PARENT_ADMIN" },
+              message: "Autenticação realizada com sucesso.",
+            }),
+            { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders() } }
+          );
+        }
+
+        return new Response(
+          JSON.stringify({ error: "Unauthorized", message: "E-mail ou senha incorretos." }),
+          { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders() } }
+        );
+      }
+
+      // Fallback legado com passcode
+      const expected = getAdminPasscode(env);
+      if (body.passcode && (body.passcode === expected || body.passcode === "@Durafa10")) {
+        const signedToken = await createSignedAdminToken("rickmateus2021@gmail.com");
         return new Response(
           JSON.stringify({
             success: true,
-            token: expected,
+            token: signedToken,
             message: "Autenticação realizada com sucesso.",
           }),
           { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders() } }
@@ -28,7 +53,7 @@ export async function handleAdminRoutes(
       }
 
       return new Response(
-        JSON.stringify({ error: "Unauthorized", message: "Senha incorreta." }),
+        JSON.stringify({ error: "Unauthorized", message: "E-mail ou senha incorretos." }),
         { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders() } }
       );
     } catch {
@@ -40,7 +65,7 @@ export async function handleAdminRoutes(
   }
 
   // All other /api/admin/* routes require authorization
-  if (!isAuthorizedAdmin(request, env)) {
+  if (!(await isAuthorizedAdmin(request, env))) {
     return unauthorizedResponse();
   }
 

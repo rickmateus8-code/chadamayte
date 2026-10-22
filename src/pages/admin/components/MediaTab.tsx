@@ -10,8 +10,14 @@ import {
   Columns,
   GripVertical,
   Tag,
+  CheckCircle,
+  Clock,
 } from "lucide-react";
-import { deleteAdminMedia, type AdminMedia } from "../../../lib/adminApi";
+import {
+  deleteAdminMedia,
+  approveAdminMedia,
+  type AdminMedia,
+} from "../../../lib/adminApi";
 import {
   POLAROID_CATEGORIES,
   SEED_VINTAGE_POLAROIDS,
@@ -29,6 +35,11 @@ interface MediaTabProps {
 }
 
 type AdminAlbumGridMode = "vintage" | "grid-3" | "grid-2";
+type ModerationFilter = "all" | "pending" | "approved";
+
+interface AdminPolaroidItem extends VintagePolaroidItem {
+  status?: "AVAILABLE" | "PENDING" | "DELETED";
+}
 
 export const MediaTab: React.FC<MediaTabProps> = ({
   token,
@@ -39,14 +50,16 @@ export const MediaTab: React.FC<MediaTabProps> = ({
   const [uploadCategory, setUploadCategory] =
     useState<Exclude<PolaroidCategoryKey, "all">>("cha");
   const [activeCategory, setActiveCategory] = useState<PolaroidCategoryKey>("all");
+  const [moderationFilter, setModerationFilter] = useState<ModerationFilter>("all");
   const [gridMode, setGridMode] = useState<AdminAlbumGridMode>("vintage");
   const [uploading, setUploading] = useState(false);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
-  const [items, setItems] = useState<VintagePolaroidItem[]>([]);
+  const [items, setItems] = useState<AdminPolaroidItem[]>([]);
+  const [approvingId, setApprovingId] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const r2Items: VintagePolaroidItem[] = mediaList.map((m, idx) => {
+    const r2Items: AdminPolaroidItem[] = mediaList.map((m, idx) => {
       const parsed = parsePolaroidCaption(m.original_filename);
       const angles = [-2.1, 1.9, -1.6, 2.2];
       return {
@@ -59,9 +72,16 @@ export const MediaTab: React.FC<MediaTabProps> = ({
           .replace(/\//g, " • "),
         rotationDeg: angles[idx % angles.length] ?? 1.5,
         isSeed: false,
+        status: (m.status as "AVAILABLE" | "PENDING" | "DELETED") || "AVAILABLE",
       };
     });
-    setItems([...r2Items, ...SEED_VINTAGE_POLAROIDS]);
+
+    const seedsWithStatus: AdminPolaroidItem[] = SEED_VINTAGE_POLAROIDS.map((s) => ({
+      ...s,
+      status: "AVAILABLE",
+    }));
+
+    setItems([...r2Items, ...seedsWithStatus]);
   }, [mediaList]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,12 +109,23 @@ export const MediaTab: React.FC<MediaTabProps> = ({
     }
   };
 
+  const handleApprove = async (id: string) => {
+    setApprovingId(id);
+    const ok = await approveAdminMedia(token, id);
+    setApprovingId(null);
+    if (ok) {
+      onRefresh();
+    } else {
+      alert("Não foi possível aprovar a foto.");
+    }
+  };
+
   const handleDelete = async (id: string, isSeed?: boolean) => {
     if (isSeed) {
       setItems((prev) => prev.filter((item) => item.id !== id));
       return;
     }
-    if (!confirm("Deseja remover esta foto da galeria pública da Maytê?")) return;
+    if (!confirm("Deseja remover esta foto do acervo da Maytê?")) return;
     const ok = await deleteAdminMedia(token, id);
     if (ok) onRefresh();
   };
@@ -110,10 +141,20 @@ export const MediaTab: React.FC<MediaTabProps> = ({
     });
   };
 
-  const filtered =
-    activeCategory === "all"
-      ? items
-      : items.filter((it) => it.category === activeCategory);
+  // Filter items by category AND moderation status
+  const filtered = items.filter((it) => {
+    const matchCategory =
+      activeCategory === "all" || it.category === activeCategory;
+    const matchModeration =
+      moderationFilter === "all"
+        ? true
+        : moderationFilter === "pending"
+        ? it.status === "PENDING"
+        : it.status === "AVAILABLE";
+    return matchCategory && matchModeration;
+  });
+
+  const pendingCount = items.filter((it) => it.status === "PENDING").length;
 
   const getCategoryLabel = (catKey: Exclude<PolaroidCategoryKey, "all">) => {
     return (
@@ -136,7 +177,7 @@ export const MediaTab: React.FC<MediaTabProps> = ({
 
         <div style={{ marginBottom: "1rem" }}>
           <span className="section-eyebrow" style={{ marginBottom: "4px" }}>
-            <Camera size={13} /> Acervo Cloudflare R2 • Polaroids Vintage
+            <Camera size={13} /> Acervo Cloudflare R2 • Moderação dos Papais
           </span>
           <h2
             style={{
@@ -146,7 +187,7 @@ export const MediaTab: React.FC<MediaTabProps> = ({
               margin: 0,
             }}
           >
-            Baú de Fotos & Polaroids Reais ({items.length})
+            Baú de Fotos & Moderação Real ({items.length})
           </h2>
           <p
             style={{
@@ -155,18 +196,60 @@ export const MediaTab: React.FC<MediaTabProps> = ({
               margin: "4px 0 0 0",
             }}
           >
-            Organize por <strong>Categoria</strong> e <strong>Modo de Grade</strong>, arraste para ordenar as Polaroids ou adicione novas fotos oficiais.
+            Todas as fotos enviadas pelos convidados passam pela sua aprovação antes de serem exibidas no mural do convite.
           </p>
         </div>
 
-        {/* Seletor de Categoria para Nova Foto */}
+        {/* Barra de Filtro de Moderação */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.5rem",
+            marginBottom: "1.25rem",
+            padding: "0.75rem",
+            background: "rgba(255, 255, 255, 0.75)",
+            borderRadius: "var(--radius-md)",
+            border: "1px solid rgba(212, 169, 89, 0.3)",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setModerationFilter("all")}
+            className={`boutique-filter-pill ${moderationFilter === "all" ? "is-active" : ""}`}
+          >
+            <span>Todas as Fotos ({items.length})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setModerationFilter("pending")}
+            className={`boutique-filter-pill ${moderationFilter === "pending" ? "is-active" : ""}`}
+            style={{
+              background: moderationFilter === "pending" ? "#e67e22" : undefined,
+              borderColor: pendingCount > 0 ? "#e67e22" : undefined,
+            }}
+          >
+            <Clock size={13} />
+            <span>Aguardando Aprovação ({pendingCount})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setModerationFilter("approved")}
+            className={`boutique-filter-pill ${moderationFilter === "approved" ? "is-active" : ""}`}
+          >
+            <CheckCircle size={13} />
+            <span>Aprovadas no Mural ({items.length - pendingCount})</span>
+          </button>
+        </div>
+
+        {/* Seletor de Categoria para Nova Foto Oficial */}
         <div style={{ marginBottom: "1rem" }}>
           <span
             className="rsvp-field-label"
             style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}
           >
             <Tag size={13} color="var(--color-gold-deep)" />
-            Categoria da Nova Polaroid:
+            Categoria da Nova Polaroid Oficial dos Papais:
           </span>
           <div className="polaroid-category-selector-pills" style={{ justifyContent: "flex-start" }}>
             {POLAROID_CATEGORIES.filter((c) => c.key !== "all").map((cat) => {
@@ -224,7 +307,7 @@ export const MediaTab: React.FC<MediaTabProps> = ({
           >
             <ImagePlus size={16} />
             <span>
-              {uploading ? "Revelando no R2..." : "Revelar Nova Polaroid"}
+              {uploading ? "Revelando no R2..." : "Revelar Foto Oficial"}
             </span>
           </button>
         </div>
@@ -281,93 +364,149 @@ export const MediaTab: React.FC<MediaTabProps> = ({
         </div>
       </div>
 
-      {/* Galeria Arrastável de Polaroids Vintage */}
+      {/* Galeria de Polaroids com Moderação */}
       <div className={`polaroid-preview-gallery mode-${gridMode}`}>
-        {filtered.map((m, idx) => (
-          <figure
-            key={m.id}
-            draggable
-            onDragStart={() => setDragIdx(idx)}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={() => {
-              if (dragIdx !== null) {
-                reorderItems(dragIdx, idx);
-                setDragIdx(null);
-              }
-            }}
-            className="royal-polaroid-frame is-vintage-animated"
-            style={
-              {
-                "--polaroid-tilt":
-                  gridMode === "vintage" ? `${m.rotationDeg}deg` : "0deg",
-                "--polaroid-delay": `${(idx % 5) * 0.4}s`,
-                margin: 0,
-              } as React.CSSProperties
-            }
-          >
-            <div className="polaroid-vintage-tape" aria-hidden="true" />
-
-            <div className="royal-polaroid-img-wrap">
-              <img src={m.url} alt={m.caption} loading="lazy" />
-              <div className="polaroid-vintage-vignette" aria-hidden="true" />
-            </div>
-
-            <div className="polaroid-vintage-meta">
-              <span className="polaroid-vintage-cat-tag">
-                {getCategoryLabel(m.category)}
-              </span>
-              <span className="polaroid-vintage-date-stamp">{m.dateStamp}</span>
-            </div>
-
-            <figcaption className="royal-polaroid-caption">
-              “{m.caption}”
-            </figcaption>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: "0.4rem",
-                marginTop: "0.55rem",
-                paddingTop: "0.45rem",
-                borderTop: "1px dashed rgba(212, 169, 89, 0.35)",
+        {filtered.map((m, idx) => {
+          const isPending = m.status === "PENDING";
+          return (
+            <figure
+              key={m.id}
+              draggable
+              onDragStart={() => setDragIdx(idx)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => {
+                if (dragIdx !== null) {
+                  reorderItems(dragIdx, idx);
+                  setDragIdx(null);
+                }
               }}
+              className="royal-polaroid-frame is-vintage-animated"
+              style={
+                {
+                  "--polaroid-tilt":
+                    gridMode === "vintage" ? `${m.rotationDeg}deg` : "0deg",
+                  "--polaroid-delay": `${(idx % 5) * 0.4}s`,
+                  margin: 0,
+                  border: isPending ? "2px solid #e67e22" : undefined,
+                } as React.CSSProperties
+              }
             >
-              <span
-                className="drag-handle"
-                style={{ width: "28px", height: "28px" }}
-                title="Arraste para reordenar Polaroid"
-              >
-                <GripVertical size={14} />
-              </span>
+              <div className="polaroid-vintage-tape" aria-hidden="true" />
 
-              <div style={{ display: "flex", gap: "0.4rem" }}>
-                <a
-                  href={m.url}
-                  download={`polaroid-mayte-${m.id}.png`}
-                  className="btn-mini-luxury"
+              {/* Badge de Moderação */}
+              {isPending && (
+                <div
                   style={{
-                    fontSize: "0.7rem",
-                    padding: "0.28rem 0.6rem",
-                    textDecoration: "none",
+                    position: "absolute",
+                    top: "12px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 4,
+                    background: "#e67e22",
+                    color: "#fff",
+                    fontSize: "0.65rem",
+                    fontWeight: 700,
+                    padding: "2px 8px",
+                    borderRadius: "10px",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    whiteSpace: "nowrap",
                   }}
                 >
-                  <Download size={12} /> Baixar
-                </a>
-                <button
-                  type="button"
-                  onClick={() => handleDelete(m.id, m.isSeed)}
-                  className="btn-remove-companion"
-                  style={{ width: "28px", height: "28px" }}
-                  title="Remover Polaroid"
-                >
-                  <Trash2 size={13} />
-                </button>
+                  ⏳ Pendente de Aprovação
+                </div>
+              )}
+
+              <div className="royal-polaroid-img-wrap">
+                <img src={m.url} alt={m.caption} loading="lazy" />
+                <div className="polaroid-vintage-vignette" aria-hidden="true" />
               </div>
-            </div>
-          </figure>
-        ))}
+
+              <div className="polaroid-vintage-meta">
+                <span className="polaroid-vintage-cat-tag">
+                  {getCategoryLabel(m.category)}
+                </span>
+                <span className="polaroid-vintage-date-stamp">{m.dateStamp}</span>
+              </div>
+
+              <figcaption className="royal-polaroid-caption">
+                “{m.caption}”
+              </figcaption>
+
+              {/* Ações de Moderação */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.4rem",
+                  marginTop: "0.55rem",
+                  paddingTop: "0.45rem",
+                  borderTop: "1px dashed rgba(212, 169, 89, 0.35)",
+                }}
+              >
+                {isPending && (
+                  <button
+                    type="button"
+                    onClick={() => handleApprove(m.id)}
+                    disabled={approvingId === m.id}
+                    className="btn-floral-gold"
+                    style={{
+                      width: "100%",
+                      padding: "0.38rem 0.5rem",
+                      fontSize: "0.74rem",
+                      background: "linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)",
+                      color: "#fff",
+                      border: "none",
+                    }}
+                  >
+                    <CheckCircle size={13} />
+                    <span>{approvingId === m.id ? "Aprovando..." : "Aprovar Foto ✓"}</span>
+                  </button>
+                )}
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                  }}
+                >
+                  <span
+                    className="drag-handle"
+                    style={{ width: "28px", height: "28px" }}
+                    title="Arraste para reordenar Polaroid"
+                  >
+                    <GripVertical size={14} />
+                  </span>
+
+                  <div style={{ display: "flex", gap: "0.4rem" }}>
+                    <a
+                      href={m.url}
+                      download={`polaroid-mayte-${m.id}.png`}
+                      className="btn-mini-luxury"
+                      style={{
+                        fontSize: "0.7rem",
+                        padding: "0.28rem 0.6rem",
+                        textDecoration: "none",
+                      }}
+                    >
+                      <Download size={12} /> Baixar
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(m.id, m.isSeed)}
+                      className="btn-remove-companion"
+                      style={{ width: "28px", height: "28px" }}
+                      title="Remover Polaroid"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </figure>
+          );
+        })}
       </div>
     </div>
   );

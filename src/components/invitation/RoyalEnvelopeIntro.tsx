@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Sparkles, Heart, Volume2 } from "lucide-react";
+import { Sparkles, Heart, Volume2, Sparkle } from "lucide-react";
 import { useEventContext } from "../../context/EventContext";
 import { GoldenParticlesCanvas } from "./GoldenParticlesCanvas";
 import { RoyalCornerFiligree, RoyalCrestOrnament, RoyalNumericText } from "../brand/RoyalOrnaments";
@@ -8,10 +8,15 @@ export const RoyalEnvelopeIntro: React.FC = () => {
   const { invitationData, eventSettings, openEnvelope } = useEventContext();
   const [unsealingStage, setUnsealingStage] = useState<0 | 1 | 2>(0);
   const [tilt, setTilt] = useState<{ rx: number; ry: number }>({ rx: 0, ry: 0 });
+  const [glare, setGlare] = useState<{ x: number; y: number; opacity: number }>({
+    x: 50,
+    y: 50,
+    opacity: 0,
+  });
   const envelopeRef = useRef<HTMLDivElement | null>(null);
   const isInteractingRef = useRef(false);
 
-  // Subtle living 3D motion on mobile & idle desktop
+  // Dynamic living 3D motion on mobile & idle desktop
   useEffect(() => {
     const prefersReducedMotion =
       typeof window !== "undefined" &&
@@ -25,8 +30,13 @@ export const RoyalEnvelopeIntro: React.FC = () => {
       if (!isInteractingRef.current && unsealingStage === 0) {
         const t = (now - start) / 1000;
         setTilt({
-          rx: Math.sin(t * 1.1) * 2.8,
-          ry: Math.cos(t * 0.85) * 3.4,
+          rx: Math.sin(t * 1.1) * 3.2,
+          ry: Math.cos(t * 0.85) * 4.0,
+        });
+        setGlare({
+          x: 50 + Math.cos(t * 0.9) * 25,
+          y: 45 + Math.sin(t * 1.1) * 20,
+          opacity: 0.18 + Math.sin(t * 1.5) * 0.08,
         });
       }
       frameId = requestAnimationFrame(loop);
@@ -44,10 +54,15 @@ export const RoyalEnvelopeIntro: React.FC = () => {
     const cy = rect.top + rect.height / 2;
     const dx = (clientX - cx) / (rect.width / 2);
     const dy = (clientY - cy) / (rect.height / 2);
+
     setTilt({
-      rx: Math.max(-9, Math.min(9, -dy * 6.5)),
-      ry: Math.max(-9, Math.min(9, dx * 6.5)),
+      rx: Math.max(-11, Math.min(11, -dy * 8.5)),
+      ry: Math.max(-11, Math.min(11, dx * 8.5)),
     });
+
+    const px = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+    const py = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+    setGlare({ x: px, y: py, opacity: 0.35 });
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -56,6 +71,7 @@ export const RoyalEnvelopeIntro: React.FC = () => {
 
   const handleMouseLeave = () => {
     isInteractingRef.current = false;
+    setGlare((prev) => ({ ...prev, opacity: 0.15 }));
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -68,7 +84,7 @@ export const RoyalEnvelopeIntro: React.FC = () => {
   const handleTouchEnd = () => {
     window.setTimeout(() => {
       isInteractingRef.current = false;
-    }, 500);
+    }, 600);
   };
 
   const handleOpen = (withMusic: boolean) => {
@@ -90,12 +106,12 @@ export const RoyalEnvelopeIntro: React.FC = () => {
       return;
     }
 
-    // Stage 2: Card rises from pocket
+    // Stage 2: Card rises dynamically from the envelope pocket
     window.setTimeout(() => {
       setUnsealingStage(2);
-    }, 380);
+    }, 420);
 
-    // Final stage: Transition to full invitation
+    // Final stage: Smooth transition to the opened invitation stationery
     window.setTimeout(() => {
       openEnvelope();
       window.setTimeout(() => {
@@ -104,7 +120,7 @@ export const RoyalEnvelopeIntro: React.FC = () => {
           heading.focus({ preventScroll: true });
         }
       }, 60);
-    }, 1250);
+    }, 1280);
   };
 
   const recipientTitle = invitationData?.invitation?.displayName
@@ -120,11 +136,12 @@ export const RoyalEnvelopeIntro: React.FC = () => {
       className={`royal-envelope-stage ${unsealingStage > 0 ? "is-unsealing" : ""}`}
       role="region"
       aria-label="Abertura do Convite Real da Maytê"
+      style={{ perspective: "1400px" }}
     >
-      <GoldenParticlesCanvas count={52} />
+      <GoldenParticlesCanvas count={64} />
 
       <div className="royal-envelope-wrapper">
-        {/* Cabeçalho Sutil Acima do Envelope */}
+        {/* Cabeçalho Nobre Acima do Envelope */}
         <div className="royal-envelope-preheader">
           <RoyalCrestOrnament width={190} />
           <span className="royal-envelope-eyebrow">
@@ -147,13 +164,38 @@ export const RoyalEnvelopeIntro: React.FC = () => {
               unsealingStage === 0
                 ? `perspective(1200px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`
                 : undefined,
+            transition: isInteractingRef.current ? "transform 0.1s ease-out" : "transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)",
           }}
         >
+          {/* Reflexo de Luz Especular Dourada Dinâmica */}
+          <div
+            className="royal-envelope-glare"
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              borderRadius: "inherit",
+              zIndex: 10,
+              background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255, 235, 175, ${glare.opacity}) 0%, transparent 60%)`,
+              transition: "opacity 0.25s ease",
+            }}
+            aria-hidden="true"
+          />
+
           {/* Interior em Veludo Rosa & Ouro */}
           <div className="royal-envelope-velvet-lining" aria-hidden="true" />
 
-          {/* Aba Superior Triangular 3D */}
-          <div className="royal-envelope-flap" aria-hidden="true">
+          {/* Aba Superior Triangular 3D com Dobra Real */}
+          <div
+            className="royal-envelope-flap"
+            aria-hidden="true"
+            style={{
+              transformOrigin: "top center",
+              transition: "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.3s ease",
+              transform: unsealingStage >= 1 ? "rotateX(-180deg)" : "rotateX(0deg)",
+              zIndex: unsealingStage >= 1 ? 1 : 5,
+            }}
+          >
             <div className="royal-envelope-flap-trim" />
           </div>
 
@@ -183,12 +225,29 @@ export const RoyalEnvelopeIntro: React.FC = () => {
                 “{recipientSalutation}”
               </p>
 
-              <div className="royal-envelope-date-pill">
-                <Sparkles size={12} />
+              {/* Data Nobre com Tipografia Fluida (Sem Moldura Branca) */}
+              <div
+                className="royal-envelope-date-pill"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  boxShadow: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px",
+                  color: "#2e151d",
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "0.95rem",
+                  fontWeight: 700,
+                  marginTop: "0.35rem",
+                }}
+              >
+                <Sparkle size={13} color="var(--color-gold-deep)" />
                 <span>
                   <RoyalNumericText text={`${eventSettings.dateFormatted} • ${eventSettings.timeFormatted}`} />
                 </span>
-                <Sparkles size={12} />
+                <Sparkle size={13} color="var(--color-gold-deep)" />
               </div>
             </div>
           </div>
@@ -205,6 +264,11 @@ export const RoyalEnvelopeIntro: React.FC = () => {
               onClick={() => handleOpen(true)}
               className={`royal-wax-seal-btn ${unsealingStage >= 1 ? "is-broken" : ""}`}
               aria-label="Tocar no lacre real dourado para abrir o convite da Maytê"
+              style={{
+                cursor: "pointer",
+                filter: "drop-shadow(0 6px 16px rgba(184, 134, 11, 0.45))",
+                transition: "transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)",
+              }}
             >
               <span className="royal-wax-seal-glow-ring" aria-hidden="true" />
               <span className="royal-wax-seal-ring">

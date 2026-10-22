@@ -79,6 +79,9 @@ export interface MayteBirthInfo {
 export interface PortalDynamicConfig {
   lifecycleStage: PortalLifecycleStage;
   pixEnabled: boolean;
+  capsuleReleaseMode: "SCHEDULED_DATE" | "MANUAL_OPEN" | "LOCKED";
+  capsuleReleaseDateIso: string;
+  capsuleReleaseNotice: string;
   giftCategories: GiftCategory[];
   rsvpDeadlineFormatted: string;
   expectedBirthDate: string;
@@ -241,6 +244,10 @@ export const defaultPortalSections: DraggablePortalSection[] = [
 export const defaultPortalDynamicConfig: PortalDynamicConfig = {
   lifecycleStage: "BABY_SHOWER",
   pixEnabled: true,
+  capsuleReleaseMode: "SCHEDULED_DATE",
+  capsuleReleaseDateIso: "2026-11-22T00:00:00",
+  capsuleReleaseNotice:
+    "O mural de recados e o envio de Polaroids para a Cápsula do Tempo serão abertos no dia do Chá de Fraldas da Maytê (22 de Novembro de 2026) ✨",
   giftCategories: defaultGiftCategories,
   rsvpDeadlineFormatted: "Confirmar até 15 de Novembro de 2026",
   expectedBirthDate: "2027-01-15T09:00:00",
@@ -347,6 +354,12 @@ export function mergePortalDynamicConfig(
   return {
     lifecycleStage: raw.lifecycleStage || defaultPortalDynamicConfig.lifecycleStage,
     pixEnabled: typeof raw.pixEnabled === "boolean" ? raw.pixEnabled : true,
+    capsuleReleaseMode:
+      raw.capsuleReleaseMode || defaultPortalDynamicConfig.capsuleReleaseMode,
+    capsuleReleaseDateIso:
+      raw.capsuleReleaseDateIso || defaultPortalDynamicConfig.capsuleReleaseDateIso,
+    capsuleReleaseNotice:
+      raw.capsuleReleaseNotice || defaultPortalDynamicConfig.capsuleReleaseNotice,
     giftCategories:
       Array.isArray(raw.giftCategories) && raw.giftCategories.length > 0
         ? raw.giftCategories

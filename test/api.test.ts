@@ -124,19 +124,30 @@ describe("Worker HTTP API Routes", () => {
     expect(res.status).toBe(401);
   });
 
-  it("authenticates admin via POST /api/admin/auth/login", async () => {
-    const req = new Request("http://localhost/api/admin/auth/login", {
+  it("authenticates admin via POST /api/admin/auth/login with encrypted credentials", async () => {
+    // 1. Login com Email e Senha Criptografada dos Papais
+    const reqParents = new Request("http://localhost/api/admin/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ passcode: "mayte2026" }),
+      body: JSON.stringify({ email: "rickmateus2021@gmail.com", password: "@Durafa10" }),
     });
 
-    const res = await handleApiRequest(req, env);
-    expect(res.status).toBe(200);
+    const resParents = await handleApiRequest(reqParents, env);
+    expect(resParents.status).toBe(200);
 
-    const data = await res.json() as { success: boolean; token: string };
-    expect(data.success).toBe(true);
-    expect(data.token).toBe("mayte2026");
+    const dataParents = await resParents.json() as { success: boolean; token: string; user?: { email: string } };
+    expect(dataParents.success).toBe(true);
+    expect(dataParents.token).toContain("mayte_sec_");
+    expect(dataParents.user?.email).toBe("rickmateus2021@gmail.com");
+
+    // 2. Rejeição de senha incorreta
+    const reqWrong = new Request("http://localhost/api/admin/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: "rickmateus2021@gmail.com", password: "wrong-password" }),
+    });
+    const resWrong = await handleApiRequest(reqWrong, env);
+    expect(resWrong.status).toBe(401);
   });
 
   it("fetches admin overview and lists invitations when authorized", async () => {

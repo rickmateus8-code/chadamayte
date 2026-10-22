@@ -305,7 +305,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
           { id: "boutique", label: `Boutique de Mimos & Categorias (${config.giftItems.length})`, icon: Gift },
           { id: "questions", label: `Perguntas do RSVP (${config.customQuestions.length})`, icon: HelpCircle },
           { id: "rsvpMimos", label: `Mimos Rápidos RSVP (${config.rsvpQuickMimos.length})`, icon: Sparkles },
-          { id: "inspirations", label: `Frases Cápsula (${config.inspirationQuotes.length})`, icon: MessageSquareHeart },
+          { id: "inspirations", label: `Cápsula do Tempo & Liberação (${config.inspirationQuotes.length})`, icon: MessageSquareHeart },
           { id: "crown", label: `Bênçãos da Coroa (${config.crownBlessings.length})`, icon: Crown },
         ].map((tab) => {
           const Icon = tab.icon;

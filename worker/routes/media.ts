@@ -56,7 +56,7 @@ export async function handleMediaRoutes(
           file.type || "image/jpeg",
           file.size || 1,
           "GUEST_PHOTO",
-          "AVAILABLE",
+          "PENDING",
           new Date().toISOString(),
           new Date().toISOString()
         )
@@ -69,7 +69,7 @@ export async function handleMediaRoutes(
           id: mediaId,
           key: r2Key,
           url: `/api/media/file/${mediaId}`,
-          message: "Foto recebida com muito carinho pelos papais!",
+          message: "Foto recebida com muito carinho! Ela aparecerá no mural assim que for aprovada pelos papais da Maytê. ✨",
         }),
         { status: 201, headers: { "Content-Type": "application/json", ...corsHeaders() } }
       );
