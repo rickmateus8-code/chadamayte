@@ -30,7 +30,11 @@ import { useEventContext } from "../../context/EventContext";
 
 type AlbumGridMode = "vintage" | "grid-3" | "grid-2";
 
-export const MemoriesSection: React.FC = () => {
+export interface MemoriesSectionProps {
+  variant?: "all" | "memories" | "capsule";
+}
+
+export const MemoriesSection: React.FC<MemoriesSectionProps> = ({ variant = "all" }) => {
   const { memories } = invitationContent.sections;
   const { guestbook, addGuestbookMessage, eventSettings, publicPhotos, refreshEventInfo } =
     useEventContext();
@@ -162,344 +166,354 @@ export const MemoriesSection: React.FC = () => {
     );
   };
 
+  const showPolaroids = variant === "all" || variant === "memories";
+  const showCapsule = variant === "all" || variant === "capsule";
+
   return (
     <section
-      id="memories-section"
+      id={variant === "capsule" ? "capsule-section" : "memories-section"}
       className="invitation-section reveal-on-scroll"
-      aria-label="Fotos e Cápsula do Tempo"
+      aria-label={variant === "capsule" ? "Cápsula do Tempo" : "Fotos e Recordações"}
     >
       <div className="invitation-container">
-        <div style={{ textAlign: "center", marginBottom: "var(--space-lg)" }}>
-          <RoyalCrestOrnament width={190} />
-          <span className="section-eyebrow">Memórias & Eternidade</span>
-          <h2 className="section-title">{memories.title}</h2>
-          <p className="section-subtitle">{memories.description}</p>
-        </div>
+        {/* Cabeçalho da Seção */}
+        {showPolaroids && (
+          <div style={{ textAlign: "center", marginBottom: "var(--space-lg)" }}>
+            <RoyalCrestOrnament width={190} />
+            <span className="section-eyebrow">Memórias & Eternidade</span>
+            <h2 className="section-title">{memories.title}</h2>
+            <p className="section-subtitle">{memories.description}</p>
+          </div>
+        )}
 
         {/* 1. Estúdio Polaroid Vintage (Dropzone + Seletor de Categoria + Galeria por Grade) */}
-        <div className="memories-interactive-card" style={{ position: "relative" }}>
-          <RoyalCornerFiligree position="tl" size={48} />
-          <RoyalCornerFiligree position="tr" size={48} />
-          <RoyalCornerFiligree position="bl" size={48} />
-          <RoyalCornerFiligree position="br" size={48} />
+        {showPolaroids && (
+          <div className="memories-interactive-card" style={{ position: "relative" }}>
+            <RoyalCornerFiligree position="tl" size={48} />
+            <RoyalCornerFiligree position="tr" size={48} />
+            <RoyalCornerFiligree position="bl" size={48} />
+            <RoyalCornerFiligree position="br" size={48} />
 
-          <div className="memories-camera-badge">
-            <Camera size={32} color="var(--color-gold-deep)" />
-          </div>
+            <div className="memories-camera-badge">
+              <Camera size={32} color="var(--color-gold-deep)" />
+            </div>
 
-          <h3 className="memories-headline">{memories.headline}</h3>
+            <h3 className="memories-headline">{memories.headline}</h3>
 
-          <p className="memories-privacy">{memories.privacyNote}</p>
+            <p className="memories-privacy">{memories.privacyNote}</p>
 
-          {/* Moldura Dropzone Polaroid Interativa com Categoria */}
-          <div
-            onDragOver={(e) => {
-              e.preventDefault();
-              setIsDragging(true);
-            }}
-            onDragLeave={() => setIsDragging(false)}
-            onDrop={handleDrop}
-            className={`royal-polaroid-dropzone ${isDragging ? "is-dragging" : ""}`}
-          >
-            {/* Passo 1: Categoria da Polaroid */}
-            <div style={{ marginBottom: "0.95rem" }}>
-              <span
-                className="rsvp-field-label"
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
-                  marginBottom: "8px",
-                }}
-              >
-                <Tag size={13} color="var(--color-gold-deep)" />
-                1. Escolha o Álbum / Categoria da sua Polaroid:
-              </span>
+            {/* Moldura Dropzone Polaroid Interativa com Categoria */}
+            <div
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={handleDrop}
+              className={`royal-polaroid-dropzone ${isDragging ? "is-dragging" : ""}`}
+            >
+              {/* Passo 1: Categoria da Polaroid */}
+              <div style={{ marginBottom: "0.95rem" }}>
+                <span
+                  className="rsvp-field-label"
+                  style={{
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "6px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <Tag size={13} color="var(--color-gold-deep)" />
+                  1. Escolha o Álbum / Categoria da sua Polaroid:
+                </span>
+                <div
+                  className="polaroid-category-selector-pills"
+                  role="radiogroup"
+                  aria-label="Categoria da foto"
+                >
+                  {POLAROID_CATEGORIES.filter((c) => c.key !== "all").map((cat) => {
+                    const selected = uploadCategory === cat.key;
+                    return (
+                      <button
+                        key={cat.key}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() =>
+                          setUploadCategory(cat.key as Exclude<PolaroidCategoryKey, "all">)
+                        }
+                        className={`polaroid-cat-pill ${selected ? "is-selected" : ""}`}
+                      >
+                        {selected ? `✓ ${cat.label}` : cat.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Passo 2: Legenda Manuscrita da Polaroid */}
+              <div className="polaroid-caption-field">
+                <label
+                  htmlFor="polaroid-caption-input"
+                  className="rsvp-field-label"
+                  style={{ textAlign: "center", display: "block", marginBottom: "6px" }}
+                >
+                  2. Escreva a dedicatória na borda da Polaroid:
+                </label>
+                <div
+                  className="royal-input-group"
+                  style={{ maxWidth: "440px", margin: "0 auto" }}
+                >
+                  <span className="royal-input-icon" aria-hidden="true">
+                    <Sparkles size={16} />
+                  </span>
+                  <input
+                    id="polaroid-caption-input"
+                    type="text"
+                    className="rsvp-field-input with-icon"
+                    value={photoCaption}
+                    onChange={(e) => setPhotoCaption(e.target.value)}
+                    placeholder="Ex: Com amor para a princesa Maytê ✨"
+                  />
+                </div>
+              </div>
+
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="image/*"
+                style={{ display: "none" }}
+              />
+
+              <div style={{ marginTop: "var(--space-md)" }}>
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={handleButtonClick}
+                  className="btn-floral-gold btn-shimmer-gold"
+                  aria-label={memories.buttonText}
+                >
+                  <ImagePlus size={18} />
+                  <span>
+                    {uploading
+                      ? "Revelando Filme Instantâneo..."
+                      : memories.buttonText}
+                  </span>
+                </button>
+                <span className="polaroid-drop-hint">
+                  Toque no botão acima para abrir a câmera/galeria ou arraste sua foto aqui
+                </span>
+              </div>
+            </div>
+
+            {/* Barra de Organização do Álbum Real: Filtros de Categoria + Seletor de Grade */}
+            <div className="polaroid-album-toolbar">
               <div
-                className="polaroid-category-selector-pills"
-                role="radiogroup"
-                aria-label="Categoria da foto"
+                className="polaroid-album-categories"
+                role="tablist"
+                aria-label="Filtrar álbum por categoria"
               >
-                {POLAROID_CATEGORIES.filter((c) => c.key !== "all").map((cat) => {
-                  const selected = uploadCategory === cat.key;
+                {POLAROID_CATEGORIES.map((cat) => {
+                  const active = activeCategory === cat.key;
+                  const count =
+                    cat.key === "all"
+                      ? allAlbumPhotos.length
+                      : allAlbumPhotos.filter((p) => p.category === cat.key).length;
                   return (
                     <button
                       key={cat.key}
                       type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      onClick={() =>
-                        setUploadCategory(cat.key as Exclude<PolaroidCategoryKey, "all">)
-                      }
-                      className={`polaroid-cat-pill ${selected ? "is-selected" : ""}`}
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => setActiveCategory(cat.key)}
+                      className={`boutique-filter-pill ${active ? "is-active" : ""}`}
                     >
-                      {selected ? `✓ ${cat.label}` : cat.label}
+                      <span>{cat.label}</span>
+                      <span className="polaroid-cat-count">{count}</span>
                     </button>
                   );
                 })}
               </div>
-            </div>
 
-            {/* Passo 2: Legenda Manuscrita da Polaroid */}
-            <div className="polaroid-caption-field">
-              <label
-                htmlFor="polaroid-caption-input"
-                className="rsvp-field-label"
-                style={{ textAlign: "center", display: "block", marginBottom: "6px" }}
-              >
-                2. Escreva a dedicatória na borda da Polaroid:
-              </label>
               <div
-                className="royal-input-group"
-                style={{ maxWidth: "440px", margin: "0 auto" }}
+                className="polaroid-grid-mode-switcher"
+                role="group"
+                aria-label="Modo de exibição da grade"
               >
-                <span className="royal-input-icon" aria-hidden="true">
-                  <Sparkles size={16} />
-                </span>
-                <input
-                  id="polaroid-caption-input"
-                  type="text"
-                  className="rsvp-field-input with-icon"
-                  value={photoCaption}
-                  onChange={(e) => setPhotoCaption(e.target.value)}
-                  placeholder="Ex: Com amor para a princesa Maytê ✨"
-                />
+                <button
+                  type="button"
+                  onClick={() => setGridMode("vintage")}
+                  className={`polaroid-grid-btn ${gridMode === "vintage" ? "is-active" : ""}`}
+                  title="Varal Antigo Animado"
+                >
+                  <Film size={14} />
+                  <span>Varal Antigo</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGridMode("grid-3")}
+                  className={`polaroid-grid-btn ${gridMode === "grid-3" ? "is-active" : ""}`}
+                  title="Grade Clássica"
+                >
+                  <LayoutGrid size={14} />
+                  <span>Grade</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGridMode("grid-2")}
+                  className={`polaroid-grid-btn ${gridMode === "grid-2" ? "is-active" : ""}`}
+                  title="Galeria Ampla"
+                >
+                  <Columns size={14} />
+                  <span>Ampla</span>
+                </button>
               </div>
             </div>
 
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept="image/*"
-              style={{ display: "none" }}
-            />
-
-            <div style={{ marginTop: "var(--space-md)" }}>
-              <button
-                type="button"
-                disabled={uploading}
-                onClick={handleButtonClick}
-                className="btn-floral-gold btn-shimmer-gold"
-                aria-label={memories.buttonText}
-              >
-                <ImagePlus size={18} />
-                <span>
-                  {uploading
-                    ? "Revelando Filme Instantâneo..."
-                    : memories.buttonText}
-                </span>
-              </button>
-              <span className="polaroid-drop-hint">
-                Toque no botão acima para abrir a câmera/galeria ou arraste sua foto aqui
-              </span>
-            </div>
-          </div>
-
-          {/* Barra de Organização do Álbum Real: Filtros de Categoria + Seletor de Grade */}
-          <div className="polaroid-album-toolbar">
+            {/* Galeria de Polaroids em Estilo Antigo (Vintage Instant Film) */}
             <div
-              className="polaroid-album-categories"
-              role="tablist"
-              aria-label="Filtrar álbum por categoria"
+              className={`polaroid-preview-gallery mode-${gridMode}`}
+              role="region"
+              aria-label="Galeria de Polaroids da Maytê"
             >
-              {POLAROID_CATEGORIES.map((cat) => {
-                const active = activeCategory === cat.key;
-                const count =
-                  cat.key === "all"
-                    ? allAlbumPhotos.length
-                    : allAlbumPhotos.filter((p) => p.category === cat.key).length;
+              {filteredPhotos.map((p, idx) => {
+                const isNew = newlyDevelopedId === p.id;
                 return (
-                  <button
-                    key={cat.key}
-                    type="button"
-                    role="tab"
-                    aria-selected={active}
-                    onClick={() => setActiveCategory(cat.key)}
-                    className={`boutique-filter-pill ${active ? "is-active" : ""}`}
+                  <figure
+                    key={p.id}
+                    onClick={() => setLightboxPhoto(p)}
+                    className={`royal-polaroid-frame is-vintage-animated ${
+                      isNew ? "is-chemical-developing" : ""
+                    }`}
+                    style={
+                      {
+                        "--polaroid-tilt":
+                          gridMode === "vintage" ? `${p.rotationDeg}deg` : "0deg",
+                        "--polaroid-delay": `${(idx % 6) * 0.45}s`,
+                      } as React.CSSProperties
+                    }
                   >
-                    <span>{cat.label}</span>
-                    <span className="polaroid-cat-count">{count}</span>
-                  </button>
+                    {/* Fita Dourada Vintage no Topo */}
+                    <div className="polaroid-vintage-tape" aria-hidden="true" />
+
+                    <div className="royal-polaroid-img-wrap">
+                      <img src={p.url} alt={p.caption} loading="lazy" />
+                      <div className="polaroid-vintage-vignette" aria-hidden="true" />
+                      <span className="polaroid-zoom-badge" aria-hidden="true">
+                        <ZoomIn size={13} />
+                      </span>
+                    </div>
+
+                    <div className="polaroid-vintage-meta">
+                      <span className="polaroid-vintage-cat-tag">
+                        {getCategoryLabel(p.category)}
+                      </span>
+                      <span className="polaroid-vintage-date-stamp">
+                        {p.dateStamp}
+                      </span>
+                    </div>
+
+                    <figcaption className="royal-polaroid-caption">
+                      “{p.caption}”
+                    </figcaption>
+                  </figure>
                 );
               })}
             </div>
-
-            <div
-              className="polaroid-grid-mode-switcher"
-              role="group"
-              aria-label="Modo de exibição da grade"
-            >
-              <button
-                type="button"
-                onClick={() => setGridMode("vintage")}
-                className={`polaroid-grid-btn ${gridMode === "vintage" ? "is-active" : ""}`}
-                title="Varal Antigo Animado"
-              >
-                <Film size={14} />
-                <span>Varal Antigo</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setGridMode("grid-3")}
-                className={`polaroid-grid-btn ${gridMode === "grid-3" ? "is-active" : ""}`}
-                title="Grade Clássica"
-              >
-                <LayoutGrid size={14} />
-                <span>Grade</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setGridMode("grid-2")}
-                className={`polaroid-grid-btn ${gridMode === "grid-2" ? "is-active" : ""}`}
-                title="Galeria Ampla"
-              >
-                <Columns size={14} />
-                <span>Ampla</span>
-              </button>
-            </div>
           </div>
-
-          {/* Galeria de Polaroids em Estilo Antigo (Vintage Instant Film) */}
-          <div
-            className={`polaroid-preview-gallery mode-${gridMode}`}
-            role="region"
-            aria-label="Galeria de Polaroids da Maytê"
-          >
-            {filteredPhotos.map((p, idx) => {
-              const isNew = newlyDevelopedId === p.id;
-              return (
-                <figure
-                  key={p.id}
-                  onClick={() => setLightboxPhoto(p)}
-                  className={`royal-polaroid-frame is-vintage-animated ${
-                    isNew ? "is-chemical-developing" : ""
-                  }`}
-                  style={
-                    {
-                      "--polaroid-tilt":
-                        gridMode === "vintage" ? `${p.rotationDeg}deg` : "0deg",
-                      "--polaroid-delay": `${(idx % 6) * 0.45}s`,
-                    } as React.CSSProperties
-                  }
-                >
-                  {/* Fita Dourada Vintage no Topo */}
-                  <div className="polaroid-vintage-tape" aria-hidden="true" />
-
-                  <div className="royal-polaroid-img-wrap">
-                    <img src={p.url} alt={p.caption} loading="lazy" />
-                    <div className="polaroid-vintage-vignette" aria-hidden="true" />
-                    <span className="polaroid-zoom-badge" aria-hidden="true">
-                      <ZoomIn size={13} />
-                    </span>
-                  </div>
-
-                  <div className="polaroid-vintage-meta">
-                    <span className="polaroid-vintage-cat-tag">
-                      {getCategoryLabel(p.category)}
-                    </span>
-                    <span className="polaroid-vintage-date-stamp">
-                      {p.dateStamp}
-                    </span>
-                  </div>
-
-                  <figcaption className="royal-polaroid-caption">
-                    “{p.caption}”
-                  </figcaption>
-                </figure>
-              );
-            })}
-          </div>
-        </div>
+        )}
 
         {/* 2. Cápsula do Tempo da Maytê — Mural de Carinho ao Vivo */}
-        <div className="time-capsule-wrapper">
-          <div className="time-capsule-header">
-            <span className="section-eyebrow">
-              <MessageSquareHeart size={13} />
-              Mural de Amor
-            </span>
-            <h3 className="time-capsule-title">
-              Cápsula do Tempo da {eventSettings.babyName}
-            </h3>
-            <p className="time-capsule-subtitle">
-              Mensagens deixadas com carinho pelos amigos e familiares para a Maytê ler no futuro:
-            </p>
-          </div>
-
-          <div className="time-capsule-grid">
-            {guestbook.slice(0, 6).map((entry) => (
-              <article key={entry.id} className="time-capsule-card">
-                <div className="time-capsule-quote-mark" aria-hidden="true">
-                  “
-                </div>
-                <p className="time-capsule-message">{entry.message}</p>
-                <div className="time-capsule-footer">
-                  <div className="time-capsule-avatar">
-                    <Heart size={12} fill="var(--color-pink)" color="var(--color-pink-deep)" />
-                  </div>
-                  <div>
-                    <strong className="time-capsule-author">{entry.author}</strong>
-                    {entry.relation && (
-                      <span className="time-capsule-relation">{entry.relation}</span>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          {/* Formulário Pergaminho Rápido para Deixar Recado Direto na Cápsula */}
-          <form onSubmit={handleSendCapsuleMessage} className="time-capsule-quick-form">
-            <div className="time-capsule-form-title">
-              <Sparkles size={15} color="var(--color-gold-deep)" />
-              <span>Deixe também um bilhete na Cápsula do Tempo da Maytê</span>
+        {showCapsule && (
+          <div className="time-capsule-wrapper" style={{ marginTop: showPolaroids ? "2.5rem" : "0" }}>
+            <div className="time-capsule-header">
+              <span className="section-eyebrow">
+                <MessageSquareHeart size={13} />
+                Mural de Amor
+              </span>
+              <h3 className="time-capsule-title">
+                Cápsula do Tempo da {eventSettings.babyName}
+              </h3>
+              <p className="time-capsule-subtitle">
+                Mensagens deixadas com carinho pelos amigos e familiares para a Maytê ler no futuro:
+              </p>
             </div>
 
-            <div className="time-capsule-inputs">
-              <div className="royal-input-group">
-                <span className="royal-input-icon" aria-hidden="true">
-                  <User size={15} />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Seu nome..."
-                  value={authorName}
-                  onChange={(e) => setAuthorName(e.target.value)}
-                  className="rsvp-field-input with-icon"
-                  required
-                />
-              </div>
-
-              <div className="royal-input-group">
-                <span className="royal-input-icon" aria-hidden="true">
-                  <MessageSquareHeart size={15} />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Escreva uma mensagem carinhosa para a Maytê..."
-                  value={capsuleMessage}
-                  onChange={(e) => setCapsuleMessage(e.target.value)}
-                  className="rsvp-field-input with-icon"
-                  required
-                />
-              </div>
-
-              <button type="submit" className="btn-capsule-send btn-shimmer-gold">
-                <Send size={14} />
-                <span>Eternizar</span>
-              </button>
+            <div className="time-capsule-grid">
+              {guestbook.slice(0, 6).map((entry) => (
+                <article key={entry.id} className="time-capsule-card">
+                  <div className="time-capsule-quote-mark" aria-hidden="true">
+                    “
+                  </div>
+                  <p className="time-capsule-message">{entry.message}</p>
+                  <div className="time-capsule-footer">
+                    <div className="time-capsule-avatar">
+                      <Heart size={12} fill="var(--color-pink)" color="var(--color-pink-deep)" />
+                    </div>
+                    <div>
+                      <strong className="time-capsule-author">{entry.author}</strong>
+                      {entry.relation && (
+                        <span className="time-capsule-relation">{entry.relation}</span>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
 
-            {capsuleSaved && (
-              <div className="time-capsule-saved-feedback">
-                ✨ Sua mensagem foi guardada na Cápsula do Tempo da Maytê! ❤️
+            {/* Formulário Pergaminho Rápido para Deixar Recado Direto na Cápsula */}
+            <form onSubmit={handleSendCapsuleMessage} className="time-capsule-quick-form">
+              <div className="time-capsule-form-title">
+                <Sparkles size={15} color="var(--color-gold-deep)" />
+                <span>Deixe também um bilhete na Cápsula do Tempo da Maytê</span>
               </div>
-            )}
-          </form>
-        </div>
+
+              <div className="time-capsule-inputs">
+                <div className="royal-input-group">
+                  <span className="royal-input-icon" aria-hidden="true">
+                    <User size={15} />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Seu nome..."
+                    value={authorName}
+                    onChange={(e) => setAuthorName(e.target.value)}
+                    className="rsvp-field-input with-icon"
+                    required
+                  />
+                </div>
+
+                <div className="royal-input-group">
+                  <span className="royal-input-icon" aria-hidden="true">
+                    <MessageSquareHeart size={15} />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Escreva uma mensagem carinhosa para a Maytê..."
+                    value={capsuleMessage}
+                    onChange={(e) => setCapsuleMessage(e.target.value)}
+                    className="rsvp-field-input with-icon"
+                    required
+                  />
+                </div>
+
+                <button type="submit" className="btn-capsule-send btn-shimmer-gold">
+                  <Send size={14} />
+                  <span>Eternizar</span>
+                </button>
+              </div>
+
+              {capsuleSaved && (
+                <div className="time-capsule-saved-feedback">
+                  ✨ Sua mensagem foi guardada na Cápsula do Tempo da Maytê! ❤️
+                </div>
+              )}
+            </form>
+          </div>
+        )}
 
         <FloralDivider />
       </div>

@@ -1,5 +1,12 @@
 export type PortalLifecycleStage = "BABY_SHOWER" | "WAITING_BIRTH" | "MAYTE_BORN";
 
+export interface GiftCategory {
+  id: string;
+  name: string;
+  icon: string;
+  description?: string;
+}
+
 export interface DraggableCrownBlessing {
   id: string;
   text: string;
@@ -34,13 +41,23 @@ export interface DraggableGiftItem {
   title: string;
   category: string;
   description: string;
+  icon?: string;
   highlight: boolean;
   enabled: boolean;
 }
 
+export type PortalSectionKey =
+  | "countdown"
+  | "welcome"
+  | "details"
+  | "gifts"
+  | "rsvp"
+  | "memories"
+  | "capsule";
+
 export interface DraggablePortalSection {
   id: string;
-  key: "welcome" | "details" | "gifts" | "rsvp" | "memories";
+  key: PortalSectionKey;
   title: string;
   subtitle: string;
   enabled: boolean;
@@ -61,6 +78,8 @@ export interface MayteBirthInfo {
 
 export interface PortalDynamicConfig {
   lifecycleStage: PortalLifecycleStage;
+  pixEnabled: boolean;
+  giftCategories: GiftCategory[];
   rsvpDeadlineFormatted: string;
   expectedBirthDate: string;
   expectedBirthFormatted: string;
@@ -77,8 +96,152 @@ export interface PortalDynamicConfig {
   portalSections: DraggablePortalSection[];
 }
 
+export const defaultGiftCategories: GiftCategory[] = [
+  {
+    id: "fraldas",
+    name: "Fraldas & Cuidados",
+    icon: "PackageCheck",
+    description: "Fraldas RN, P, M, G e itens de higiene básica",
+  },
+  {
+    id: "enxoval",
+    name: "Enxoval & Lookinhos",
+    icon: "Shirt",
+    description: "Roupas, bodies, vestidos e sapatinhos para a princesa",
+  },
+  {
+    id: "banho",
+    name: "Hora do Banho & Cheirinho",
+    icon: "Sparkles",
+    description: "Shampoo, sabonete neutro, toalhas macias e escova",
+  },
+  {
+    id: "conforto",
+    name: "Passeio & Conforto",
+    icon: "Baby",
+    description: "Mantas, naninhas, mordedores e acessórios",
+  },
+  {
+    id: "livre",
+    name: "Mimos Livres & Especiais",
+    icon: "Gift",
+    description: "Lembrancinhas com carinho e presentes livres para a Maytê",
+  },
+];
+
+export const defaultGiftItems: DraggableGiftItem[] = [
+  {
+    id: "gift-fralda-rn",
+    title: "Fraldas RN ou P + Mimo",
+    category: "fraldas",
+    icon: "PackageCheck",
+    description: "Para os primeiros dias da nossa princesinha (sugestão: Pampers Confort Sec ou Huggies Supreme Care).",
+    highlight: false,
+    enabled: true,
+  },
+  {
+    id: "gift-fralda-m",
+    title: "Fraldas Tamanho M + Lenços",
+    category: "fraldas",
+    icon: "PackageCheck",
+    description: "A fase em que a Maytê mais vai usar! Pacote de fraldas M acompanhado de lencinhos umedecidos.",
+    highlight: true,
+    enabled: true,
+  },
+  {
+    id: "gift-fralda-g",
+    title: "Fraldas Tamanho G + Pomadinha",
+    category: "fraldas",
+    icon: "PackageCheck",
+    description: "Para garantir o conforto da nossa bebê por muitos meses, junto com pomada preventiva (Bepantol Baby / Mustela).",
+    highlight: true,
+    enabled: true,
+  },
+  {
+    id: "gift-lookinho",
+    title: "Lookinho Princesa (3 a 9 meses)",
+    category: "enxoval",
+    icon: "Shirt",
+    description: "Vestidinhos, bodies de algodão egípcio, conjuntinhos ou sapatinhos delicados em tons rosê, creme ou branco.",
+    highlight: false,
+    enabled: true,
+  },
+  {
+    id: "gift-banho",
+    title: "Kit Hora do Banho & Cheirinho",
+    category: "banho",
+    icon: "Sparkles",
+    description: "Sabonete líquido da cabeça aos pés, colônia sem álcool, toalha fralda macia ou escovinha de cerdas naturais.",
+    highlight: false,
+    enabled: true,
+  },
+  {
+    id: "gift-livre",
+    title: "Carinho Livre para o Enxoval",
+    category: "livre",
+    icon: "Gift",
+    description: "Sinta-se totalmente à vontade para escolher qualquer lembrancinha de coração para a Maytê.",
+    highlight: false,
+    enabled: true,
+  },
+];
+
+export const defaultPortalSections: DraggablePortalSection[] = [
+  {
+    id: "sec_countdown",
+    key: "countdown",
+    title: "Contagem Regressiva Real",
+    subtitle: "Relógio ao vivo e dias para o grande encontro",
+    enabled: true,
+  },
+  {
+    id: "sec_welcome",
+    key: "welcome",
+    title: "A Doce Espera / Carta Real",
+    subtitle: "Mensagem carinhosa dos papais e bênçãos",
+    enabled: true,
+  },
+  {
+    id: "sec_details",
+    key: "details",
+    title: "Localização & Mapa Interativo",
+    subtitle: "Data, horário, endereço e GPS do salão",
+    enabled: true,
+  },
+  {
+    id: "sec_gifts",
+    key: "gifts",
+    title: "Boutique de Mimos da Maytê",
+    subtitle: "Vitrine de sugestões de presentes e enxoval",
+    enabled: true,
+  },
+  {
+    id: "sec_rsvp",
+    key: "rsvp",
+    title: "Confirmação de Presença (R.S.V.P.)",
+    subtitle: "Formulário real de presença e acompanhantes",
+    enabled: true,
+  },
+  {
+    id: "sec_memories",
+    key: "memories",
+    title: "Álbum Polaroid de Recordações",
+    subtitle: "Fotos estilo vintage com molduras polaroide",
+    enabled: true,
+  },
+  {
+    id: "sec_capsule",
+    key: "capsule",
+    title: "Cápsula do Tempo / Mensagens",
+    subtitle: "Mural de recados eternos para a Maytê",
+    enabled: true,
+  },
+];
+
 export const defaultPortalDynamicConfig: PortalDynamicConfig = {
   lifecycleStage: "BABY_SHOWER",
+  pixEnabled: true,
+  giftCategories: defaultGiftCategories,
   rsvpDeadlineFormatted: "Confirmar até 15 de Novembro de 2026",
   expectedBirthDate: "2027-01-15T09:00:00",
   expectedBirthFormatted: "Janeiro de 2027",
@@ -149,71 +312,45 @@ export const defaultPortalDynamicConfig: PortalDynamicConfig = {
       enabled: true,
     },
   ],
-  giftItems: [
-    {
-      id: "gift-fralda-rn",
-      title: "Fraldas RN ou P + Mimo",
-      category: "0 a 2 Meses",
-      description: "Para os primeiros dias da nossa princesinha (sugestão: Pampers Confort Sec ou Huggies Supreme Care).",
-      highlight: false,
-      enabled: true,
-    },
-    {
-      id: "gift-fralda-m",
-      title: "Fraldas Tamanho M + Lenços",
-      category: "2 a 5 Meses • Muito Útil",
-      description: "A fase em que a Maytê mais vai usar! Pacote de fraldas M acompanhado de lencinhos umedecidos.",
-      highlight: true,
-      enabled: true,
-    },
-    {
-      id: "gift-fralda-g",
-      title: "Fraldas Tamanho G + Pomadinha",
-      category: "6+ Meses • Estoque Real",
-      description: "Para garantir o conforto da nossa bebê por muitos meses, junto com pomada preventiva (Bepantol Baby / Mustela).",
-      highlight: true,
-      enabled: true,
-    },
-    {
-      id: "gift-lookinho",
-      title: "Lookinho Princesa (3 a 9 meses)",
-      category: "Enxoval Real",
-      description: "Vestidinhos, bodies de algodão egípcio, conjuntinhos ou sapatinhos delicados em tons rosê, creme ou branco.",
-      highlight: false,
-      enabled: true,
-    },
-    {
-      id: "gift-banho",
-      title: "Kit Hora do Banho & Cheirinho",
-      category: "Cuidados Delicados",
-      description: "Sabonete líquido da cabeça aos pés, colônia sem álcool, toalha fralda macia ou escovinha de cerdas naturais.",
-      highlight: false,
-      enabled: true,
-    },
-    {
-      id: "gift-livre",
-      title: "Carinho Livre ou PIX para o Enxoval",
-      category: "Escolha Livre",
-      description: "Sinta-se totalmente à vontade para escolher qualquer lembrancinha de coração ou contribuir via PIX abaixo.",
-      highlight: false,
-      enabled: true,
-    },
-  ],
-  portalSections: [
-    { id: "sec_welcome", key: "welcome", title: "Carta de Boas-Vindas", subtitle: "Mensagem carinhosa dos papais", enabled: true },
-    { id: "sec_details", key: "details", title: "Contagem Regressiva & Local", subtitle: "Relógio ao vivo, data e GPS do salão", enabled: true },
-    { id: "sec_gifts", key: "gifts", title: "Boutique Real de Mimos & PIX", subtitle: "Vitrine de fraldas, sugestões e chave PIX", enabled: true },
-    { id: "sec_rsvp", key: "rsvp", title: "Cartão de Resposta Real (R.S.V.P.)", subtitle: "Confirmação de presença e perguntas", enabled: true },
-    { id: "sec_memories", key: "memories", title: "Álbum Polaroid & Cápsula do Tempo", subtitle: "Envio de fotos e mural de recados", enabled: true },
-  ],
+  giftItems: defaultGiftItems,
+  portalSections: defaultPortalSections,
 };
 
 export function mergePortalDynamicConfig(
   raw?: Partial<PortalDynamicConfig> | null
 ): PortalDynamicConfig {
   if (!raw) return defaultPortalDynamicConfig;
+
+  // Ensure sections include all canonical keys even if older stored configs lacked new ones
+  const rawSections = Array.isArray(raw.portalSections) ? raw.portalSections : [];
+  const existingKeys = new Set(rawSections.map((s) => s.key as string));
+  const mergedSections: DraggablePortalSection[] = [];
+
+  for (const s of rawSections) {
+    if (s && s.key) {
+      mergedSections.push({
+        id: s.id || `sec_${s.key}`,
+        key: s.key as PortalSectionKey,
+        title: s.title || "",
+        subtitle: s.subtitle || "",
+        enabled: typeof s.enabled === "boolean" ? s.enabled : true,
+      });
+    }
+  }
+
+  for (const defSec of defaultPortalSections) {
+    if (!existingKeys.has(defSec.key)) {
+      mergedSections.push(defSec);
+    }
+  }
+
   return {
     lifecycleStage: raw.lifecycleStage || defaultPortalDynamicConfig.lifecycleStage,
+    pixEnabled: typeof raw.pixEnabled === "boolean" ? raw.pixEnabled : true,
+    giftCategories:
+      Array.isArray(raw.giftCategories) && raw.giftCategories.length > 0
+        ? raw.giftCategories
+        : defaultPortalDynamicConfig.giftCategories,
     rsvpDeadlineFormatted:
       raw.rsvpDeadlineFormatted ?? defaultPortalDynamicConfig.rsvpDeadlineFormatted,
     expectedBirthDate: raw.expectedBirthDate || defaultPortalDynamicConfig.expectedBirthDate,
@@ -248,10 +385,7 @@ export function mergePortalDynamicConfig(
       Array.isArray(raw.giftItems) && raw.giftItems.length > 0
         ? raw.giftItems
         : defaultPortalDynamicConfig.giftItems,
-    portalSections:
-      Array.isArray(raw.portalSections) && raw.portalSections.length > 0
-        ? raw.portalSections
-        : defaultPortalDynamicConfig.portalSections,
+    portalSections: mergedSections.length > 0 ? mergedSections : defaultPortalDynamicConfig.portalSections,
   };
 }
 
@@ -344,4 +478,3 @@ export function parsePolaroidCaption(rawFilename: string): {
     caption: withoutExt || "Recordação Real da Maytê ✨",
   };
 }
-

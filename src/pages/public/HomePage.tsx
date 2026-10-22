@@ -86,32 +86,31 @@ const InvitationInnerStage: React.FC = () => {
           {/* 1b. Banner Evolutivo ("Doce Espera" ou "A Maytê Nasceu!") */}
           <MayteBornBanner />
 
-          {/* Seções Dinâmicas Ordenáveis e Ativáveis no Painel Real (/admin) */}
+          {/* Seções Dinâmicas Ordenáveis e Ativáveis no Painel Real */}
           {portalConfig.portalSections
             .filter((sec) => sec.enabled)
             .map((sec) => {
               switch (sec.key) {
+                case "countdown":
+                  return <CountdownSection key={sec.id} />;
                 case "welcome":
                   return <WelcomeSection key={sec.id} />;
                 case "details":
-                  return (
-                    <React.Fragment key={sec.id}>
-                      <CountdownSection />
-                      <EventDetailsSection />
-                    </React.Fragment>
-                  );
+                  return <EventDetailsSection key={sec.id} />;
                 case "gifts":
                   return <GiftsSection key={sec.id} />;
                 case "rsvp":
                   return <RsvpSection key={sec.id} />;
                 case "memories":
-                  return <MemoriesSection key={sec.id} />;
+                  return <MemoriesSection key={sec.id} variant="memories" />;
+                case "capsule":
+                  return <MemoriesSection key={sec.id} variant="capsule" />;
                 default:
                   return null;
               }
             })}
 
-          {/* 8. Encerramento com Barrado Rendado */}
+          {/* Encerramento com Barrado Rendado */}
           <ClosingSection />
         </main>
       )}

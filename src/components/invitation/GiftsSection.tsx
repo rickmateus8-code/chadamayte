@@ -8,54 +8,118 @@ import {
   QrCode,
   X,
   ArrowDownCircle,
+  Baby,
+  Shirt,
+  PackageCheck,
+  Crown,
+  Smile,
+  Milk,
+  ShoppingBag,
+  Star,
+  Music,
+  HeartHandshake,
 } from "lucide-react";
 import { FloralDivider } from "../brand/FloralDivider";
 import { RoyalCrestOrnament } from "../brand/RoyalOrnaments";
-import { invitationContent, type GiftBoutiqueItem } from "../../config/invitationContent";
+import { invitationContent } from "../../config/invitationContent";
 import { useEventContext } from "../../context/EventContext";
+
+export function renderRoyalGiftIcon(iconName: string | undefined, color: string, size = 22) {
+  switch (iconName) {
+    case "Baby":
+      return <Baby size={size} color={color} />;
+    case "Shirt":
+      return <Shirt size={size} color={color} />;
+    case "PackageCheck":
+      return <PackageCheck size={size} color={color} />;
+    case "Crown":
+      return <Crown size={size} color={color} />;
+    case "Smile":
+      return <Smile size={size} color={color} />;
+    case "Milk":
+      return <Milk size={size} color={color} />;
+    case "ShoppingBag":
+      return <ShoppingBag size={size} color={color} />;
+    case "Star":
+      return <Star size={size} color={color} />;
+    case "Music":
+      return <Music size={size} color={color} />;
+    case "HeartHandshake":
+      return <HeartHandshake size={size} color={color} />;
+    case "Heart":
+      return <Heart size={size} color={color} />;
+    case "Sparkles":
+      return <Sparkles size={size} color={color} />;
+    case "Gift":
+    default:
+      return <Gift size={size} color={color} />;
+  }
+}
 
 export const GiftsSection: React.FC = () => {
   const { gifts } = invitationContent.sections;
   const { eventSettings, portalConfig, selectedMimos, toggleMimo } = useEventContext();
 
-  const [activeCategory, setActiveCategory] = useState<"all" | "diapers" | "clothes" | "care">("all");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
   const [pixModalOpen, setPixModalOpen] = useState(false);
   const [copiedPix, setCopiedPix] = useState(false);
 
-  const dynamicBoutiqueItems: GiftBoutiqueItem[] =
-    portalConfig.giftItems && portalConfig.giftItems.filter((g) => g.enabled).length > 0
-      ? portalConfig.giftItems
-          .filter((g) => g.enabled)
-          .map((g) => ({
-            id: g.id,
-            title: g.title,
-            subtitle: g.description,
-            tag: g.category,
-            category: g.title.toLowerCase().includes("fralda")
-              ? "diapers"
-              : g.title.toLowerCase().includes("look") || g.title.toLowerCase().includes("roup")
-              ? "clothes"
-              : "care",
-            iconName: g.highlight ? "Sparkles" : g.title.toLowerCase().includes("pix") ? "Heart" : "Gift",
-          }))
-      : gifts.boutiqueItems;
+  // Map configured gift categories
+  const categoriesList = portalConfig.giftCategories && portalConfig.giftCategories.length > 0
+    ? portalConfig.giftCategories
+    : [
+        { id: "fraldas", name: "Fraldas & Cuidados", icon: "PackageCheck" },
+        { id: "enxoval", name: "Enxoval & Lookinhos", icon: "Shirt" },
+        { id: "banho", name: "Hora do Banho", icon: "Sparkles" },
+        { id: "conforto", name: "Passeio & Conforto", icon: "Baby" },
+        { id: "livre", name: "Escolha Livre", icon: "Gift" },
+      ];
 
-  const filteredItems = dynamicBoutiqueItems.filter(
+  // Dynamic gift items filtered by enabled status
+  const rawItems = portalConfig.giftItems && portalConfig.giftItems.filter((g) => g.enabled).length > 0
+    ? portalConfig.giftItems.filter((g) => g.enabled)
+    : [
+        {
+          id: "seed-fralda-p",
+          title: "Fraldas RN ou P + Mimo",
+          category: "fraldas",
+          description: "Para os primeiros dias da nossa princesinha.",
+          icon: "PackageCheck",
+          highlight: false,
+          enabled: true,
+        },
+        {
+          id: "seed-fralda-m",
+          title: "Fraldas Tamanho M + Lenços",
+          category: "fraldas",
+          description: "A fase em que a Maytê mais vai usar!",
+          icon: "PackageCheck",
+          highlight: true,
+          enabled: true,
+        },
+        {
+          id: "seed-lookinho",
+          title: "Lookinho Princesa (3 a 9 meses)",
+          category: "enxoval",
+          description: "Vestidinhos, bodies de algodão delicados.",
+          icon: "Shirt",
+          highlight: false,
+          enabled: true,
+        },
+      ];
+
+  // If PIX is disabled, filter out items that are specifically PIX contributions
+  const items = portalConfig.pixEnabled
+    ? rawItems
+    : rawItems.filter(
+        (it) =>
+          !it.title.toLowerCase().includes("pix") &&
+          !it.description.toLowerCase().includes("pix")
+      );
+
+  const filteredItems = items.filter(
     (item) => activeCategory === "all" || item.category === activeCategory
   );
-
-  const renderIcon = (iconName: GiftBoutiqueItem["iconName"], isSelected: boolean) => {
-    const color = isSelected ? "var(--color-gold-deep)" : "var(--color-pink-deep)";
-    switch (iconName) {
-      case "Sparkles":
-        return <Sparkles size={22} color={color} />;
-      case "Heart":
-        return <Heart size={22} color={color} />;
-      case "Gift":
-      default:
-        return <Gift size={22} color={color} />;
-    }
-  };
 
   const handleCopyPix = async () => {
     try {
@@ -90,23 +154,29 @@ export const GiftsSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Filtros da Boutique Real */}
+        {/* Filtros da Boutique Real por Categorias Configuráveis */}
         <div className="boutique-filter-bar" role="tablist" aria-label="Categorias de mimos">
-          {[
-            { id: "all", label: "Todos os Mimos" },
-            { id: "diapers", label: "Fraldas & Higiene" },
-            { id: "clothes", label: "Lookinhos" },
-            { id: "care", label: "Conforto & Banho" },
-          ].map((cat) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeCategory === "all"}
+            onClick={() => setActiveCategory("all")}
+            className={`boutique-filter-pill ${activeCategory === "all" ? "is-active" : ""}`}
+          >
+            Todos os Mimos
+          </button>
+          {categoriesList.map((cat) => (
             <button
               key={cat.id}
               type="button"
               role="tab"
               aria-selected={activeCategory === cat.id}
-              onClick={() => setActiveCategory(cat.id as any)}
+              onClick={() => setActiveCategory(cat.id)}
               className={`boutique-filter-pill ${activeCategory === cat.id ? "is-active" : ""}`}
+              style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
             >
-              {cat.label}
+              {renderRoyalGiftIcon(cat.icon, activeCategory === cat.id ? "var(--color-gold-deep)" : "var(--color-pink-deep)", 14)}
+              <span>{cat.name}</span>
             </button>
           ))}
         </div>
@@ -115,6 +185,10 @@ export const GiftsSection: React.FC = () => {
         <div className="boutique-grid">
           {filteredItems.map((item) => {
             const isSelected = selectedMimos.includes(item.title);
+            const catDef = categoriesList.find((c) => c.id === item.category);
+            const iconName = item.icon || catDef?.icon || "Gift";
+            const color = isSelected ? "var(--color-gold-deep)" : "var(--color-pink-deep)";
+
             return (
               <button
                 key={item.id}
@@ -124,18 +198,18 @@ export const GiftsSection: React.FC = () => {
                 aria-pressed={isSelected}
               >
                 <div className="boutique-item-top">
-                  <span className="boutique-item-tag">{item.tag}</span>
+                  <span className="boutique-item-tag">{catDef?.name || item.category}</span>
                   <span className={`boutique-check-circle ${isSelected ? "is-checked" : ""}`}>
                     {isSelected ? <Check size={14} /> : "+"}
                   </span>
                 </div>
 
                 <div className="boutique-icon-medal">
-                  {renderIcon(item.iconName, isSelected)}
+                  {renderRoyalGiftIcon(iconName, color, 22)}
                 </div>
 
                 <h3 className="boutique-item-title">{item.title}</h3>
-                <p className="boutique-item-subtitle">{item.subtitle}</p>
+                <p className="boutique-item-subtitle">{item.description}</p>
 
                 <div className="boutique-item-action-label">
                   {isSelected ? "✓ Mimo Selecionado com Carinho" : "Toque para escolher este mimo"}
@@ -166,35 +240,37 @@ export const GiftsSection: React.FC = () => {
           </div>
         )}
 
-        {/* Card Luxuoso de Mimo via PIX */}
-        <div className="royal-pix-showcase-card">
-          <div className="royal-pix-badge">
-            <QrCode size={22} color="var(--color-gold-deep)" />
+        {/* Card Luxuoso de Mimo via PIX (Ativável/Desativável pelo Admin) */}
+        {portalConfig.pixEnabled && (
+          <div className="royal-pix-showcase-card">
+            <div className="royal-pix-badge">
+              <QrCode size={22} color="var(--color-gold-deep)" />
+            </div>
+            <div className="royal-pix-content">
+              <h3 className="royal-pix-title">{gifts.pixNotice}</h3>
+              <p className="royal-pix-desc">
+                Prefere deixar os papais escolherem o mimo ideal para o enxoval da Maytê? Você pode enviar um carinho via PIX com toda praticidade!
+              </p>
+              <p className="royal-pix-brands">{gifts.message}</p>
+            </div>
+            <div className="royal-pix-cta">
+              <button
+                type="button"
+                onClick={() => setPixModalOpen(true)}
+                className="btn-floral-gold"
+              >
+                <Sparkles size={16} />
+                MIMO REAL VIA PIX
+              </button>
+            </div>
           </div>
-          <div className="royal-pix-content">
-            <h3 className="royal-pix-title">{gifts.pixNotice}</h3>
-            <p className="royal-pix-desc">
-              Prefere deixar os papais escolherem o mimo ideal para o enxoval da Maytê? Você pode enviar um carinho via PIX com toda praticidade!
-            </p>
-            <p className="royal-pix-brands">{gifts.message}</p>
-          </div>
-          <div className="royal-pix-cta">
-            <button
-              type="button"
-              onClick={() => setPixModalOpen(true)}
-              className="btn-floral-gold"
-            >
-              <Sparkles size={16} />
-              MIMO REAL VIA PIX
-            </button>
-          </div>
-        </div>
+        )}
 
         <FloralDivider />
       </div>
 
       {/* Modal Real de PIX */}
-      {pixModalOpen && (
+      {portalConfig.pixEnabled && pixModalOpen && (
         <div
           className="modal-backdrop"
           onClick={() => setPixModalOpen(false)}

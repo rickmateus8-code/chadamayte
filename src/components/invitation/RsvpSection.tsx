@@ -666,9 +666,9 @@ export const RsvpSection: React.FC = () => {
                 </div>
 
                 <div className="rsvp-mimo-grid-2x2">
-                  {(portalConfig.rsvpQuickMimos.filter((m) => m.enabled).length > 0
+                  {(portalConfig.rsvpQuickMimos.filter((m) => m.enabled && (portalConfig.pixEnabled || (!m.label.toUpperCase().includes('PIX') && !m.category.toUpperCase().includes('PIX')))).length > 0
                     ? portalConfig.rsvpQuickMimos
-                        .filter((m) => m.enabled)
+                        .filter((m) => m.enabled && (portalConfig.pixEnabled || (!m.label.toUpperCase().includes('PIX') && !m.category.toUpperCase().includes('PIX'))))
                         .map((m) => ({
                           id: m.id,
                           title: m.label,
