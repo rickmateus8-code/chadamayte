@@ -4038,6 +4038,20 @@ body,
   transition: all 0.2s ease;
 }
 
+/* Labels Adaptativas para Desktop vs Mobile */
+.admin-btn-label-desktop {
+  display: inline;
+}
+.admin-btn-label-mobile {
+  display: none;
+}
+.admin-tab-label-desktop {
+  display: inline;
+}
+.admin-tab-label-mobile {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .admin-page-canvas {
     padding: 2rem 1.25rem 3.5rem 1.25rem;
@@ -4052,13 +4066,13 @@ body,
 
 @media (max-width: 768px) {
   .admin-page-canvas {
-    padding: 0.75rem 0.5rem 2.5rem 0.5rem;
+    padding: 0.75rem 0.5rem 3rem 0.5rem;
   }
 
   .admin-page-card,
   .admin-shell-card {
     padding: 1.5rem 1rem 2rem 1rem;
-    border-radius: 16px;
+    border-radius: 18px;
     border-width: 1px;
     box-shadow: 0 10px 30px rgba(138, 75, 96, 0.08);
   }
@@ -4088,17 +4102,40 @@ body,
     font-size: 0.68rem;
   }
 
+  .admin-header-title {
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+
   .admin-header-actions {
     display: grid;
     grid-template-columns: 1fr 1fr auto;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
+    align-items: stretch;
   }
 
   .admin-action-btn {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    padding: 0.55rem 0.65rem;
-    font-size: 0.74rem;
+    min-height: 42px;
+    padding: 0.5rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    box-sizing: border-box;
+  }
+
+  .admin-logout-btn {
+    min-height: 42px;
+    padding: 0.5rem 0.9rem !important;
+  }
+
+  .admin-btn-label-desktop {
+    display: none;
+  }
+  .admin-btn-label-mobile {
+    display: inline;
   }
 
   .admin-tabs-nav {
@@ -4106,15 +4143,59 @@ body,
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     width: 100%;
-    border-radius: var(--radius-lg);
-    padding: 0.5rem;
+    border-radius: 16px;
+    padding: 0.55rem;
+    align-items: stretch;
   }
 
   .admin-tab-pill {
     width: 100%;
-    padding: 0.65rem 0.5rem;
-    font-size: 0.73rem;
+    min-height: 44px;
+    padding: 0.6rem 0.4rem;
+    font-size: 0.76rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 12px;
+    box-sizing: border-box;
     text-align: center;
+  }
+
+  .admin-tab-label-desktop {
+    display: none;
+  }
+  .admin-tab-label-mobile {
+    display: inline;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .btn-icon-royal {
+    min-width: 38px;
+    min-height: 38px;
+  }
+
+  .admin-builder-subtabs-nav {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px !important;
+    scrollbar-width: none;
+  }
+  .admin-builder-subtabs-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .admin-builder-subtabs-nav .boutique-filter-pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.78rem;
+  }
+
+  .admin-builder-mockup-col {
+    position: static !important;
+    margin-top: 1.5rem;
   }
 
   .admin-kanban-board {
@@ -4142,6 +4223,17 @@ body,
 
   .polaroid-category-filter-bar {
     justify-content: center;
+  }
+
+  .royal-filigree-corner {
+    width: 30px !important;
+    height: 30px !important;
+    opacity: 0.25 !important;
+  }
+
+  .rsvp-field-input,
+  .rsvp-field-textarea {
+    font-size: 16px !important;
   }
 }
 

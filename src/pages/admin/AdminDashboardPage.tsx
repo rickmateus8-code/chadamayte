@@ -134,7 +134,8 @@ export const AdminDashboardPage: React.FC = () => {
               style={{ textDecoration: "none" }}
             >
               <ExternalLink size={14} />
-              <span>Ver Convite ao Vivo</span>
+              <span className="admin-btn-label-desktop">Ver Convite ao Vivo</span>
+              <span className="admin-btn-label-mobile">Ver Convite</span>
             </Link>
 
             <button
@@ -152,7 +153,6 @@ export const AdminDashboardPage: React.FC = () => {
               onClick={handleLogout}
               title="Sair"
               className="btn-remove-companion admin-action-btn admin-logout-btn"
-              style={{ width: "auto", padding: "0.45rem 0.9rem", borderRadius: "var(--radius-full)", gap: "5px", display: "inline-flex", alignItems: "center", fontSize: "0.8rem", fontWeight: 700 }}
             >
               <LogOut size={14} />
               <span>Sair</span>
@@ -168,12 +168,12 @@ export const AdminDashboardPage: React.FC = () => {
           className="admin-tabs-nav"
         >
           {[
-            { id: "overview", label: "Fase & Nascimento", icon: Crown },
-            { id: "invitations", label: `Kanban & Convites (${invitations.length})`, icon: Users },
-            { id: "builder", label: "Construtor Arrastável & Seções", icon: Sliders },
-            { id: "rsvps", label: `Respostas & Mimos (${rsvps.length})`, icon: CheckCircle2 },
-            { id: "media", label: `Álbum Polaroid (${mediaList.length})`, icon: ImageIcon },
-            { id: "settings", label: "Datas, Local & PIX", icon: Settings },
+            { id: "overview", label: "Fase & Nascimento", shortLabel: "Nascimento", icon: Crown },
+            { id: "invitations", label: `Kanban & Convites (${invitations.length})`, shortLabel: `Convites (${invitations.length})`, icon: Users },
+            { id: "builder", label: "Construtor Arrastável & Seções", shortLabel: "Construtor", icon: Sliders },
+            { id: "rsvps", label: `Respostas & Mimos (${rsvps.length})`, shortLabel: `Mimos (${rsvps.length})`, icon: CheckCircle2 },
+            { id: "media", label: `Álbum Polaroid (${mediaList.length})`, shortLabel: `Álbum (${mediaList.length})`, icon: ImageIcon },
+            { id: "settings", label: "Datas, Local & PIX", shortLabel: "Datas & PIX", icon: Settings },
           ].map((tab) => {
             const Icon = tab.icon;
             const isSelected = activeTab === tab.id;
@@ -183,9 +183,11 @@ export const AdminDashboardPage: React.FC = () => {
                 type="button"
                 onClick={() => setActiveTab(tab.id as AdminTabId)}
                 className={`boutique-filter-pill admin-tab-pill ${isSelected ? "is-active" : ""}`}
+                aria-selected={isSelected}
               >
                 <Icon size={15} />
-                <span>{tab.label}</span>
+                <span className="admin-tab-label-desktop">{tab.label}</span>
+                <span className="admin-tab-label-mobile">{tab.shortLabel}</span>
               </button>
             );
           })}

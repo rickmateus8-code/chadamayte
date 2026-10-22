@@ -291,6 +291,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
 
       {/* Sub-abas do Construtor */}
       <div
+        className="admin-builder-subtabs-nav"
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -554,6 +555,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
 
             {/* Coluna 2: Mockup Interativo em Tempo Real do Convite */}
             <div
+              className="admin-builder-mockup-col"
               style={{
                 position: "sticky",
                 top: "1.5rem",
