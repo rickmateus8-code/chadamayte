@@ -3212,53 +3212,106 @@
    19. PAINEL REAL (/ADMIN) + COMPONENTES ARRASTÁVEIS & KANBAN
    ============================================================================ */
 
+/* 19.1 Alça de Arraste Real com Micro-Interação Háptica & Rotação */
 .drag-handle {
   cursor: grab;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(212, 169, 89, 0.45);
+  border: 1.5px solid rgba(212, 169, 89, 0.45);
   background: linear-gradient(135deg, #fffdf9 0%, #fceef3 100%);
   color: var(--color-gold-deep);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  position: relative;
 }
 
 .drag-handle:hover {
   border-color: var(--color-gold);
-  box-shadow: 0 4px 12px rgba(201, 155, 59, 0.22);
-  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(201, 155, 59, 0.35);
+  transform: scale(1.14) rotate(3deg);
+  background: linear-gradient(135deg, #fffcf2 0%, #ffe9f2 100%);
+  color: #b8860b;
 }
 
 .drag-handle:active,
 .drag-handle.dragging {
-  cursor: grabbing;
+  cursor: grabbing !important;
+  transform: scale(1.22) rotate(-5deg);
+  box-shadow: 0 10px 26px rgba(201, 155, 59, 0.48);
+  background: #fff3cd;
+  border-color: #b8860b;
+  color: #8c671b;
 }
 
+/* Card Arrastável Geral com Física de Mola e Transições Dinâmicas */
 .admin-draggable-card {
   background: linear-gradient(180deg, #ffffff 0%, #fffdf9 100%);
   border: 1.5px solid rgba(212, 169, 89, 0.42);
   border-radius: var(--radius-lg);
   padding: 1rem 1.15rem;
   box-shadow: 0 10px 26px rgba(176, 114, 134, 0.08);
-  transition: all 0.22s ease;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.24s ease, border-color 0.2s ease, background 0.2s ease, opacity 0.22s ease;
+  position: relative;
 }
 
 .admin-draggable-card:hover {
   border-color: var(--color-gold);
-  box-shadow: 0 14px 32px rgba(201, 155, 59, 0.16);
+  box-shadow: 0 14px 34px rgba(201, 155, 59, 0.18);
+  transform: translateY(-2px);
 }
 
-.admin-draggable-card.is-drag-over {
-  border: 2px dashed var(--color-gold-deep);
-  background: #fff9eb;
-  transform: scale(1.01);
+/* 1. Item em Arraste Ativo: Slot de Origem Flutuante / Dourado Esmaecido */
+.admin-draggable-card.is-dragging,
+.admin-kanban-card.is-dragging,
+.royal-polaroid-frame.is-dragging {
+  opacity: 0.36 !important;
+  transform: scale(0.96) rotate(-2deg) !important;
+  border: 2px dashed #cfa439 !important;
+  background: rgba(255, 248, 235, 0.75) !important;
+  box-shadow: inset 0 2px 10px rgba(207, 164, 57, 0.2) !important;
+  filter: grayscale(25%);
+  cursor: grabbing !important;
+}
+
+/* 2. Slot de Destino com Farol Dourado e Elevação Magnética */
+.admin-draggable-card.is-drag-over,
+.admin-kanban-card.is-drag-over {
+  border: 2px solid #b8860b !important;
+  background: linear-gradient(135deg, #fffdf2 0%, #fff0f7 100%) !important;
+  transform: translateY(-6px) scale(1.026) !important;
+  box-shadow: 0 18px 42px rgba(207, 164, 57, 0.32), 0 0 0 4px rgba(246, 228, 190, 0.6) !important;
+  z-index: 10;
+  animation: royalDragPulse 1.2s ease-in-out infinite alternate;
+}
+
+.admin-draggable-card.is-drag-over::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 6%;
+  right: 6%;
+  height: 5px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent 0%, #ffd700 20%, #cfa439 50%, #ffd700 80%, transparent 100%);
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.95), 0 0 5px #cfa439;
+  animation: royalBeaconGlow 0.8s ease-in-out infinite alternate;
+  z-index: 15;
+}
+
+/* 3. Efeito de Encaixe com Salto Elástico após Soltura */
+.admin-draggable-card.is-just-dropped,
+.admin-kanban-card.is-just-dropped,
+.royal-polaroid-frame.is-just-dropped {
+  animation: royalDropSnap 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative;
+  z-index: 8;
 }
 
 .admin-draggable-card.is-muted-card {
@@ -3375,49 +3428,28 @@
   border-radius: var(--radius-xl);
   padding: 1.15rem;
   min-height: 360px;
-  transition: all 0.22s ease;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.22s ease, background 0.22s ease;
 }
 
 .admin-kanban-column.is-kanban-over {
-  border: 2px dashed var(--color-gold-deep);
-  background: #fff9eb;
-  box-shadow: 0 16px 38px rgba(201, 155, 59, 0.22);
+  border: 2.5px dashed #b8860b !important;
+  background: linear-gradient(180deg, #fffcf0 0%, #fdf0f6 100%) !important;
+  box-shadow: 0 24px 58px rgba(201, 155, 59, 0.35), inset 0 0 32px rgba(246, 228, 190, 0.5) !important;
+  transform: scale(1.02);
 }
 
-.admin-kanban-col-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding-bottom: 0.85rem;
-  margin-bottom: 0.85rem;
-  border-bottom: 1px dashed rgba(212, 169, 89, 0.45);
-  text-align: left;
+.admin-kanban-column.is-kanban-over .admin-kanban-col-header {
+  border-bottom-color: #cfa439 !important;
+  transform: translateY(-2px);
 }
 
-.admin-kanban-col-title {
-  font-family: var(--font-serif);
-  font-size: 1.25rem;
-  color: var(--color-text);
-  margin: 0;
-}
-
-.admin-kanban-col-sub {
-  font-size: 0.74rem;
-  color: var(--color-text-light);
-}
-
-.admin-kanban-count {
-  padding: 0.25rem 0.7rem;
-  border-radius: var(--radius-full);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.admin-kanban-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+.admin-kanban-column.is-kanban-over .admin-kanban-empty {
+  border: 2px dashed #b8860b !important;
+  background: rgba(255, 248, 225, 0.95) !important;
+  color: #8c671b !important;
+  transform: scale(1.04);
+  box-shadow: 0 10px 24px rgba(207, 164, 57, 0.25);
+  animation: royalSlotBounce 0.7s ease-in-out infinite alternate;
 }
 
 .admin-kanban-card {
@@ -3427,12 +3459,13 @@
   padding: 0.95rem;
   box-shadow: 0 8px 20px rgba(176, 114, 134, 0.08);
   text-align: left;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease, border-color 0.2s ease, opacity 0.2s ease;
+  position: relative;
 }
 
 .admin-kanban-card:hover {
   border-color: var(--color-gold);
-  box-shadow: 0 12px 26px rgba(201, 155, 59, 0.18);
+  box-shadow: 0 12px 28px rgba(201, 155, 59, 0.2);
   transform: translateY(-2px);
 }
 
@@ -4837,3 +4870,51 @@ body,
 
 
 
+
+
+/* Keyframes de Física e Animações Dinâmicas de Arraste */
+@keyframes royalDragPulse {
+  0% {
+    box-shadow: 0 14px 32px rgba(207, 164, 57, 0.24), 0 0 0 3px rgba(246, 228, 190, 0.4);
+  }
+  100% {
+    box-shadow: 0 20px 46px rgba(207, 164, 57, 0.4), 0 0 0 6px rgba(246, 228, 190, 0.7);
+  }
+}
+
+@keyframes royalBeaconGlow {
+  0% {
+    opacity: 0.55;
+    transform: scaleX(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1.06);
+  }
+}
+
+@keyframes royalSlotBounce {
+  0% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1.045);
+  }
+}
+
+@keyframes royalDropSnap {
+  0% {
+    transform: scale(0.94) translateY(-10px) rotate(1.5deg);
+    box-shadow: 0 22px 50px rgba(207, 164, 57, 0.5);
+    border-color: #ffd700;
+  }
+  50% {
+    transform: scale(1.04) translateY(3px) rotate(-0.5deg);
+    box-shadow: 0 14px 34px rgba(207, 164, 57, 0.32);
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    box-shadow: 0 10px 26px rgba(176, 114, 134, 0.08);
+    border-color: rgba(212, 169, 89, 0.42);
+  }
+}

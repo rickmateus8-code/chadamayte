@@ -84,6 +84,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
   const [activeSubTab, setActiveSubTab] = useState<BuilderSectionKey>("sections");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [justDroppedId, setJustDroppedId] = useState<string | number | null>(null);
   const [saving, setSaving] = useState(false);
   const [savedToast, setSavedToast] = useState(false);
 
@@ -392,17 +393,25 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                   <div
                     key={sec.id}
                     draggable
-                    onDragStart={() => setDragIndex(idx)}
+                    onDragStart={(e) => {
+                      setDragIndex(idx);
+                      if (e.dataTransfer) e.dataTransfer.effectAllowed = "move";
+                    }}
                     onDragOver={(e) => {
                       e.preventDefault();
                       setDragOverIndex(idx);
                     }}
                     onDrop={() => {
                       if (dragIndex !== null) {
+                        const target = config.portalSections[dragIndex];
                         setConfig((prev) => ({
                           ...prev,
                           portalSections: reorderList(prev.portalSections, dragIndex, idx),
                         }));
+                        if (target) {
+                          setJustDroppedId(target.id);
+                          window.setTimeout(() => setJustDroppedId(null), 550);
+                        }
                       }
                       setDragIndex(null);
                       setDragOverIndex(null);
@@ -411,7 +420,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                       setDragIndex(null);
                       setDragOverIndex(null);
                     }}
-                    className={`admin-draggable-card ${dragOverIndex === idx ? "is-drag-over" : ""} ${!sec.enabled ? "is-muted-card" : ""}`}
+                    className={`admin-draggable-card ${dragIndex === idx ? "is-dragging" : ""} ${dragOverIndex === idx ? "is-drag-over" : ""} ${justDroppedId === sec.id ? "is-just-dropped" : ""} ${!sec.enabled ? "is-muted-card" : ""}`}
                     style={{
                       borderLeft: sec.enabled ? "4px solid var(--color-gold)" : "4px solid #bbb",
                       background: sec.enabled ? "rgba(255, 255, 255, 0.95)" : "rgba(240, 240, 240, 0.6)",
@@ -1132,17 +1141,25 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                 <div
                   key={gift.id}
                   draggable
-                  onDragStart={() => setDragIndex(idx)}
+                  onDragStart={(e) => {
+                    setDragIndex(idx);
+                    if (e.dataTransfer) e.dataTransfer.effectAllowed = "move";
+                  }}
                   onDragOver={(e) => {
                     e.preventDefault();
                     setDragOverIndex(idx);
                   }}
                   onDrop={() => {
                     if (dragIndex !== null) {
+                      const target = config.giftItems[dragIndex];
                       setConfig((prev) => ({
                         ...prev,
                         giftItems: reorderList(prev.giftItems, dragIndex, idx),
                       }));
+                      if (target) {
+                        setJustDroppedId(target.id);
+                        window.setTimeout(() => setJustDroppedId(null), 550);
+                      }
                     }
                     setDragIndex(null);
                     setDragOverIndex(null);
@@ -1151,7 +1168,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                     setDragIndex(null);
                     setDragOverIndex(null);
                   }}
-                  className={`admin-draggable-card ${dragOverIndex === idx ? "is-drag-over" : ""} ${!gift.enabled ? "is-muted-card" : ""}`}
+                  className={`admin-draggable-card ${dragIndex === idx ? "is-dragging" : ""} ${dragOverIndex === idx ? "is-drag-over" : ""} ${justDroppedId === gift.id ? "is-just-dropped" : ""} ${!gift.enabled ? "is-muted-card" : ""}`}
                 >
                   <div className="admin-draggable-row" style={{ alignItems: "flex-start" }}>
                     <button type="button" className="drag-handle" aria-label="Arrastar mimo" style={{ marginTop: "8px" }}>
@@ -1345,17 +1362,25 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
               <div
                 key={q.id}
                 draggable
-                onDragStart={() => setDragIndex(idx)}
+                onDragStart={(e) => {
+                  setDragIndex(idx);
+                  if (e.dataTransfer) e.dataTransfer.effectAllowed = "move";
+                }}
                 onDragOver={(e) => {
                   e.preventDefault();
                   setDragOverIndex(idx);
                 }}
                 onDrop={() => {
                   if (dragIndex !== null) {
+                    const target = config.customQuestions[dragIndex];
                     setConfig((prev) => ({
                       ...prev,
                       customQuestions: reorderList(prev.customQuestions, dragIndex, idx),
                     }));
+                    if (target) {
+                      setJustDroppedId(target.id);
+                      window.setTimeout(() => setJustDroppedId(null), 550);
+                    }
                   }
                   setDragIndex(null);
                   setDragOverIndex(null);
@@ -1364,7 +1389,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                   setDragIndex(null);
                   setDragOverIndex(null);
                 }}
-                className={`admin-draggable-card ${dragOverIndex === idx ? "is-drag-over" : ""} ${!q.enabled ? "is-muted-card" : ""}`}
+                className={`admin-draggable-card ${dragIndex === idx ? "is-dragging" : ""} ${dragOverIndex === idx ? "is-drag-over" : ""} ${justDroppedId === q.id ? "is-just-dropped" : ""} ${!q.enabled ? "is-muted-card" : ""}`}
               >
                 <div className="admin-draggable-row" style={{ alignItems: "flex-start" }}>
                   <button type="button" className="drag-handle" aria-label="Arrastar pergunta" style={{ marginTop: "8px" }}>
@@ -1526,17 +1551,25 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
               <div
                 key={qm.id}
                 draggable
-                onDragStart={() => setDragIndex(idx)}
+                onDragStart={(e) => {
+                  setDragIndex(idx);
+                  if (e.dataTransfer) e.dataTransfer.effectAllowed = "move";
+                }}
                 onDragOver={(e) => {
                   e.preventDefault();
                   setDragOverIndex(idx);
                 }}
                 onDrop={() => {
                   if (dragIndex !== null) {
+                    const target = config.rsvpQuickMimos[dragIndex];
                     setConfig((prev) => ({
                       ...prev,
                       rsvpQuickMimos: reorderList(prev.rsvpQuickMimos, dragIndex, idx),
                     }));
+                    if (target) {
+                      setJustDroppedId(target.id);
+                      window.setTimeout(() => setJustDroppedId(null), 550);
+                    }
                   }
                   setDragIndex(null);
                   setDragOverIndex(null);
@@ -1545,7 +1578,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                   setDragIndex(null);
                   setDragOverIndex(null);
                 }}
-                className={`admin-draggable-card ${dragOverIndex === idx ? "is-drag-over" : ""} ${!qm.enabled ? "is-muted-card" : ""}`}
+                className={`admin-draggable-card ${dragIndex === idx ? "is-dragging" : ""} ${dragOverIndex === idx ? "is-drag-over" : ""} ${justDroppedId === qm.id ? "is-just-dropped" : ""} ${!qm.enabled ? "is-muted-card" : ""}`}
               >
                 <div className="admin-draggable-row">
                   <button type="button" className="drag-handle" aria-label="Arrastar mimo rápido">
@@ -1667,17 +1700,25 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
               <div
                 key={iq.id}
                 draggable
-                onDragStart={() => setDragIndex(idx)}
+                onDragStart={(e) => {
+                  setDragIndex(idx);
+                  if (e.dataTransfer) e.dataTransfer.effectAllowed = "move";
+                }}
                 onDragOver={(e) => {
                   e.preventDefault();
                   setDragOverIndex(idx);
                 }}
                 onDrop={() => {
                   if (dragIndex !== null) {
+                    const target = config.inspirationQuotes[dragIndex];
                     setConfig((prev) => ({
                       ...prev,
                       inspirationQuotes: reorderList(prev.inspirationQuotes, dragIndex, idx),
                     }));
+                    if (target) {
+                      setJustDroppedId(target.id);
+                      window.setTimeout(() => setJustDroppedId(null), 550);
+                    }
                   }
                   setDragIndex(null);
                   setDragOverIndex(null);
@@ -1686,7 +1727,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                   setDragIndex(null);
                   setDragOverIndex(null);
                 }}
-                className={`admin-draggable-card ${dragOverIndex === idx ? "is-drag-over" : ""}`}
+                className={`admin-draggable-card ${dragIndex === idx ? "is-dragging" : ""} ${dragOverIndex === idx ? "is-drag-over" : ""} ${justDroppedId === iq.id ? "is-just-dropped" : ""}`}
               >
                 <div className="admin-draggable-row">
                   <button type="button" className="drag-handle" aria-label="Arrastar frase">
@@ -1773,17 +1814,25 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
               <div
                 key={cb.id}
                 draggable
-                onDragStart={() => setDragIndex(idx)}
+                onDragStart={(e) => {
+                  setDragIndex(idx);
+                  if (e.dataTransfer) e.dataTransfer.effectAllowed = "move";
+                }}
                 onDragOver={(e) => {
                   e.preventDefault();
                   setDragOverIndex(idx);
                 }}
                 onDrop={() => {
                   if (dragIndex !== null) {
+                    const target = config.crownBlessings[dragIndex];
                     setConfig((prev) => ({
                       ...prev,
                       crownBlessings: reorderList(prev.crownBlessings, dragIndex, idx),
                     }));
+                    if (target) {
+                      setJustDroppedId(target.id);
+                      window.setTimeout(() => setJustDroppedId(null), 550);
+                    }
                   }
                   setDragIndex(null);
                   setDragOverIndex(null);
@@ -1792,7 +1841,7 @@ export const PortalBuilderTab: React.FC<PortalBuilderTabProps> = ({
                   setDragIndex(null);
                   setDragOverIndex(null);
                 }}
-                className={`admin-draggable-card ${dragOverIndex === idx ? "is-drag-over" : ""}`}
+                className={`admin-draggable-card ${dragIndex === idx ? "is-dragging" : ""} ${dragOverIndex === idx ? "is-drag-over" : ""} ${justDroppedId === cb.id ? "is-just-dropped" : ""}`}
               >
                 <div className="admin-draggable-row">
                   <button type="button" className="drag-handle" aria-label="Arrastar bênção da coroa">

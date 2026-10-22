@@ -38,6 +38,7 @@ export const InvitationsTab: React.FC<InvitationsTabProps> = ({
   const [draggedInvId, setDraggedInvId] = useState<string | null>(null);
   const [dragOverCol, setDragOverCol] = useState<KanbanColumnKey | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
+  const [justDroppedId, setJustDroppedId] = useState<string | null>(null);
 
   const copyInvitationLink = (publicToken: string) => {
     const url = `${window.location.origin}/i/${publicToken}`;
@@ -196,8 +197,11 @@ export const InvitationsTab: React.FC<InvitationsTabProps> = ({
                   e.preventDefault();
                   setDragOverCol(null);
                   if (draggedInvId) {
-                    await handleMoveStatus(draggedInvId, col.key);
+                    const id = draggedInvId;
+                    setJustDroppedId(id);
+                    await handleMoveStatus(id, col.key);
                     setDraggedInvId(null);
+                    window.setTimeout(() => setJustDroppedId(null), 600);
                   }
                 }}
                 className={`admin-kanban-column ${isOver ? "is-kanban-over" : ""}`}
@@ -233,7 +237,7 @@ export const InvitationsTab: React.FC<InvitationsTabProps> = ({
                             setDraggedInvId(null);
                             setDragOverCol(null);
                           }}
-                          className="admin-kanban-card"
+                          className={`admin-kanban-card ${draggedInvId === inv.id ? "is-dragging" : ""} ${justDroppedId === inv.id ? "is-just-dropped" : ""}`}
                           style={{ opacity: isMoving ? 0.55 : 1 }}
                         >
                           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px" }}>
