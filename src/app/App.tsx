@@ -19,7 +19,6 @@ export const App: React.FC = () => {
         <Header />
         <div style={{ flex: 1 }}>
           {isAdminSubdomain ? (
-            /* Subdomínio Administrativo SaaS: admin.{domínio}/{nomedochadebebe} */
             <Routes>
               <Route path="/" element={<AdminDashboardPage />} />
               <Route path="/:eventSlug" element={<AdminDashboardPage />} />

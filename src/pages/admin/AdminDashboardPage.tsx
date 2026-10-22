@@ -11,9 +11,6 @@ import {
   Sliders,
   ExternalLink,
   Sparkles,
-  Globe,
-  Copy,
-  Check,
 } from "lucide-react";
 import {
   fetchAdminOverview,
@@ -44,7 +41,6 @@ export const AdminDashboardPage: React.FC = () => {
   const [token, setToken] = useState<string>(() => localStorage.getItem("mayte_admin_token") || "");
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<AdminTabId>("overview");
-  const [copiedSaaSUrl, setCopiedSaaSUrl] = useState(false);
 
   // Data states
   const [overview, setOverview] = useState<AdminOverview | null>(null);
@@ -97,18 +93,6 @@ export const AdminDashboardPage: React.FC = () => {
     const ok = await deleteAdminInvitation(token, id);
     if (ok) {
       loadAllData();
-    }
-  };
-
-  const saasAdminUrl = "https://admin.chadamayte.pages.dev/chadamayte";
-
-  const handleCopySaaSUrl = async () => {
-    try {
-      await navigator.clipboard.writeText(saasAdminUrl);
-      setCopiedSaaSUrl(true);
-      window.setTimeout(() => setCopiedSaaSUrl(false), 3000);
-    } catch {
-      // Fallback
     }
   };
 
@@ -175,63 +159,6 @@ export const AdminDashboardPage: React.FC = () => {
             </button>
           </div>
         </header>
-
-        {/* Banner Nobre SaaS Multi-Tenant */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, rgba(212, 169, 89, 0.12) 0%, rgba(255, 240, 245, 0.35) 100%)",
-            border: "1px solid rgba(212, 169, 89, 0.35)",
-            borderRadius: "var(--radius-md)",
-            padding: "0.65rem 1rem",
-            marginBottom: "1.25rem",
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "0.75rem",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Globe size={16} color="var(--color-gold-deep)" />
-            <span style={{ fontSize: "0.82rem", color: "var(--color-text)" }}>
-              <strong>Subdomínio Administrativo SaaS:</strong>{" "}
-              <code
-                style={{
-                  background: "rgba(255, 255, 255, 0.8)",
-                  padding: "2px 6px",
-                  borderRadius: "4px",
-                  color: "var(--color-gold-deep)",
-                  fontWeight: 700,
-                  fontSize: "0.82rem",
-                }}
-              >
-                admin.chadamayte.pages.dev/chadamayte
-              </code>
-            </span>
-            <span
-              style={{
-                fontSize: "0.68rem",
-                padding: "2px 6px",
-                borderRadius: "10px",
-                background: "rgba(39, 174, 96, 0.15)",
-                color: "#1e7e34",
-                fontWeight: 700,
-              }}
-            >
-              SaaS Multi-Tenant Ativo
-            </span>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleCopySaaSUrl}
-            className="btn-mini-gold-solid"
-            style={{ fontSize: "0.75rem", padding: "0.35rem 0.75rem" }}
-          >
-            {copiedSaaSUrl ? <Check size={13} /> : <Copy size={13} />}
-            <span>{copiedSaaSUrl ? "Copiado! ✓" : "Copiar Link de Acesso"}</span>
-          </button>
-        </div>
 
         <RoyalCrestOrnament width={180} />
 
