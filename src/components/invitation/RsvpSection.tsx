@@ -86,6 +86,14 @@ export const RsvpSection: React.FC = () => {
     addGuestbookMessage,
   } = useEventContext();
 
+  const isPixActive = Boolean(
+    portalConfig.pixEnabled &&
+    eventSettings.pixKey &&
+    eventSettings.pixKey.trim().length > 0 &&
+    eventSettings.pixKey.trim().toLowerCase() !== "none" &&
+    eventSettings.pixKey.trim().toLowerCase() !== "desativado"
+  );
+
   const [attendanceIntent, setAttendanceIntent] = useState<"yes" | "no">("yes");
   const [name, setName] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
@@ -666,16 +674,16 @@ export const RsvpSection: React.FC = () => {
                 </div>
 
                 <div className="rsvp-mimo-grid-2x2">
-                  {(portalConfig.rsvpQuickMimos.filter((m) => m.enabled && (portalConfig.pixEnabled || (!m.label.toUpperCase().includes('PIX') && !m.category.toUpperCase().includes('PIX')))).length > 0
+                  {(portalConfig.rsvpQuickMimos.filter((m) => m.enabled && (isPixActive || (!m.label.toUpperCase().includes('PIX') && !m.category.toUpperCase().includes('PIX')))).length > 0
                     ? portalConfig.rsvpQuickMimos
-                        .filter((m) => m.enabled && (portalConfig.pixEnabled || (!m.label.toUpperCase().includes('PIX') && !m.category.toUpperCase().includes('PIX'))))
+                        .filter((m) => m.enabled && (isPixActive || (!m.label.toUpperCase().includes('PIX') && !m.category.toUpperCase().includes('PIX'))))
                         .map((m) => ({
                           id: m.id,
                           title: m.label,
                           shortLabel: m.label,
                           sub: m.category,
                         }))
-                    : QUICK_MIMO_CARDS
+                    : QUICK_MIMO_CARDS.filter((c) => isPixActive || !c.title.toUpperCase().includes('PIX'))
                   ).map((card) => {
                     const active = selectedMimos.includes(card.title);
                     return (

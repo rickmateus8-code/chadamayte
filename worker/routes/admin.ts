@@ -427,8 +427,8 @@ export async function handleAdminRoutes(
         locationCity: String(eventRow?.venue_city ?? "São Paulo"),
         locationState: String(eventRow?.venue_state ?? "SP"),
         mapUrl: String(eventRow?.map_url || "https://maps.google.com/?q=Av.+Paulista,+1000,+Sao+Paulo"),
-        pixKey: customDetails.pixKey || "chadamayte@familia.com.br",
-        pixBeneficiary: customDetails.pixBeneficiary || "Papais da Maytê",
+        pixKey: typeof customDetails.pixKey === "string" ? customDetails.pixKey : "",
+        pixBeneficiary: typeof customDetails.pixBeneficiary === "string" ? customDetails.pixBeneficiary : "",
         observations:
           customDetails.observations ||
           "Será um encontro real muito especial! Venham preparados para comemorar, brindar e registrar muitas fotos para o álbum da nossa princesinha.",
@@ -492,13 +492,28 @@ export async function handleAdminRoutes(
         body.pixBeneficiary !== undefined ||
         body.observations !== undefined
       ) {
+        const existingDetailsRow = await db
+          .prepare("SELECT value_json FROM event_settings WHERE event_id = ? AND setting_key = 'custom_details' LIMIT 1")
+          .bind(eventId)
+          .first<{ value_json: string }>();
+
+        let currentDetails: Record<string, string> = {};
+        if (existingDetailsRow?.value_json) {
+          try {
+            currentDetails = JSON.parse(existingDetailsRow.value_json);
+          } catch {
+            currentDetails = {};
+          }
+        }
+
         const customJson = JSON.stringify({
-          dateFormatted: body.dateFormatted ?? "Domingo, 22 de Novembro de 2026",
-          timeFormatted: body.timeFormatted ?? "A partir das 15h30",
-          pixKey: body.pixKey ?? "chadamayte@familia.com.br",
-          pixBeneficiary: body.pixBeneficiary ?? "Papais da Maytê",
+          dateFormatted: body.dateFormatted ?? currentDetails.dateFormatted ?? "Domingo, 22 de Novembro de 2026",
+          timeFormatted: body.timeFormatted ?? currentDetails.timeFormatted ?? "A partir das 15h30",
+          pixKey: body.pixKey !== undefined ? body.pixKey.trim() : (currentDetails.pixKey ?? ""),
+          pixBeneficiary: body.pixBeneficiary !== undefined ? body.pixBeneficiary.trim() : (currentDetails.pixBeneficiary ?? ""),
           observations:
             body.observations ??
+            currentDetails.observations ??
             "Será um encontro real muito especial! Venham preparados para comemorar, brindar e registrar muitas fotos para o álbum da nossa princesinha.",
         });
 

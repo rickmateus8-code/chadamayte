@@ -64,6 +64,15 @@ export const GiftsSection: React.FC = () => {
   const [pixModalOpen, setPixModalOpen] = useState(false);
   const [copiedPix, setCopiedPix] = useState(false);
 
+  // PIX só é exibido se estiver ativado nas configurações e houver chave configurada
+  const isPixActive = Boolean(
+    portalConfig.pixEnabled &&
+    eventSettings.pixKey &&
+    eventSettings.pixKey.trim().length > 0 &&
+    eventSettings.pixKey.trim().toLowerCase() !== "none" &&
+    eventSettings.pixKey.trim().toLowerCase() !== "desativado"
+  );
+
   // Map configured gift categories
   const categoriesList = portalConfig.giftCategories && portalConfig.giftCategories.length > 0
     ? portalConfig.giftCategories
@@ -150,7 +159,9 @@ export const GiftsSection: React.FC = () => {
             {gifts.title}
           </h2>
           <p className="section-subtitle">
-            {gifts.subtitle}
+            {isPixActive
+              ? gifts.subtitle
+              : "Sua presença já é o nosso maior presente! Se desejar mimar a nossa princesinha, escolha um item da nossa boutique abaixo para vincular à sua confirmação:"}
           </p>
         </div>
 
@@ -241,7 +252,7 @@ export const GiftsSection: React.FC = () => {
         )}
 
         {/* Card Luxuoso de Mimo via PIX (Ativável/Desativável pelo Admin) */}
-        {portalConfig.pixEnabled && (
+        {isPixActive && (
           <div className="royal-pix-showcase-card">
             <div className="royal-pix-badge">
               <QrCode size={22} color="var(--color-gold-deep)" />
@@ -266,11 +277,35 @@ export const GiftsSection: React.FC = () => {
           </div>
         )}
 
+        {/* Sugestão de Marcas de Fraldas (Apenas quando PIX estiver desativado) */}
+        {!isPixActive && gifts.message && (
+          <div
+            style={{
+              margin: "1.5rem auto 0 auto",
+              maxWidth: "580px",
+              padding: "0.85rem 1.25rem",
+              background: "linear-gradient(135deg, rgba(255, 245, 248, 0.85) 0%, rgba(253, 248, 240, 0.85) 100%)",
+              border: "1px dashed rgba(212, 169, 89, 0.4)",
+              borderRadius: "var(--radius-md)",
+              textAlign: "center",
+              fontSize: "0.85rem",
+              color: "var(--color-text-soft)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+            }}
+          >
+            <Sparkles size={15} color="var(--color-gold-deep)" style={{ flexShrink: 0 }} />
+            <span>{gifts.message}</span>
+          </div>
+        )}
+
         <FloralDivider />
       </div>
 
       {/* Modal Real de PIX */}
-      {portalConfig.pixEnabled && pixModalOpen && (
+      {isPixActive && pixModalOpen && (
         <div
           className="modal-backdrop"
           onClick={() => setPixModalOpen(false)}

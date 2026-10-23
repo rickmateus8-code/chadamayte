@@ -133,8 +133,8 @@ export async function handlePublicEventRoutes(
         eventRow?.map_url ||
           "https://maps.google.com/?q=Av.+Paulista,+1000,+Sao+Paulo"
       ),
-      pixKey: customDetails.pixKey || "chadamayte@familia.com.br",
-      pixBeneficiary: customDetails.pixBeneficiary || "Papais da Maytê",
+      pixKey: typeof customDetails.pixKey === "string" ? customDetails.pixKey : "",
+      pixBeneficiary: typeof customDetails.pixBeneficiary === "string" ? customDetails.pixBeneficiary : "",
       observations:
         customDetails.observations ||
         "Será um encontro real muito especial! Venham preparados para comemorar, brindar e registrar muitas fotos para o álbum da nossa princesinha.",

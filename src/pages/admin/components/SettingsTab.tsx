@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Save, CheckCircle2, Calendar, MapPin, QrCode, Sparkles, Heart } from "lucide-react";
+import { Save, CheckCircle2, Calendar, MapPin, QrCode, Sparkles, Heart, EyeOff, Check, Trash2 } from "lucide-react";
 import { updateAdminEventSettings, type AdminEventSettings } from "../../../lib/adminApi";
 import { mergePortalDynamicConfig, type PortalDynamicConfig } from "../../../config/portalConfig";
 import { RoyalCornerFiligree } from "../../../components/brand/RoyalOrnaments";
@@ -46,9 +46,17 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+
+    const isPixActive = Boolean(portalCfg.pixEnabled && form.pixKey.trim().length > 0);
+    const updatedPortalConfig = {
+      ...portalCfg,
+      pixEnabled: isPixActive,
+    };
+
     const res = await updateAdminEventSettings(token, {
       ...form,
-      portalConfig: portalCfg,
+      pixKey: form.pixKey.trim(),
+      portalConfig: updatedPortalConfig,
     });
     setSaving(false);
 
@@ -273,29 +281,128 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
         />
       </div>
 
-      {/* 4. Bloco PIX Real */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.9rem" }}>
-        <div className="rsvp-form-field">
-          <label className="rsvp-field-label" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <QrCode size={14} color="var(--color-gold-deep)" />
-            Chave PIX (Para Mimos)
-          </label>
-          <input
-            type="text"
-            className="rsvp-field-input"
-            value={form.pixKey}
-            onChange={(e) => handleChange("pixKey", e.target.value)}
-          />
+      {/* 4. Bloco PIX Real com Ativação/Desativação e Remoção Imediata */}
+      <div
+        style={{
+          background: portalCfg.pixEnabled && form.pixKey.trim().length > 0
+            ? "linear-gradient(135deg, rgba(212, 169, 89, 0.12) 0%, rgba(255, 240, 245, 0.45) 100%)"
+            : "rgba(245, 245, 245, 0.8)",
+          border: portalCfg.pixEnabled && form.pixKey.trim().length > 0
+            ? "1px solid var(--color-gold)"
+            : "1px dashed #bbb",
+          borderRadius: "var(--radius-md)",
+          padding: "1.25rem",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "var(--radius-full)",
+                background: portalCfg.pixEnabled && form.pixKey.trim().length > 0 ? "var(--color-gold-deep)" : "#888",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <QrCode size={18} />
+            </div>
+            <div>
+              <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", color: "var(--color-text)", margin: 0, display: "flex", alignItems: "center", gap: "6px" }}>
+                Função de Mimo Real via PIX
+              </h3>
+              <span
+                style={{
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  color: portalCfg.pixEnabled && form.pixKey.trim().length > 0 ? "#1b7340" : "#666",
+                }}
+              >
+                {portalCfg.pixEnabled && form.pixKey.trim().length > 0
+                  ? "✓ Ativado no convite e na Boutique"
+                  : "✕ Desativado / Totalmente oculto"}
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                setPortalCfg((prev) => ({ ...prev, pixEnabled: !prev.pixEnabled }));
+              }}
+              className={portalCfg.pixEnabled ? "btn-rsvp-decline" : "btn-floral-gold"}
+              style={{ fontSize: "0.78rem", padding: "6px 14px" }}
+            >
+              {portalCfg.pixEnabled ? (
+                <>
+                  <EyeOff size={14} /> Desativar PIX
+                </>
+              ) : (
+                <>
+                  <Check size={14} /> Ativar PIX
+                </>
+              )}
+            </button>
+
+            {form.pixKey.trim().length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  handleChange("pixKey", "");
+                  setPortalCfg((prev) => ({ ...prev, pixEnabled: false }));
+                }}
+                className="btn-rsvp-decline"
+                style={{ fontSize: "0.78rem", padding: "6px 12px", background: "rgba(220, 53, 69, 0.1)", color: "#c82333", borderColor: "rgba(220, 53, 69, 0.3)" }}
+                title="Limpar chave e ocultar PIX instantaneamente"
+              >
+                <Trash2 size={14} /> Limpar e Remover
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="rsvp-form-field">
-          <label className="rsvp-field-label">Nome do Favorecido PIX</label>
-          <input
-            type="text"
-            className="rsvp-field-input"
-            value={form.pixBeneficiary}
-            onChange={(e) => handleChange("pixBeneficiary", e.target.value)}
-          />
+        <p style={{ margin: "0 0 1rem 0", fontSize: "0.82rem", color: "var(--color-text-soft)" }}>
+          {portalCfg.pixEnabled && form.pixKey.trim().length > 0
+            ? "O card oficial de PIX com QR Code e botão de cópia é exibido na Boutique de Mimos e no formulário de confirmação."
+            : "A chave PIX, o card 'Mimo Real via PIX' e o QR Code estão desativados e não aparecerão para nenhum convidado no portal."}
+        </p>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.9rem" }}>
+          <div className="rsvp-form-field">
+            <label className="rsvp-field-label" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <QrCode size={14} color="var(--color-gold-deep)" />
+              Chave PIX (Para Mimos)
+            </label>
+            <input
+              type="text"
+              className="rsvp-field-input"
+              placeholder="Ex: seu-pix@email.com ou CPF (deixe vazio para desativar)"
+              value={form.pixKey}
+              onChange={(e) => {
+                const val = e.target.value;
+                handleChange("pixKey", val);
+                if (val.trim() === "") {
+                  setPortalCfg((prev) => ({ ...prev, pixEnabled: false }));
+                } else if (!portalCfg.pixEnabled) {
+                  setPortalCfg((prev) => ({ ...prev, pixEnabled: true }));
+                }
+              }}
+            />
+          </div>
+
+          <div className="rsvp-form-field">
+            <label className="rsvp-field-label">Nome do Favorecido PIX</label>
+            <input
+              type="text"
+              className="rsvp-field-input"
+              value={form.pixBeneficiary}
+              onChange={(e) => handleChange("pixBeneficiary", e.target.value)}
+            />
+          </div>
         </div>
       </div>
 

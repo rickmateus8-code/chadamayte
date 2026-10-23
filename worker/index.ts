@@ -166,7 +166,49 @@ export default {
         init.body = await request.arrayBuffer();
       }
 
-      return fetch(targetUrl, init);
+      const upstreamRes = await fetch(targetUrl, init);
+
+      // Sanitização de resposta pública quando PIX estiver desativado pelos pais
+      if (url.pathname === "/api/public/event-info" && upstreamRes.status === 200) {
+        try {
+          const data = (await upstreamRes.json()) as any;
+          if (data && data.portalConfig && data.portalConfig.pixEnabled === false) {
+            if (data.event) {
+              data.event.pixKey = "";
+            }
+          }
+          return new Response(JSON.stringify(data), {
+            status: upstreamRes.status,
+            headers: {
+              "Content-Type": "application/json",
+              ...corsHeaders(),
+            },
+          });
+        } catch {
+          // fallback
+        }
+      }
+
+      // Sanitização de resposta administrativa quando PIX estiver desativado
+      if (url.pathname === "/api/admin/event-settings" && request.method === "GET" && upstreamRes.status === 200) {
+        try {
+          const data = (await upstreamRes.json()) as any;
+          if (data && data.portalConfig && data.portalConfig.pixEnabled === false) {
+            data.pixKey = "";
+          }
+          return new Response(JSON.stringify(data), {
+            status: upstreamRes.status,
+            headers: {
+              "Content-Type": "application/json",
+              ...corsHeaders(),
+            },
+          });
+        } catch {
+          // fallback
+        }
+      }
+
+      return upstreamRes;
     }
 
     if (env && env.ASSETS) {
